@@ -1,0 +1,3 @@
+[submodule "extra-addons/OCA/web"]
+	path = extra-addons/OCA/web
+	url = https://github.com/OCA/web.git

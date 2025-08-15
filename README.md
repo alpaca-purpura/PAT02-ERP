@@ -182,6 +182,16 @@ __pycache__/
    sudo chown -R 101:101 ./addons
    ```
 
+4. **Problema de assets corruptos (CSS)
+   ```bash
+      # En Linux/Mac, ajustar permisos
+   # 1. Limpiar assets corruptos
+   docker-compose exec db psql -U odoo -d odoo_patco -c "DELETE FROM ir_attachment WHERE res_model = 'ir.ui.view' AND (name ILIKE '%.assets_%.css' OR name ILIKE '%.assets_%.js');"
+
+   # 2. Reiniciar Odoo
+   docker-compose restart odoo
+   ```
+
 ### Logs y Diagnóstico
 
 ```bash
