@@ -1,3 +1,18 @@
 [submodule "extra-addons/OCA/web"]
 	path = extra-addons/OCA/web
 	url = https://github.com/OCA/web.git
+[submodule "extra-addons/OCA/maintenance"]
+	path = extra-addons/OCA/maintenance
+	url = https://github.com/OCA/maintenance.git
+[submodule "extra-addons/OCA/project"]
+	path = extra-addons/OCA/project
+	url = https://github.com/OCA/project.git
+[submodule "extra-addons/OCA/account-payment"]
+	path = extra-addons/OCA/account-payment
+	url = https://github.com/OCA/account-payment.git
+[submodule "extra-addons/OCA/reporting-engine"]
+	path = extra-addons/OCA/reporting-engine
+	url = https://github.com/OCA/reporting-engine.git
+[submodule "extra-addons/OCA/server-env"]
+	path = extra-addons/OCA/server-env
+	url = https://github.com/OCA/server-env.git

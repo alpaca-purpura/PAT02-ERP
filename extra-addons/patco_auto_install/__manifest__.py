@@ -19,6 +19,7 @@
     'website': 'https://www.patco.com',
     'license': 'LGPL-3',
     'depends': [
+        # Módulos nativos de Odoo
         'base',
         'contacts',
         'account',
@@ -28,7 +29,22 @@
         'maintenance',
         'stock',
         'hr',
+        'purchase',
+        'crm',
+        'website',
+        'portal',
+        'board',
+        'calendar',
+        'mail',
+        
+        # Módulos OCA
         'web_responsive',
+        'web_timeline',
+        'maintenance_equipment_category_hierarchy',
+        'project_task_stock',
+        'account_payment_term_extension',
+        'report_xlsx',
+        'server_environment',
     ],
     'data': [
         'security/patco_security.xml',
