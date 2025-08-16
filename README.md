@@ -191,6 +191,11 @@ __pycache__/
    # 2. Reiniciar Odoo
    docker-compose restart odoo
    ```
+5. actualizaciones de los modulos, si hay cambios
+   ```bash
+   # Actualizar módulos
+   docker-compose exec odoo odoo-bin -u all -d odoo-patco
+   ```
 
 ### Logs y Diagnóstico
 

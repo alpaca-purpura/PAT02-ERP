@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- PATCO Security Groups -->
+        
+        <!-- Grupo: Administrador PATCO -->
+        <record id="group_patco_admin" model="res.groups">
+            <field name="name">PATCO Administrador</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="comment">Acceso completo a todas las funcionalidades del sistema PATCO</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Grupo: Gerente PATCO -->
+        <record id="group_patco_manager" model="res.groups">
+            <field name="name">PATCO Gerente</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="comment">Gestión de proyectos, clientes, facturación y reportes</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Grupo: Técnico Líder PATCO -->
+        <record id="group_patco_tech_leader" model="res.groups">
+            <field name="name">PATCO Técnico Líder</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="comment">Supervisión de técnicos, aprobación de informes y gestión de mantenimientos</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Grupo: Técnico PATCO -->
+        <record id="group_patco_technician" model="res.groups">
+            <field name="name">PATCO Técnico</field>
+            <field name="category_id" ref="base.module_category_administration"/>
+            <field name="comment">Acceso a proyectos asignados, activos y mantenimientos</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Permisos específicos para módulos core -->
+        
+        <!-- Permisos de Proyecto -->
+        <record id="project_manager_patco_admin" model="res.groups">
+            <field name="name">Project Manager (PATCO Admin)</field>
+            <field name="category_id" ref="base.module_category_services_project"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_admin'))]"/>
+        </record>
+        
+        <record id="project_manager_patco_manager" model="res.groups">
+            <field name="name">Project Manager (PATCO Manager)</field>
+            <field name="category_id" ref="base.module_category_services_project"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_manager'))]"/>
+        </record>
+        
+        <record id="project_user_patco_tech_leader" model="res.groups">
+            <field name="name">Project User (PATCO Tech Leader)</field>
+            <field name="category_id" ref="base.module_category_services_project"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_tech_leader'))]"/>
+        </record>
+        
+        <record id="project_user_patco_technician" model="res.groups">
+            <field name="name">Project User (PATCO Technician)</field>
+            <field name="category_id" ref="base.module_category_services_project"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Permisos de Mantenimiento -->
+        <record id="maintenance_manager_patco_admin" model="res.groups">
+            <field name="name">Maintenance Manager (PATCO Admin)</field>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_admin'))]"/>
+        </record>
+        
+        <record id="maintenance_manager_patco_manager" model="res.groups">
+            <field name="name">Maintenance Manager (PATCO Manager)</field>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_manager'))]"/>
+        </record>
+        
+        <record id="maintenance_user_patco_tech_leader" model="res.groups">
+            <field name="name">Maintenance User (PATCO Tech Leader)</field>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_tech_leader'))]"/>
+        </record>
+        
+        <record id="maintenance_user_patco_technician" model="res.groups">
+            <field name="name">Maintenance User (PATCO Technician)</field>
+            <field name="category_id" ref="base.module_category_services"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_technician')), (4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Permisos de Contabilidad -->
+        <record id="account_manager_patco_admin" model="res.groups">
+            <field name="name">Billing Manager (PATCO Admin)</field>
+            <field name="category_id" ref="base.module_category_accounting"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_admin'))]"/>
+        </record>
+        
+        <record id="account_manager_patco_manager" model="res.groups">
+            <field name="name">Billing Manager (PATCO Manager)</field>
+            <field name="category_id" ref="base.module_category_accounting"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_manager'))]"/>
+        </record>
+        
+        <!-- Permisos de Ventas -->
+        <record id="sale_manager_patco_admin" model="res.groups">
+            <field name="name">Sales Manager (PATCO Admin)</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_admin'))]"/>
+        </record>
+        
+        <record id="sale_manager_patco_manager" model="res.groups">
+            <field name="name">Sales Manager (PATCO Manager)</field>
+            <field name="category_id" ref="base.module_category_sales_sales"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_manager'))]"/>
+        </record>
+        
+    </data>
+</odoo>

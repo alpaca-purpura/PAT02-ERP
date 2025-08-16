@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Secuencias de numeración para PATCO -->
+        
+        <!-- Secuencia para Proyectos de Mantenimiento -->
+        <record id="seq_project_maintenance" model="ir.sequence">
+            <field name="name">Proyectos de Mantenimiento PATCO</field>
+            <field name="code">project.maintenance.patco</field>
+            <field name="prefix">MANT-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <!-- Secuencia para Órdenes de Mantenimiento -->
+        <record id="seq_maintenance_request" model="ir.sequence">
+            <field name="name">Órdenes de Mantenimiento PATCO</field>
+            <field name="code">maintenance.request.patco</field>
+            <field name="prefix">OM-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <!-- Secuencia para Equipos -->
+        <record id="seq_maintenance_equipment" model="ir.sequence">
+            <field name="name">Equipos PATCO</field>
+            <field name="code">maintenance.equipment.patco</field>
+            <field name="prefix">EQ-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <!-- Secuencia para Informes de Servicio -->
+        <record id="seq_service_report" model="ir.sequence">
+            <field name="name">Informes de Servicio PATCO</field>
+            <field name="code">service.report.patco</field>
+            <field name="prefix">INF-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <!-- Secuencia para Checklists de Calidad -->
+        <record id="seq_quality_checklist" model="ir.sequence">
+            <field name="name">Checklists de Calidad PATCO</field>
+            <field name="code">quality.checklist.patco</field>
+            <field name="prefix">CHK-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <!-- Secuencia para Documentos de Conocimiento -->
+        <record id="seq_knowledge_document" model="ir.sequence">
+            <field name="name">Documentos de Conocimiento PATCO</field>
+            <field name="code">knowledge.document.patco</field>
+            <field name="prefix">DOC-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <!-- Secuencia para Alertas de Cobranza -->
+        <record id="seq_billing_alert" model="ir.sequence">
+            <field name="name">Alertas de Cobranza PATCO</field>
+            <field name="code">billing.alert.patco</field>
+            <field name="prefix">ALT-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <!-- Secuencia para Tickets de Soporte -->
+        <record id="seq_support_ticket" model="ir.sequence">
+            <field name="name">Tickets de Soporte PATCO</field>
+            <field name="code">support.ticket.patco</field>
+            <field name="prefix">TKT-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+        <!-- Secuencia para Contratos de Mantenimiento -->
+        <record id="seq_maintenance_contract" model="ir.sequence">
+            <field name="name">Contratos de Mantenimiento PATCO</field>
+            <field name="code">maintenance.contract.patco</field>
+            <field name="prefix">CONT-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+        
+    </data>
+</odoo>
