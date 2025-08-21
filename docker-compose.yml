@@ -8,11 +8,9 @@ services:
       - POSTGRES_DB=odoo_patco
       - POSTGRES_USER=odoo
       - POSTGRES_PASSWORD=P4tc0_2
-      - POSTGRES_INITDB_ARGS=--auth-host=scram-sha-256
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - odoo-db-data:/var/lib/postgresql/data/pgdata
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     restart: unless-stopped
     networks:
       - odoo-network
@@ -33,10 +31,12 @@ services:
         condition: service_healthy
     ports:
       - "8069:8069"
-    command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "-i", "base"]
+    # --- EL COMANDO DEFINITIVO Y CORRECTO ---
+    command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "--init=l10n_pe", "--load-language=es_PE", "--without-demo=all"]    
     environment:
       - DB_HOST=db
       - DB_PORT=5432
+      - ODOO_RC=/etc/odoo/odoo.conf
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./config:/etc/odoo

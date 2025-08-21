@@ -1,5 +1,6 @@
 # Odoo PATCO - Sistema ERP
 
+
 ## Descripción
 
 Sistema ERP basado en Odoo Community 18 para **PACIFIC ALLIANCE TRADING COMPANY SAC**, empresa peruana dedicada al servicio de mantenimiento de maquinaria para la industria hotelera y gastronómica.
@@ -33,31 +34,10 @@ odoo-patco/
 
 ## Instalación y Configuración
 
-### 1. Clonar y Configurar
 
-```bash
-# Navegar al directorio del proyecto
-cd odoo-patco
+### Desplegar los Servicios
 
-# Copiar el archivo de configuración
-cp .env.example .env
-```
-
-### 2. Configurar Variables de Entorno
-
-Editar el archivo `.env` y cambiar las contraseñas por valores seguros:
-
-```bash
-# Configuración de Base de Datos PostgreSQL
-POSTGRES_DB=odoo_patco
-POSTGRES_USER=odoo
-POSTGRES_PASSWORD=tu_password_postgresql_seguro
-
-# Configuración de Odoo
-ODOO_ADMIN_PASSWORD=tu_password_admin_odoo_seguro
-```
-
-### 3. Desplegar los Servicios
+Clonar el repositorio. Ir a la carpeta raiz, donde se encuentra el archivo docker-compose.yml
 
 ```bash
 # Iniciar los servicios en segundo plano
@@ -70,12 +50,15 @@ docker-compose ps
 docker-compose logs -f
 ```
 
-### 4. Acceder a Odoo
+### Acceder a Odoo
 
 - **URL**: http://localhost:8069
-- **Base de datos**: odoo_patco
-- **Usuario**: admin
-- **Contraseña**: La configurada en `ODOO_ADMIN_PASSWORD`
+
+## Configuración Inicial
+Todo ha sido programado por lo que el proceso manual es mínimo y es el siguiente:
+1. Ejecutar desde docker compose.
+2. Ingresar con usuario administrador, y a Facturacion/Ajustes y cambiar la localización fiscal a Perú, Guardar.
+3. Instalar patco_auto_install
 
 ## Comandos Útiles
 
@@ -95,8 +78,7 @@ docker-compose restart
 docker-compose ps
 
 # Ver logs
-docker-compose logs -f odoo
-docker-compose logs -f db
+docker-compose logs -f
 ```
 
 ### Gestión de Datos
@@ -112,17 +94,6 @@ docker-compose exec -T db psql -U odoo odoo_patco < backup_file.sql
 docker-compose exec db psql -U odoo -d odoo_patco
 ```
 
-### Desarrollo
-
-```bash
-# Instalar módulos personalizados
-# Colocar módulos en el directorio ./addons/
-# Reiniciar Odoo para cargar nuevos módulos
-docker-compose restart odoo
-
-# Modo desarrollo (editar config/odoo.conf)
-# Descomentar: dev_mode = reload,qweb,werkzeug,xml
-```
 
 ## Módulos del Sistema
 
@@ -139,7 +110,6 @@ El sistema incluirá los siguientes módulos personalizados:
 ### Recomendaciones
 
 1. **Cambiar contraseñas por defecto** antes del despliegue
-2. **No subir el archivo `.env`** al repositorio
 3. **Usar contraseñas seguras** (mínimo 12 caracteres)
 4. **Configurar firewall** para limitar acceso al puerto 8069
 5. **Realizar backups regulares** de la base de datos
@@ -209,14 +179,5 @@ docker-compose exec odoo bash
 # Verificar configuración
 docker-compose exec odoo cat /etc/odoo/odoo.conf
 ```
-
-## Contacto y Soporte
-
-- **Empresa**: PACIFIC ALLIANCE TRADING COMPANY SAC
-- **Proyecto**: Sistema ERP Odoo PATCO
-- **Versión**: Odoo Community 18
-- **Documentación**: [Odoo 18 Documentation](https://www.odoo.com/documentation/18.0/)
-
----
 
 **Nota**: Este es un sistema en desarrollo. Para producción, considerar configuraciones adicionales de seguridad, SSL/TLS, y monitoreo.

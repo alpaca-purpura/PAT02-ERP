@@ -1,22 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        
-        <!-- Configuración de la Compañía Principal -->
-        <!-- Comentado para evitar conflictos con asientos contables existentes -->
-        <!--
-        <record id="base.main_company" model="res.company">
-            <field name="name">PACIFIC ALLIANCE TRADING COMPANY SAC</field>
-            <field name="street">Av. Principal 123</field>
-            <field name="city">Lima</field>
-            <field name="zip">15001</field>
-            <field name="country_id" ref="base.pe"/>
-            <field name="phone">+51 1 234-5678</field>
-            <field name="email">info@patco.com.pe</field>
-        </record>
-        -->
-        
-        <!-- Categorías de Productos para Servicios de Mantenimiento -->
         <record id="categ_maintenance_services" model="product.category">
             <field name="name">Servicios de Mantenimiento</field>
             <field name="parent_id" ref="product.product_category_all"/>
@@ -32,7 +16,6 @@
             <field name="parent_id" ref="categ_maintenance_services"/>
         </record>
         
-        <!-- Productos/Servicios Base -->
         <record id="product_preventive_maintenance" model="product.product">
             <field name="name">Servicio de Mantenimiento Preventivo</field>
             <field name="type">service</field>
@@ -57,7 +40,6 @@
             <field name="description_sale">Servicio de mantenimiento correctivo para equipos industriales</field>
         </record>
         
-        <!-- Cliente de Ejemplo -->
         <record id="partner_hotel_example" model="res.partner">
             <field name="name">Hotel Plaza Lima</field>
             <field name="is_company">True</field>
@@ -68,8 +50,7 @@
             <field name="country_id" ref="base.pe"/>
             <field name="phone">+51 1 987-6543</field>
             <field name="email">contacto@hotelplaza.com.pe</field>
-            <field name="category_id" eval="[(6, 0, [ref('base.res_partner_category_0')])]"/>
-        </record>
+            </record>
         
         <record id="partner_restaurant_example" model="res.partner">
             <field name="name">Restaurante El Dorado</field>
@@ -81,42 +62,6 @@
             <field name="country_id" ref="base.pe"/>
             <field name="phone">+51 1 456-7890</field>
             <field name="email">gerencia@eldorado.com.pe</field>
-            <field name="category_id" eval="[(6, 0, [ref('base.res_partner_category_0')])]"/>
-        </record>
-        
-        <!-- Configuración de Términos de Pago -->
-        <!-- Los términos de pago se definen en patco_data.xml para evitar duplicación -->
-        
-        <!-- Configuración de Impuestos Peruanos -->
-        <!-- Los impuestos se configuran automáticamente con l10n_pe -->
-        <!-- 
-        <record id="tax_igv_18" model="account.tax">
-            <field name="name">IGV 18%</field>
-            <field name="type_tax_use">sale</field>
-            <field name="amount_type">percent</field>
-            <field name="amount">18.0</field>
-            <field name="country_id" ref="base.pe"/>
-            <field name="description">IGV</field>
-        </record>
-        -->
-        
-        <!-- Configuración de Diarios Contables -->
-        <!-- Los diarios se crean automáticamente al instalar contabilidad -->
-        <!-- 
-        <record id="account_journal_sales" model="account.journal">
-            <field name="name">Ventas</field>
-            <field name="code">VEN</field>
-            <field name="type">sale</field>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        
-        <record id="account_journal_purchases" model="account.journal">
-            <field name="name">Compras</field>
-            <field name="code">COM</field>
-            <field name="type">purchase</field>
-            <field name="company_id" ref="base.main_company"/>
-        </record>
-        -->
-        
+            </record>
     </data>
 </odoo>
