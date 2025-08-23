@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_patco_service_nature_user,patco.service.nature.user,model_patco_service_nature,base.group_user,1,0,0,0
+access_patco_service_nature_manager,patco.service.nature.manager,model_patco_service_nature,base.group_system,1,1,1,1
+access_patco_service_area_user,patco.service.area.user,model_patco_service_area,base.group_user,1,0,0,0
+access_patco_service_area_manager,patco.service.area.manager,model_patco_service_area,base.group_system,1,1,1,1
+access_patco_service_complexity_user,patco.service.complexity.user,model_patco_service_complexity,base.group_user,1,0,0,0
+access_patco_service_complexity_manager,patco.service.complexity.manager,model_patco_service_complexity,base.group_system,1,1,1,1

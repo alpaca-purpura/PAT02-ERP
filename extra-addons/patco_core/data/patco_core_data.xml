@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+        <record id="base.main_company" model="res.company">
+            <field name="logo" type="base64" file="patco_core/static/src/img/PATCO-Logo.png"/>
+        </record>
         <record id="categ_maintenance_services" model="product.category">
             <field name="name">Servicios de Mantenimiento</field>
             <field name="parent_id" ref="product.product_category_all"/>

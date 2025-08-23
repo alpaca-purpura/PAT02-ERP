@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Definición del reporte -->
+        <record id="action_report_equipment_label" model="ir.actions.report">
+            <field name="name">Etiqueta de Equipo</field>
+            <field name="model">patco.customer.equipment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">patco_customer_equipment.equipment_label_template</field>
+            <field name="report_file">patco_customer_equipment.equipment_label_template</field>
+            <field name="binding_type">report</field>
+        </record>
+
+        <!-- Formato de papel personalizado para etiquetas -->
+        <record id="paperformat_equipment_label" model="report.paperformat">
+            <field name="name">Etiqueta de Equipo</field>
+            <field name="default" eval="False"/>
+            <field name="format">custom</field>
+            <field name="page_height">60</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">3</field>
+            <field name="margin_bottom">3</field>
+            <field name="margin_left">3</field>
+            <field name="margin_right">3</field>
+            <field name="header_line" eval="False"/>
+            <field name="header_spacing">0</field>
+            <field name="dpi">90</field>
+        </record>
+
+        <!-- Actualizar el reporte para usar el formato personalizado -->
+        <record id="action_report_equipment_label" model="ir.actions.report">
+            <field name="paperformat_id" ref="paperformat_equipment_label"/>
+        </record>
+
+        <!-- Template QWeb para la etiqueta -->
+        <template id="equipment_label_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="equipment">
+                    <div class="page" style="page-break-after: always;">
+                        <div class="equipment-label" style="
+                            width: 94mm;
+                            height: 54mm;
+                            border: 1px solid #000;
+                            padding: 2mm;
+                            font-family: Arial, sans-serif;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                        ">
+                            <!-- Encabezado con nombre del equipo -->
+                            <div class="label-header" style="
+                                text-align: center;
+                                border-bottom: 1px solid #ccc;
+                                padding-bottom: 1mm;
+                                margin-bottom: 1mm;
+                            ">
+                                <div style="font-size: 12pt; font-weight: bold;">
+                                    <t t-esc="equipment.name"/>
+                                </div>
+                                <div style="font-size: 8pt; color: #666;">
+                                    ID: <t t-esc="equipment.code"/>
+                                </div>
+                            </div>
+
+                            <!-- Contenido principal -->
+                            <div class="label-content" style="
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+                                flex-grow: 1;
+                            ">
+                                <!-- Información del equipo -->
+                                <div class="equipment-info" style="
+                                    flex: 1;
+                                    padding-right: 2mm;
+                                ">
+                                    <div style="font-size: 9pt; margin-bottom: 1mm;">
+                                        <strong>Cliente:</strong><br/>
+                                        <t t-esc="equipment.partner_id.name"/>
+                                    </div>
+                                    <div style="font-size: 8pt; margin-bottom: 1mm;" t-if="equipment.brand">
+                                        <strong>Marca:</strong> <t t-esc="equipment.brand"/>
+                                    </div>
+                                    <div style="font-size: 8pt; margin-bottom: 1mm;" t-if="equipment.model">
+                                        <strong>Modelo:</strong> <t t-esc="equipment.model"/>
+                                    </div>
+                                    <div style="font-size: 8pt;" t-if="equipment.serial_no">
+                                        <strong>S/N:</strong> <t t-esc="equipment.serial_no"/>
+                                    </div>
+                                </div>
+
+                                <!-- Código QR -->
+                                <div class="qr-code" style="
+                                    text-align: center;
+                                    min-width: 20mm;
+                                ">
+                                    <t t-if="equipment.qr_code">
+                                        <img t-att-src="'data:image/png;base64,%s' % equipment.qr_code" 
+                                             style="width: 18mm; height: 18mm;"/>
+                                    </t>
+                                    <t t-else="">
+                                        <div style="
+                                            width: 18mm;
+                                            height: 18mm;
+                                            border: 1px dashed #ccc;
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            font-size: 6pt;
+                                            color: #999;
+                                        ">
+                                            Sin QR
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+
+                            <!-- Pie de etiqueta -->
+                            <div class="label-footer" style="
+                                text-align: center;
+                                border-top: 1px solid #ccc;
+                                padding-top: 1mm;
+                                margin-top: 1mm;
+                                font-size: 6pt;
+                                color: #666;
+                            ">
+                                PATCO - Gestión de Activos
+                                <t t-if="equipment.location_id">
+                                    | <t t-esc="equipment.location_id.name"/>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+
+        <!-- Template para múltiples etiquetas en una página -->
+        <template id="equipment_label_multiple_template">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <div style="
+                        display: flex;
+                        flex-wrap: wrap;
+                        justify-content: flex-start;
+                        align-content: flex-start;
+                        gap: 2mm;
+                        padding: 5mm;
+                    ">
+                        <t t-foreach="docs" t-as="equipment">
+                            <div class="equipment-label-small" style="
+                                width: 94mm;
+                                height: 54mm;
+                                border: 1px solid #000;
+                                padding: 2mm;
+                                font-family: Arial, sans-serif;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: space-between;
+                                margin-bottom: 2mm;
+                            ">
+                                <!-- Contenido igual al template individual pero más compacto -->
+                                <div class="label-header" style="
+                                    text-align: center;
+                                    border-bottom: 1px solid #ccc;
+                                    padding-bottom: 1mm;
+                                    margin-bottom: 1mm;
+                                ">
+                                    <div style="font-size: 10pt; font-weight: bold;">
+                                        <t t-esc="equipment.name"/>
+                                    </div>
+                                    <div style="font-size: 7pt; color: #666;">
+                                        ID: <t t-esc="equipment.code"/>
+                                    </div>
+                                </div>
+
+                                <div class="label-content" style="
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    flex-grow: 1;
+                                ">
+                                    <div class="equipment-info" style="
+                                        flex: 1;
+                                        padding-right: 2mm;
+                                    ">
+                                        <div style="font-size: 8pt; margin-bottom: 1mm;">
+                                            <strong>Cliente:</strong><br/>
+                                            <t t-esc="equipment.partner_id.name"/>
+                                        </div>
+                                        <div style="font-size: 7pt;" t-if="equipment.serial_no">
+                                            <strong>S/N:</strong> <t t-esc="equipment.serial_no"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="qr-code" style="text-align: center; min-width: 15mm;">
+                                        <t t-if="equipment.qr_code">
+                                            <img t-att-src="'data:image/png;base64,%s' % equipment.qr_code" 
+                                                 style="width: 15mm; height: 15mm;"/>
+                                        </t>
+                                    </div>
+                                </div>
+
+                                <div class="label-footer" style="
+                                    text-align: center;
+                                    border-top: 1px solid #ccc;
+                                    padding-top: 1mm;
+                                    margin-top: 1mm;
+                                    font-size: 5pt;
+                                    color: #666;
+                                ">
+                                    PATCO - Gestión de Activos
+                                </div>
+                            </div>
+                        </t>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

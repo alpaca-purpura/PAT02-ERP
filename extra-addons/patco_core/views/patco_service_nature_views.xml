@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Tree View -->
+        <record id="view_patco_service_nature_tree" model="ir.ui.view">
+            <field name="name">patco.service.nature.tree</field>
+            <field name="model">patco.service.nature</field>
+            <field name="arch" type="xml">
+                <list string="Service Nature">
+                    <field name="sequence" widget="handle"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form View -->
+        <record id="view_patco_service_nature_form" model="ir.ui.view">
+            <field name="name">patco.service.nature.form</field>
+            <field name="model">patco.service.nature</field>
+            <field name="arch" type="xml">
+                <form string="Service Nature">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="ej: Mantenimiento Preventivo"/>
+                                <field name="code" placeholder="ej: MP"/>
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Descripción detallada de la naturaleza del servicio..."/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Search View -->
+        <record id="view_patco_service_nature_search" model="ir.ui.view">
+            <field name="name">patco.service.nature.search</field>
+            <field name="model">patco.service.nature</field>
+            <field name="arch" type="xml">
+                <search string="Service Nature">
+                    <field name="name" string="Nature" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                    <field name="code"/>
+                    <separator/>
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Active" name="group_active" context="{'group_by': 'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Action -->
+        <record id="action_patco_service_nature" model="ir.actions.act_window">
+            <field name="name">Service Nature</field>
+            <field name="res_model">patco.service.nature</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crear una nueva naturaleza de servicio
+                </p>
+                <p>
+                    Las naturalezas de servicio definen el tipo de trabajo a realizar,
+                    como Mantenimiento, Instalación, Reparación, etc.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

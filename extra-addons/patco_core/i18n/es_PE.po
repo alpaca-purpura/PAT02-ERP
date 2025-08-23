@@ -1,0 +1,111 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* patco_core
+#
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es_PE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_area__name
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_complexity__name
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_nature__name
+msgid "Name"
+msgstr "Nombre"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_area__code
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_complexity__code
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_nature__code
+msgid "Code"
+msgstr "Código"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_area__description
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_complexity__description
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_nature__description
+msgid "Description"
+msgstr "Descripción"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_area__active
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_complexity__active
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_nature__active
+msgid "Active"
+msgstr "Activo"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_area__sequence
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_complexity__sequence
+#: model:ir.model.fields,field_description:patco_core.field_patco_service_nature__sequence
+msgid "Sequence"
+msgstr "Secuencia"
+
+#. module: patco_core
+#: model:ir.ui.menu,name:patco_core.menu_patco_service_nature
+msgid "Service Nature"
+msgstr "Naturaleza del Servicio"
+
+#. module: patco_core
+#: model:ir.ui.menu,name:patco_core.menu_patco_service_area
+msgid "Service Area"
+msgstr "Área del Servicio"
+
+#. module: patco_core
+#: model:ir.ui.menu,name:patco_core.menu_patco_service_complexity
+msgid "Service Complexity"
+msgstr "Complejidad del Servicio"
+
+#. module: patco_core
+#: model:ir.ui.menu,name:patco_core.menu_patco_configuration
+msgid "Configuration"
+msgstr "Configuración"
+
+#. module: patco_core
+#: model:ir.actions.act_window,name:patco_core.action_patco_service_nature
+msgid "Service Natures"
+msgstr "Naturalezas del Servicio"
+
+#. module: patco_core
+#: model:ir.actions.act_window,name:patco_core.action_patco_service_area
+msgid "Service Areas"
+msgstr "Áreas del Servicio"
+
+#. module: patco_core
+#: model:ir.actions.act_window,name:patco_core.action_patco_service_complexity
+msgid "Service Complexities"
+msgstr "Complejidades del Servicio"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_helpdesk_ticket__x_nature_id
+#: model:ir.model.fields,field_description:patco_core.field_fsm_order__x_nature_id
+msgid "Nature"
+msgstr "Naturaleza"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_helpdesk_ticket__x_area_id
+#: model:ir.model.fields,field_description:patco_core.field_fsm_order__x_area_id
+msgid "Area"
+msgstr "Área"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_helpdesk_ticket__x_complexity_id
+#: model:ir.model.fields,field_description:patco_core.field_fsm_order__x_complexity_id
+msgid "Complexity"
+msgstr "Complejidad"
+
+#. module: patco_core
+#: model:ir.model.fields,field_description:patco_core.field_helpdesk_ticket__x_classification_code
+#: model:ir.model.fields,field_description:patco_core.field_fsm_order__x_classification_code
+msgid "Classification Code"
+msgstr "Código de Clasificación"
+
+#. module: patco_core
+#: model:ir.ui.view,arch_db:patco_core.helpdesk_ticket_view_form_inherit_patco_core
+#: model:ir.ui.view,arch_db:patco_core.fsm_order_form_view_inherit_patco_core
+msgid "Operational Classification"
+msgstr "Clasificación Operacional"

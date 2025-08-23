@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Main Menu -->
+        <menuitem id="menu_patco_main"
+                  name="PATCO"
+                  sequence="10"/>
+
+        <!-- Configuration Menu -->
+        <menuitem id="menu_patco_configuration"
+                  name="Configuración"
+                  parent="menu_patco_main"
+                  sequence="100"/>
+
+        <!-- Operational Classification Menu -->
+        <menuitem id="menu_patco_operational_classification"
+                  name="Clasificación Operativa"
+                  parent="menu_patco_configuration"
+                  sequence="10"/>
+
+        <!-- Service Nature Menu -->
+        <menuitem id="menu_patco_service_nature"
+                  name="Naturaleza de Servicio"
+                  parent="menu_patco_operational_classification"
+                  action="action_patco_service_nature"
+                  sequence="10"/>
+
+        <!-- Service Area Menu -->
+        <menuitem id="menu_patco_service_area"
+                  name="Área de Especialización"
+                  parent="menu_patco_operational_classification"
+                  action="action_patco_service_area"
+                  sequence="20"/>
+
+        <!-- Service Complexity Menu -->
+        <menuitem id="menu_patco_service_complexity"
+                  name="Complejidad de Servicio"
+                  parent="menu_patco_operational_classification"
+                  action="action_patco_service_complexity"
+                  sequence="30"/>
+
+    </data>
+</odoo>

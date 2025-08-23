@@ -16,3 +16,15 @@
 [submodule "extra-addons/OCA/server-env"]
 	path = extra-addons/OCA/server-env
 	url = https://github.com/OCA/server-env.git
+[submodule "extra-addons/OCA/field-service"]
+	path = extra-addons/OCA/field-service
+	url = https://github.com/OCA/field-service.git
+[submodule "extra-addons/OCA/partner-contact"]
+	path = extra-addons/OCA/partner-contact
+	url = https://github.com/OCA/partner-contact.git
+[submodule "extra-addons/OCA/hr"]
+	path = extra-addons/OCA/hr
+	url = https://github.com/OCA/hr.git
+[submodule "extra-addons/OCA/helpdesk"]
+	path = extra-addons/OCA/helpdesk
+	url = https://github.com/OCA/helpdesk.git

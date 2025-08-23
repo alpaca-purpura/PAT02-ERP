@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="helpdesk_ticket_view_form_inherit_patco_core" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.inherit.patco.core</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page string="Operational Classification" name="operational_classification">
+                    <group>
+                        <group>
+                            <field name="x_nature_id"/>
+                            <field name="x_area_id"/>
+                            <field name="x_complexity_id"/>
+                        </group>
+                        <group>
+                            <field name="x_classification_code"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fsm_order_form_view_inherit_patco_core" model="ir.ui.view">
+        <field name="name">fsm.order.form.inherit.patco.core</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='info']" position="inside">
+                <group string="Operational Classification">
+                    <group>
+                        <field name="x_nature_id"/>
+                        <field name="x_area_id"/>
+                        <field name="x_complexity_id"/>
+                    </group>
+                    <group>
+                        <field name="x_classification_code"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

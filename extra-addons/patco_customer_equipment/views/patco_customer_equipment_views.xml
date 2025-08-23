@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista Tree para Equipos de Cliente -->
+        <record id="view_patco_customer_equipment_tree" model="ir.ui.view">
+            <field name="name">patco.customer.equipment.tree</field>
+            <field name="model">patco.customer.equipment</field>
+            <field name="arch" type="xml">
+                <list string="Equipos de Cliente">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="partner_id"/>
+                    <field name="brand"/>
+                    <field name="model"/>
+                    <field name="serial_no"/>
+                    <field name="location_id"/>
+                    <field name="service_count"/>
+                    <field name="last_service_date"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista Form para Equipos de Cliente -->
+        <record id="view_patco_customer_equipment_form" model="ir.ui.view">
+            <field name="name">patco.customer.equipment.form</field>
+            <field name="model">patco.customer.equipment</field>
+            <field name="arch" type="xml">
+                <form string="Equipo de Cliente">
+                    <header>
+                         <button name="action_activate" type="object" string="Activar" 
+                                 class="oe_highlight" invisible="state != 'draft'"/>
+                         <button name="action_maintenance" type="object" string="En Mantenimiento" 
+                                 invisible="state != 'active'"/>
+                         <button name="action_retire" type="object" string="Retirar" 
+                                 invisible="state in ['draft', 'retired']"/>
+                         <field name="state" widget="statusbar" statusbar_visible="draft,active,maintenance,retired"/>
+                     </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_service_orders" type="object" 
+                                    class="oe_stat_button" icon="fa-wrench"
+                                    invisible="service_count == 0">
+                                <field name="service_count" widget="statinfo" string="Servicios"/>
+                            </button>
+                            <button name="action_view_helpdesk_tickets" type="object" 
+                                    class="oe_stat_button" icon="fa-life-ring"
+                                    invisible="ticket_count == 0">
+                                <field name="ticket_count" widget="statinfo" string="Tickets"/>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Nombre del equipo..."/>
+                            </h1>
+                            <h2>
+                                <field name="code" readonly="1"/>
+                            </h2>
+                        </div>
+                        
+                        <group>
+                            <group name="basic_info" string="Información Básica">
+                                <field name="partner_id" required="1"/>
+                                <field name="location_id"/>
+                                <field name="brand"/>
+                                <field name="model"/>
+                                <field name="serial_no"/>
+                            </group>
+                            <group name="qr_info" string="Código QR">
+                                <field name="qr_code" widget="image" class="oe_avatar"/>
+                                <field name="qr_url" widget="url"/>
+                            </group>
+                        </group>
+                        
+                        <group name="service_info" string="Información de Servicio">
+                            <group>
+                                <field name="last_service_date" readonly="1"/>
+                                <field name="service_count" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="ticket_count" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Descripción">
+                                <field name="description" placeholder="Descripción detallada del equipo..."/>
+                            </page>
+                            <page string="Órdenes de Servicio">
+                                <field name="service_order_ids" readonly="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="location_id"/>
+                                        <field name="scheduled_date_start"/>
+                                        <field name="stage_id"/>
+                                    </list>
+                                </field>
+                            </page>
+                            <page string="Tickets de Soporte">
+                                <field name="helpdesk_ticket_ids" readonly="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="partner_id"/>
+                                        <field name="create_date"/>
+                                        <field name="stage_id"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista Search para Equipos de Cliente -->
+        <record id="view_patco_customer_equipment_search" model="ir.ui.view">
+            <field name="name">patco.customer.equipment.search</field>
+            <field name="model">patco.customer.equipment</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Equipos">
+                    <field name="name" string="Nombre"/>
+                    <field name="code" string="Código"/>
+                    <field name="partner_id" string="Cliente"/>
+                    <field name="brand" string="Marca"/>
+                    <field name="model" string="Modelo"/>
+                    <field name="serial_no" string="Número de Serie"/>
+                    <field name="location_id" string="Ubicación"/>
+                    
+                    <filter name="active" string="Activos" domain="[('state', '=', 'active')]"/>
+                    <filter name="maintenance" string="En Mantenimiento" domain="[('state', '=', 'maintenance')]"/>
+                    <filter name="draft" string="Borrador" domain="[('state', '=', 'draft')]"/>
+                    <filter name="retired" string="Retirados" domain="[('state', '=', 'retired')]"/>
+                    
+                    <separator/>
+                    <filter name="with_services" string="Con Servicios" domain="[('service_count', '>', 0)]"/>
+                    <filter name="with_tickets" string="Con Tickets" domain="[('ticket_count', '>', 0)]"/>
+                    
+                    <group expand="0" string="Agrupar Por">
+                        <filter name="group_partner" string="Cliente" context="{'group_by': 'partner_id'}"/>
+                        <filter name="group_brand" string="Marca" context="{'group_by': 'brand'}"/>
+                        <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                        <filter name="group_location" string="Ubicación" context="{'group_by': 'location_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Acción de Ventana para Equipos de Cliente -->
+        <record id="action_patco_customer_equipment" model="ir.actions.act_window">
+            <field name="name">Equipos de Cliente</field>
+            <field name="res_model">patco.customer.equipment</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_patco_customer_equipment_search"/>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Crea tu primer equipo de cliente!
+                </p>
+                <p>
+                    Los equipos de cliente te permiten gestionar y dar seguimiento
+                    a los activos de tus clientes, incluyendo información de servicio
+                    y códigos QR para identificación rápida.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

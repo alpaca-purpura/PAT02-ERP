@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Service Area Initial Data -->
+        <record id="service_area_kitchen_laundry" model="patco.service.area">
+            <field name="name">Cocina - Lavandería</field>
+            <field name="code">COC-LAV</field>
+            <field name="sequence">10</field>
+            <field name="description">Equipos de cocina industrial y sistemas de lavandería</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="service_area_refrigeration" model="patco.service.area">
+            <field name="name">Refrigeración</field>
+            <field name="code">REF</field>
+            <field name="sequence">20</field>
+            <field name="description">Sistemas de refrigeración comercial e industrial</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="service_area_air_conditioning" model="patco.service.area">
+            <field name="name">Aire Acondicionado</field>
+            <field name="code">AC</field>
+            <field name="sequence">30</field>
+            <field name="description">Sistemas de climatización y aire acondicionado</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="service_area_electrical" model="patco.service.area">
+            <field name="name">Eléctrico</field>
+            <field name="code">ELEC</field>
+            <field name="sequence">40</field>
+            <field name="description">Sistemas eléctricos y componentes electrónicos</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="service_area_plumbing" model="patco.service.area">
+            <field name="name">Fontanería</field>
+            <field name="code">FONT</field>
+            <field name="sequence">50</field>
+            <field name="description">Sistemas de fontanería y tuberías</field>
+            <field name="active">True</field>
+        </record>
+
+        <record id="service_area_general" model="patco.service.area">
+            <field name="name">General</field>
+            <field name="code">GEN</field>
+            <field name="sequence">60</field>
+            <field name="description">Servicios generales y multidisciplinarios</field>
+            <field name="active">True</field>
+        </record>
+
+    </data>
+</odoo>

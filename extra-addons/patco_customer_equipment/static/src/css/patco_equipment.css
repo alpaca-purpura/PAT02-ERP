@@ -1,0 +1,81 @@
+/* Estilos para el módulo PATCO Customer Equipment */
+
+/* Estilos para las vistas de equipos */
+.o_patco_equipment_form {
+    /* Estilos específicos para el formulario de equipos */
+}
+
+/* Estilos para el código QR */
+.o_patco_qr_code {
+    text-align: center;
+    padding: 10px;
+}
+
+.o_patco_qr_code img {
+    max-width: 200px;
+    max-height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+}
+
+/* Estilos para los estados de equipos */
+.o_patco_equipment_state {
+    font-weight: bold;
+}
+
+.o_patco_equipment_state.active {
+    color: #28a745;
+}
+
+.o_patco_equipment_state.inactive {
+    color: #6c757d;
+}
+
+.o_patco_equipment_state.maintenance {
+    color: #ffc107;
+}
+
+.o_patco_equipment_state.retired {
+    color: #dc3545;
+}
+
+/* Estilos para las etiquetas de equipos */
+.o_patco_equipment_label {
+    border: 1px solid #000;
+    padding: 5px;
+    font-family: Arial, sans-serif;
+    page-break-after: always;
+}
+
+.o_patco_equipment_label .header {
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+}
+
+.o_patco_equipment_label .content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.o_patco_equipment_label .info {
+    flex: 1;
+    padding-right: 10px;
+}
+
+.o_patco_equipment_label .qr {
+    text-align: center;
+}
+
+.o_patco_equipment_label .footer {
+    text-align: center;
+    font-size: 8pt;
+    color: #666;
+    border-top: 1px solid #ccc;
+    margin-top: 5px;
+    padding-top: 3px;
+}

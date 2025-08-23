@@ -1,0 +1,118 @@
+# -*- coding: utf-8 -*-
+from odoo import api, fields, models, _
+from odoo.exceptions import ValidationError
+
+# Operational Classification for Service Orders
+# This module extends helpdesk.ticket and fsm.order models with classification fields
+
+class HelpdeskTicket(models.Model):
+    _inherit = 'helpdesk.ticket'
+    
+    x_nature_id = fields.Many2one(
+        'patco.service.nature',
+        string='Nature',
+        tracking=True
+    )
+    x_area_id = fields.Many2one(
+        'patco.service.area',
+        string='Area',
+        tracking=True
+    )
+    x_complexity_id = fields.Many2one(
+        'patco.service.complexity',
+        string='Complexity',
+        tracking=True
+    )
+    x_classification_code = fields.Char(
+        string='Classification Code',
+        compute='_compute_classification_code',
+        store=True,
+        readonly=True,
+        copy=False
+    )
+
+    @api.depends('x_nature_id.code', 'x_area_id.code', 'x_complexity_id.code')
+    def _compute_classification_code(self):
+        for record in self:
+            nature_code = record.x_nature_id.code
+            area_code = record.x_area_id.code
+            complexity_code = record.x_complexity_id.code
+
+            if nature_code and area_code and complexity_code:
+                record.x_classification_code = (
+                    f"{nature_code}/{area_code}/{complexity_code}"
+                )
+            else:
+                record.x_classification_code = False
+
+    @api.constrains('stage_id', 'x_nature_id', 'x_area_id', 'x_complexity_id')
+    def _check_classification_completeness(self):
+        for record in self:
+            is_in_progress_stage = False
+            if hasattr(record, 'stage_id') and record.stage_id:
+                if hasattr(record.stage_id, 'unattended') and hasattr(record.stage_id, 'closed'):
+                    if not record.stage_id.unattended and not record.stage_id.closed:
+                         is_in_progress_stage = True
+
+            if is_in_progress_stage:
+                if not all([record.x_nature_id, record.x_area_id, record.x_complexity_id]):
+                    raise ValidationError(_(
+                        "The 'Nature', 'Area', and 'Complexity' fields must be "
+                        "completed before moving the record to an in-progress stage."
+                    ))
+
+class FSMOrder(models.Model):
+    _inherit = 'fsm.order'
+    
+    x_nature_id = fields.Many2one(
+        'patco.service.nature',
+        string='Nature',
+        tracking=True
+    )
+    x_area_id = fields.Many2one(
+        'patco.service.area',
+        string='Area',
+        tracking=True
+    )
+    x_complexity_id = fields.Many2one(
+        'patco.service.complexity',
+        string='Complexity',
+        tracking=True
+    )
+    x_classification_code = fields.Char(
+        string='Classification Code',
+        compute='_compute_classification_code',
+        store=True,
+        readonly=True,
+        copy=False
+    )
+
+    @api.depends('x_nature_id.code', 'x_area_id.code', 'x_complexity_id.code')
+    def _compute_classification_code(self):
+        for record in self:
+            nature_code = record.x_nature_id.code
+            area_code = record.x_area_id.code
+            complexity_code = record.x_complexity_id.code
+
+            if nature_code and area_code and complexity_code:
+                record.x_classification_code = (
+                    f"{nature_code}/{area_code}/{complexity_code}"
+                )
+            else:
+                record.x_classification_code = False
+
+    @api.constrains('stage_id', 'x_nature_id', 'x_area_id', 'x_complexity_id')
+    def _check_classification_completeness(self):
+        for record in self:
+            is_in_progress_stage = False
+            if hasattr(record, 'stage_id') and record.stage_id:
+                if hasattr(record.stage_id, 'is_closed'):
+                    if not record.stage_id.is_closed:
+                        is_in_progress_stage = True
+
+            if is_in_progress_stage:
+                if not all([record.x_nature_id, record.x_area_id, record.x_complexity_id]):
+                    raise ValidationError(_(
+                        "The 'Nature', 'Area', and 'Complexity' fields must be "
+                        "completed before moving the record to an in-progress stage."
+                    ))
