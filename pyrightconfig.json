@@ -1,0 +1,38 @@
+{
+  "include": [
+    "extra-addons",
+    "docker-compose.yml",
+    "Dockerfile",
+    "requirements.txt",
+    "*.py",
+    "*.md"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__",
+    "**/.git",
+    "**/.*",
+    "addons",
+    "odoo",
+    "**/build",
+    "**/dist",
+    "**/.venv",
+    "**/venv",
+    "**/.pytest_cache",
+    "**/.mypy_cache",
+    "**/logs",
+    "**/tmp",
+    "**/temp",
+    "**/*.log",
+    "**/*.pyc",
+    "**/*.pyo",
+    "**/*.egg-info",
+    "**/coverage",
+    "**/.coverage",
+    "**/htmlcov"
+  ],
+  "verboseOutput": false,
+  "extraPaths": [
+    "extra-addons"
+  ]
+}

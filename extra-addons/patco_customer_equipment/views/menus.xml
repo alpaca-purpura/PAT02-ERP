@@ -13,6 +13,5 @@
                   parent="menu_patco_asset_management" 
                   action="action_patco_customer_equipment" 
                   sequence="10"/>
-
     </data>
 </odoo>
