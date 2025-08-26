@@ -48,7 +48,7 @@ services:
       - "traefik.http.routers.odoo.rule=Host(`erp.andessuyo.com`)"
       - "traefik.http.routers.odoo.entrypoints=websecure"
       - "traefik.http.routers.odoo.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.odoo.service=odoo"
+      # - "traefik.http.routers.odoo.service=odoo"
       # --- MIDDLEWARE PARA ODOO (OPCIONAL PERO RECOMENDADO) ---
       - "traefik.http.routers.odoo.middlewares=odoo-headers"
       - "traefik.http.middlewares.odoo-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
