@@ -50,6 +50,7 @@ services:
       - "traefik.http.routers.odoo.rule=Host(`erp.andessuyo.com`)"
       - "traefik.http.routers.odoo.entrypoints=websecure"
       - "traefik.http.routers.odoo.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.odoo.service=odoo"
       - "traefik.http.services.odoo.loadbalancer.server.port=8069"
       - "traefik.http.middlewares.odoo-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
     healthcheck:
