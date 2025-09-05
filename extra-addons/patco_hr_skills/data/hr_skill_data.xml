@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Habilidades Específicas PATCO -->
+        
+        <!-- COC - Cocina -->
+        <record id="skill_coc_cal" model="hr.skill">
+            <field name="name">COC-CAL - Calentadores</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+        </record>
+        
+        <record id="skill_coc_pre" model="hr.skill">
+            <field name="name">COC-PRE - Presión</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+        </record>
+        
+        <record id="skill_coc_lav" model="hr.skill">
+            <field name="name">COC-LAV - Lavado</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+        </record>
+        
+        <!-- REF - Refrigeración -->
+        <record id="skill_ref_com" model="hr.skill">
+            <field name="name">REF-COM - Comercial</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+        </record>
+        
+        <record id="skill_ref_ac" model="hr.skill">
+            <field name="name">AC - Aire Acondicionado</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+        </record>
+        
+        <!-- LAV - Lavandería -->
+        <record id="skill_lav_lav" model="hr.skill">
+            <field name="name">LAV-LAV - Lavadoras</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+        </record>
+        
+        <record id="skill_lav_sec" model="hr.skill">
+            <field name="name">LAV-SEC - Secadoras</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+        </record>
+        
+        <record id="skill_lav_pla" model="hr.skill">
+            <field name="name">LAV-PLA - Planchadoras</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+        </record>
+        
+        <!-- ELEC - Eléctrico -->
+        <record id="skill_elec_bt" model="hr.skill">
+            <field name="name">ELEC-BT - Baja Tensión</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+        </record>
+        
+        <record id="skill_elec_gen" model="hr.skill">
+            <field name="name">ELEC-GEN - Generadores</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+        </record>
+        
+        <!-- FONT - Fontanería -->
+        <record id="skill_font_agua" model="hr.skill">
+            <field name="name">FONT-AGUA - Agua</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+        </record>
+        
+        <record id="skill_font_gas" model="hr.skill">
+            <field name="name">FONT-GAS - Gas</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+        </record>
+        
+    </data>
+</odoo>

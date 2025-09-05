@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista de formulario extendida para fsm.order -->
+        <record id="view_fsm_order_form_skills" model="ir.ui.view">
+            <field name="name">fsm.order.form.skills</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='person_id']" position="after">
+                    <field name="required_skills" placeholder="Ej: COC-CAL, REF-COM, ELEC-BT"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de lista extendida para fsm.order -->
+        <record id="view_fsm_order_tree_skills" model="ir.ui.view">
+            <field name="name">fsm.order.tree.skills</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='person_id']" position="after">
+                    <field name="required_skills" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Wizard para sugerir técnicos -->
+        <record id="view_suggest_technician_wizard" model="ir.ui.view">
+            <field name="name">suggest.technician.wizard.form</field>
+            <field name="model">suggest.technician.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Sugerir Técnico">
+                    <group>
+                        <field name="fsm_order_id" invisible="1"/>
+                        <field name="equipment_category"/>
+                        <field name="required_skills" widget="text"/>
+                    </group>
+                    <separator string="Técnicos Sugeridos"/>
+                    <field name="suggested_technician_ids">
+                        <tree>
+                            <field name="name"/>
+                            <field name="main_skills"/>
+                            <field name="fsm_order_count"/>
+                        </tree>
+                    </field>
+                    <footer>
+                        <button string="Asignar Técnico" name="assign_technician" type="object" class="btn-primary"/>
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>

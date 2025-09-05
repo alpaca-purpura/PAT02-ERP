@@ -9,7 +9,7 @@ class HelpdeskTicket(models.Model):
     _inherit = 'helpdesk.ticket'
     
     x_equipment_id = fields.Many2one(
-        'patco.customer.equipment',
+        'maintenance.equipment',
         string='Equipo',
         tracking=True,
         help='Equipo relacionado con este ticket de soporte'

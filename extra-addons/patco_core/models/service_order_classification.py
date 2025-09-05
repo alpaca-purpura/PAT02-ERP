@@ -30,6 +30,16 @@ class HelpdeskTicket(models.Model):
         readonly=True,
         copy=False
     )
+    
+    # Campos de checklist según documento wannabe
+    x_entry_checklist = fields.Html(
+        string='Entry Checklist',
+        help='Checklist to be completed at the beginning of the service'
+    )
+    x_exit_checklist = fields.Html(
+        string='Exit Checklist',
+        help='Checklist to be completed at the end of the service'
+    )
 
     @api.depends('x_nature_id.code', 'x_area_id.code', 'x_complexity_id.code')
     def _compute_classification_code(self):
@@ -85,6 +95,16 @@ class FSMOrder(models.Model):
         store=True,
         readonly=True,
         copy=False
+    )
+    
+    # Campos de checklist según documento wannabe
+    x_entry_checklist = fields.Html(
+        string='Entry Checklist',
+        help='Checklist to be completed at the beginning of the service'
+    )
+    x_exit_checklist = fields.Html(
+        string='Exit Checklist',
+        help='Checklist to be completed at the end of the service'
     )
 
     @api.depends('x_nature_id.code', 'x_area_id.code', 'x_complexity_id.code')

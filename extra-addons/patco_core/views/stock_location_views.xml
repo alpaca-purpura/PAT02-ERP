@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario para ubicaciones de vehículos -->
+    <record id="view_stock_location_vehicle_form" model="ir.ui.view">
+        <field name="name">stock.location.vehicle.form</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_form"/>
+        <field name="arch" type="xml">
+            <field name="usage" position="after">
+                <field name="is_vehicle_location"/>
+                <field name="technician_id" invisible="not is_vehicle_location" required="is_vehicle_location"/>
+                <field name="vehicle_code" invisible="not is_vehicle_location" required="is_vehicle_location"/>
+                <field name="max_capacity" invisible="not is_vehicle_location"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Vista de lista para ubicaciones de vehículos -->
+    <record id="view_stock_location_vehicle_tree" model="ir.ui.view">
+        <field name="name">stock.location.vehicle.tree</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_tree2"/>
+        <field name="arch" type="xml">
+            <field name="usage" position="after">
+                <field name="is_vehicle_location" optional="show"/>
+                <field name="technician_id" optional="show"/>
+                <field name="vehicle_code" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+    <!-- Filtro para ubicaciones de vehículos -->
+    <record id="view_stock_location_vehicle_search" model="ir.ui.view">
+        <field name="name">stock.location.vehicle.search</field>
+        <field name="model">stock.location</field>
+        <field name="inherit_id" ref="stock.view_location_search"/>
+        <field name="arch" type="xml">
+            <search position="inside">
+                <filter name="vehicle_locations" string="Ubicaciones de Vehículos" 
+                        domain="[('is_vehicle_location', '=', True)]"/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_by_technician" string="Técnico" 
+                            context="{'group_by': 'technician_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción para ubicaciones de vehículos -->
+    <record id="action_stock_location_vehicle" model="ir.ui.act_window">
+        <field name="name">Ubicaciones de Vehículos</field>
+        <field name="res_model">stock.location</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_vehicle_location', '=', True)]</field>
+        <field name="context">{'default_is_vehicle_location': True, 'default_usage': 'internal'}</field>
+    </record>
+
+</odoo>

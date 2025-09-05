@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_patco_customer_equipment_user,patco.customer.equipment.user,patco_customer_equipment.model_patco_customer_equipment,base.group_user,1,1,1,0
+access_maintenance_equipment_patco_user,maintenance.equipment.patco.user,maintenance.model_maintenance_equipment,base.group_user,1,1,1,0
+access_maintenance_equipment_category_patco_user,maintenance.equipment.category.patco.user,maintenance.model_maintenance_equipment_category,base.group_user,1,1,1,0

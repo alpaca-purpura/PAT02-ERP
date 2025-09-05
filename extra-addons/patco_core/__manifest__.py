@@ -10,15 +10,25 @@
         # --- Odoo Standard Apps ---
         'base',
         'sale_management',
+        'maintenance',
+        'product',
+        'stock',
 
-        # 2. Módulos específicos de Field Service (OCA)
+        # --- OCA Agreement Management ---
+        'agreement',
+        'agreement_sale',
+
+        # --- OCA Maintenance ---
+        'maintenance_equipment_category_hierarchy',
+
+        # --- OCA Field Service ---
         'fieldservice',
         'helpdesk_mgmt',
-        #'fieldservice_account',
-        #'fieldservice_stock',
-        #'fieldservice_sale',
-        #'fieldservice_skill', ya no viene en la versión 18, tengo que migrarla maualmente
-        #'hr_skills',
+        'fieldservice_account',
+        'fieldservice_stock',
+        'fieldservice_sale',
+        'hr_skills',  # Requerido para matriz de competencias
+        'fieldservice_skill',  # Disponible en OCA v18
         #'fieldservice_tag',
         #'fieldservice_asset',
         #'fieldservice_calendar',
@@ -31,7 +41,6 @@
 
 
         #'contacts',
-        #'stock',
         #'account',
         #'hr',
         #'project',
@@ -39,20 +48,23 @@
         #'base_geolocalize',
     ],
     'data': [
-        # 1. Cargar la seguridad PRIMERO.
         'security/ir.model.access.csv',
-
-        # 2. Cargar los datos iniciales SEGUNDO.
+        'data/stock_locations_data.xml',
+        # 'data/product_spare_parts_data.xml',  # Temporalmente comentado
+        'data/service_catalog_data.xml',
+        'data/agreement_type_data.xml',
+        'data/maintenance_equipment_category_data.xml',
         'data/patco_service_nature_data.xml',
         'data/patco_service_area_data.xml',
         'data/patco_service_complexity_data.xml',
-
-        # 3. Cargar las vistas y menús DESPUÉS.
+        # 'data/stock_rules_data.xml',  # Temporalmente comentado - depende de productos
+        # 'data/stock_initial_data.xml',  # Temporalmente comentado - depende de productos
+        # 'data/stock_vehicle_data.xml',  # Temporalmente comentado - contiene productos
+        'views/fsm_order_views.xml',
+        'views/maintenance_equipment_category_views.xml',
         'views/patco_service_nature_views.xml',
         'views/patco_service_area_views.xml',
         'views/patco_service_complexity_views.xml',
-        #views/helpdesk_ticket_views.xml',
-        #views/fsm_order_views.xml',
         'views/patco_menus.xml',
     ],
     'installable': True,

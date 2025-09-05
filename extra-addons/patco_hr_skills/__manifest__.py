@@ -1,34 +1,35 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'PATCO Profile: Field Service',
+    'name': 'PATCO HR Skills',
     'version': '18.0.1.0.0',
-    'category': 'Technical/Profiles',
-    'summary': 'Instala y configura el perfil de negocio para Field Service.',
-    'author': 'PATCO Development Team',
-    'website': 'https://www.patcoperu.com',
+    'category': 'Human Resources',
+    'summary': 'Gestión de habilidades técnicas para PATCO',
+    'description': """
+    Módulo para gestionar las habilidades técnicas de los empleados de PATCO.
+    Incluye tipos de habilidades específicas para el sector HORECA:
+    - COC (Cocina): Calentadores, Presión, Lavado
+    - REF (Refrigeración): Comercial, Aire Acondicionado
+    - LAV (Lavandería): Lavadoras, Secadoras, Planchadoras
+    - ELEC (Eléctrico): Baja Tensión, Generadores
+    - FONT (Fontanería): Agua, Gas
+    
+    Integra con fieldservice_skill para asignación automática de técnicos.
+    """,
+    'author': 'PATCO',
+    'website': 'https://www.patco.com',
     'depends': [
-        # 1. La dependencia clave es el módulo base
-        #'patco_core',
-
-        # 2. Módulos específicos de Field Service (OCA)
-        #'fieldservice',
-        #'fieldservice_account',
-        #'fieldservice_stock',
-        #'fieldservice_sale',
-        # 'fieldservice_skill', ya no viene en la versión 18, tengo que migrarla maualmente
-        # 'hr_skills',
-        # 'fieldservice_tag',
-        # 'fieldservice_asset',
-        #'fieldservice_calendar',
-        # 'fieldservice_geoengine',
-        #'fieldservice_project',
-        # 'base_geolocalize',
-        # 'hr_skill',
-        # 'base_asset_mro',
+        'hr',
+        'hr_skills',
     ],
-    # Si tienes datos específicos para este perfil, los agregas aquí
-    'data': [],
+    'data': [
+        'security/ir.model.access.csv',
+        # 'views/hr_employee_views.xml',
+        # 'views/fsm_order_views.xml',
+        # 'data/hr_skill_level_data.xml',
+        # 'data/hr_skill_type_data.xml',
+        # 'data/hr_skill_data.xml',
+    ],
     'installable': True,
-    'application': True, # Este es el módulo que buscarás para instalar
     'auto_install': False,
+    'application': False,
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Ubicación padre para vehículos -->
+        <record id="stock_location_vehicles_parent" model="stock.location">
+            <field name="name">Vehículos PATCO</field>
+            <field name="location_id" ref="stock.stock_location_locations"/>
+            <field name="usage">view</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+        <!-- Productos de repuestos básicos -->
+        <record id="product_spare_filter" model="product.product">
+            <field name="name">Filtro de Aire</field>
+            <field name="type">product</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">25.00</field>
+            <field name="standard_price">15.00</field>
+            <field name="default_code">SPARE-FILTER-001</field>
+            <field name="detailed_type">product</field>
+        </record>
+
+        <record id="product_spare_oil" model="product.product">
+            <field name="name">Aceite Lubricante 1L</field>
+            <field name="type">product</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">12.50</field>
+            <field name="standard_price">8.00</field>
+            <field name="default_code">SPARE-OIL-001</field>
+            <field name="detailed_type">product</field>
+        </record>
+
+        <record id="product_spare_belt" model="product.product">
+            <field name="name">Correa de Transmisión</field>
+            <field name="type">product</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">45.00</field>
+            <field name="standard_price">30.00</field>
+            <field name="default_code">SPARE-BELT-001</field>
+            <field name="detailed_type">product</field>
+        </record>
+
+        <record id="product_spare_gasket" model="product.product">
+            <field name="name">Junta de Estanqueidad</field>
+            <field name="type">product</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">8.00</field>
+            <field name="standard_price">5.00</field>
+            <field name="default_code">SPARE-GASKET-001</field>
+            <field name="detailed_type">product</field>
+        </record>
+
+        <record id="product_spare_screw_kit" model="product.product">
+            <field name="name">Kit de Tornillería</field>
+            <field name="type">product</field>
+            <field name="categ_id" ref="product.product_category_all"/>
+            <field name="list_price">15.00</field>
+            <field name="standard_price">10.00</field>
+            <field name="default_code">SPARE-SCREW-KIT-001</field>
+            <field name="detailed_type">product</field>
+        </record>
+
+        <!-- Reglas de stock para transferencias automáticas -->
+        <record id="stock_rule_vehicle_replenishment" model="stock.rule">
+            <field name="name">Reposición Vehículos PATCO</field>
+            <field name="action">pull</field>
+            <field name="location_id" ref="stock_location_vehicles_parent"/>
+            <field name="location_src_id" ref="stock.stock_location_stock"/>
+            <field name="procure_method">make_to_stock</field>
+            <field name="route_id" ref="stock.route_warehouse0_mto"/>
+            <field name="picking_type_id" ref="stock.picking_type_internal"/>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+
+    </data>
+</odoo>

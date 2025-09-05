@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Ubicación principal para vehículos -->
+        <record id="stock_location_vehicles" model="stock.location">
+            <field name="name">Vehículos de Servicio</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="stock.stock_location_stock"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Ubicaciones específicas por vehículo/técnico -->
+        <record id="stock_location_vehicle_001" model="stock.location">
+            <field name="name">Vehículo 001 - Técnico Principal</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="stock_location_vehicles"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="stock_location_vehicle_002" model="stock.location">
+            <field name="name">Vehículo 002 - Técnico Secundario</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="stock_location_vehicles"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="stock_location_vehicle_003" model="stock.location">
+            <field name="name">Vehículo 003 - Técnico Especialista</field>
+            <field name="usage">internal</field>
+            <field name="location_id" ref="stock_location_vehicles"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Ubicación para repuestos consumidos en campo - Comentado temporalmente por error de parsing -->
+        <!--
+        <record id="stock_location_field_consumption" model="stock.location">
+            <field name="name">Consumo en Campo</field>
+            <field name="usage">consumption</field>
+            <field name="location_id" ref="stock.stock_location_locations"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="active">True</field>
+        </record>
+        -->
+        
+    </data>
+</odoo>

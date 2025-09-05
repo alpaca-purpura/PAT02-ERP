@@ -9,7 +9,7 @@ class FSMOrder(models.Model):
     _inherit = 'fsm.order'
     
     x_equipment_id = fields.Many2one(
-        'patco.customer.equipment',
+        'maintenance.equipment',
         string='Equipo',
         tracking=True,
         help='Equipo relacionado con esta orden de servicio'

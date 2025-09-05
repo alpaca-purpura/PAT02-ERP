@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="x_equipment_id" 
-                           domain="[('partner_id', '=', partner_id)]"
+                           domain="[('x_customer_id', '=', partner_id)]"
                            options="{'no_create': True, 'no_edit': True}"
                            readonly="closed"/>
                 </xpath>

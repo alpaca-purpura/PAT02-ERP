@@ -28,3 +28,10 @@
 [submodule "extra-addons/OCA/helpdesk"]
 	path = extra-addons/OCA/helpdesk
 	url = https://github.com/OCA/helpdesk.git
+[submodule "extra-addons/OCA/agreement"]
+	path = extra-addons/OCA/agreement
+	url = https://github.com/OCA/agreement.git
+[submodule "extra-addons/OCA/fieldservice_skill"]
+	path = extra-addons/OCA/fieldservice_skill
+	url = https://github.com/HeliconiaIO/field-service.git
+	branch = 18.0-mig-fieldservice_skill

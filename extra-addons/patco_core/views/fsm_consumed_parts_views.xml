@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario para repuestos consumidos -->
+    <record id="view_fsm_order_consumed_part_form" model="ir.ui.view">
+        <field name="name">fsm.order.consumed.part.form</field>
+        <field name="model">fsm.order.consumed.part</field>
+        <field name="arch" type="xml">
+            <form string="Repuesto Consumido">
+                <header>
+                    <button name="action_confirm" string="Confirmar" type="object" 
+                            class="btn-primary" states="draft"/>
+                    <button name="action_cancel" string="Cancelar" type="object" 
+                            states="draft,confirmed"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="order_id" readonly="1"/>
+                            <field name="product_id"/>
+                            <field name="product_uom_id"/>
+                            <field name="quantity"/>
+                        </group>
+                        <group>
+                            <field name="location_id"/>
+                            <field name="unit_cost" readonly="1"/>
+                            <field name="total_cost" readonly="1"/>
+                            <field name="move_id" readonly="1" groups="stock.group_stock_user"/>
+                        </group>
+                    </group>
+                    <field name="notes" placeholder="Notas adicionales..."/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista para repuestos consumidos -->
+    <record id="view_fsm_order_consumed_part_tree" model="ir.ui.view">
+        <field name="name">fsm.order.consumed.part.tree</field>
+        <field name="model">fsm.order.consumed.part</field>
+        <field name="arch" type="xml">
+            <tree string="Repuestos Consumidos" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="order_id" optional="hide"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="product_uom_id" groups="uom.group_uom"/>
+                <field name="unit_cost" readonly="1"/>
+                <field name="total_cost" readonly="1" sum="Total"/>
+                <field name="location_id" optional="hide"/>
+                <field name="state" widget="badge" 
+                       decoration-success="state == 'done'"
+                       decoration-info="state == 'confirmed'"
+                       decoration-muted="state == 'cancel'"/>
+                <field name="notes" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda para repuestos consumidos -->
+    <record id="view_fsm_order_consumed_part_search" model="ir.ui.view">
+        <field name="name">fsm.order.consumed.part.search</field>
+        <field name="model">fsm.order.consumed.part</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Repuestos Consumidos">
+                <field name="order_id"/>
+                <field name="product_id"/>
+                <field name="location_id"/>
+                <separator/>
+                <filter name="draft" string="Borrador" domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Confirmado" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="done" string="Realizado" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <group expand="0" string="Agrupar por">
+                    <filter name="group_order" string="Orden de Servicio" context="{'group_by': 'order_id'}"/>
+                    <filter name="group_product" string="Producto" context="{'group_by': 'product_id'}"/>
+                    <filter name="group_location" string="Ubicación" context="{'group_by': 'location_id'}"/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción para repuestos consumidos -->
+    <record id="action_fsm_order_consumed_part" model="ir.actions.act_window">
+        <field name="name">Repuestos Consumidos</field>
+        <field name="res_model">fsm.order.consumed.part</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_fsm_order_consumed_part_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡No hay repuestos consumidos registrados!
+            </p>
+            <p>
+                Los repuestos consumidos se crean automáticamente desde las órdenes de servicio.
+            </p>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para el wizard de consumo -->
+    <record id="view_fsm_consume_parts_wizard_form" model="ir.ui.view">
+        <field name="name">fsm.order.consume.parts.wizard.form</field>
+        <field name="model">fsm.order.consume.parts.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Consumir Repuestos">
+                <sheet>
+                    <group>
+                        <field name="order_id" readonly="1"/>
+                        <field name="location_id" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Repuestos a Consumir">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="available_qty" readonly="1"/>
+                                    <field name="quantity"/>
+                                    <field name="product_uom_id" groups="uom.group_uom"/>
+                                    <field name="unit_cost" readonly="1"/>
+                                    <field name="total_cost" readonly="1" sum="Total"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <footer>
+                    <button name="action_consume_parts" string="Consumir Repuestos" 
+                            type="object" class="btn-primary"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

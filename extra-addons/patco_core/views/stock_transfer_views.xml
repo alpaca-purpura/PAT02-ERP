@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario para solicitudes de transferencia -->
+    <record id="view_stock_transfer_request_form" model="ir.ui.view">
+        <field name="name">stock.transfer.request.form</field>
+        <field name="model">stock.transfer.request</field>
+        <field name="arch" type="xml">
+            <form string="Solicitud de Transferencia de Stock">
+                <header>
+                    <button name="action_confirm" string="Confirmar" type="object" 
+                            class="btn-primary" states="draft"/>
+                    <button name="action_create_transfer" string="Crear Transferencia" type="object" 
+                            class="btn-primary" states="confirmed"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_pickings" type="object" 
+                                class="oe_stat_button" icon="fa-truck" 
+                                attrs="{'invisible': [('picking_count', '=', 0)]}">
+                            <field name="picking_count" widget="statinfo" string="Transferencias"/>
+                        </button>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="date"/>
+                            <field name="technician_id"/>
+                            <field name="vehicle_location_id"/>
+                        </group>
+                        <group>
+                            <field name="source_location_id"/>
+                            <field name="state" invisible="1"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Productos a Transferir">
+                            <field name="line_ids">
+                                <tree editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="product_id"/>
+                                    <field name="product_uom_id"/>
+                                    <field name="quantity_requested"/>
+                                    <field name="quantity_available"/>
+                                    <field name="quantity_to_transfer"/>
+                                    <field name="notes"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Notas">
+                            <field name="notes" placeholder="Notas adicionales sobre la transferencia..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vista de lista para solicitudes de transferencia -->
+    <record id="view_stock_transfer_request_tree" model="ir.ui.view">
+        <field name="name">stock.transfer.request.tree</field>
+        <field name="model">stock.transfer.request</field>
+        <field name="arch" type="xml">
+            <tree string="Solicitudes de Transferencia">
+                <field name="date"/>
+                <field name="technician_id"/>
+                <field name="vehicle_location_id"/>
+                <field name="picking_count"/>
+                <field name="state" decoration-info="state == 'draft'" 
+                       decoration-warning="state == 'confirmed'" 
+                       decoration-success="state == 'done'"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vista de búsqueda para solicitudes de transferencia -->
+    <record id="view_stock_transfer_request_search" model="ir.ui.view">
+        <field name="name">stock.transfer.request.search</field>
+        <field name="model">stock.transfer.request</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Solicitudes de Transferencia">
+                <field name="technician_id"/>
+                <field name="vehicle_location_id"/>
+                <field name="date"/>
+                <separator/>
+                <filter name="draft" string="Borrador" domain="[('state', '=', 'draft')]"/>
+                <filter name="confirmed" string="Confirmado" domain="[('state', '=', 'confirmed')]"/>
+                <filter name="done" string="Completado" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter name="today" string="Hoy" domain="[('date', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), ('date', '&lt;=', datetime.datetime.combine(context_today(), datetime.time(23,59,59)))]"/>
+                <filter name="this_week" string="Esta Semana" domain="[('date', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')), ('date', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <group expand="0" string="Agrupar Por">
+                    <filter name="group_technician" string="Técnico" context="{'group_by': 'technician_id'}"/>
+                    <filter name="group_state" string="Estado" context="{'group_by': 'state'}"/>
+                    <filter name="group_date" string="Fecha" context="{'group_by': 'date'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Acción para solicitudes de transferencia -->
+    <record id="action_stock_transfer_request" model="ir.actions.act_window">
+        <field name="name">Solicitudes de Transferencia</field>
+        <field name="res_model">stock.transfer.request</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_stock_transfer_request_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primera solicitud de transferencia!
+            </p>
+            <p>
+                Las solicitudes de transferencia permiten gestionar el movimiento de stock
+                desde el almacén central hacia los vehículos de los técnicos.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú para solicitudes de transferencia -->
+    <menuitem id="menu_stock_transfer_request"
+              name="Transferencias a Vehículos"
+              parent="stock.menu_stock_warehouse_mgmt"
+              action="action_stock_transfer_request"
+              sequence="15"/>
+
+    <!-- Vista de formulario para líneas de transferencia -->
+    <record id="view_stock_transfer_request_line_form" model="ir.ui.view">
+        <field name="name">stock.transfer.request.line.form</field>
+        <field name="model">stock.transfer.request.line</field>
+        <field name="arch" type="xml">
+            <form string="Línea de Transferencia">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="product_id"/>
+                            <field name="product_uom_id"/>
+                            <field name="quantity_requested"/>
+                        </group>
+                        <group>
+                            <field name="quantity_available"/>
+                            <field name="quantity_to_transfer"/>
+                            <field name="notes"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Extender vista de picking para mostrar solicitud de transferencia -->
+    <record id="view_picking_form_inherit_transfer_request" model="ir.ui.view">
+        <field name="name">stock.picking.form.inherit.transfer.request</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="x_transfer_request_id" readonly="1" 
+                       attrs="{'invisible': [('x_transfer_request_id', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario extendida para helpdesk.ticket -->
+    <record id="helpdesk_ticket_form_view_patco" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.patco</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='priority']" position="after">
+                <!-- Campos de clasificación PATCO -->
+                <group string="Clasificación PATCO" col="2">
+      <field name="x_nature_id" options="{'no_create': True, 'no_edit': True}"/>
+      <field name="x_area_id" options="{'no_create': True, 'no_edit': True}"/>
+      <field name="x_complexity_id" options="{'no_create': True, 'no_edit': True}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista de lista extendida para helpdesk.ticket -->
+    <record id="helpdesk_ticket_tree_view_patco" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.tree.patco</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='priority']" position="after">
+                <field name="x_nature_id" optional="show"/>
+                <field name="x_area_id" optional="show"/>
+                <field name="x_complexity_id" optional="show"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

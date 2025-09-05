@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista formulario extendida para Categoría de Equipos -->
+        <record id="maintenance_equipment_category_form_view_inherit" model="ir.ui.view">
+            <field name="name">maintenance.equipment.category.form.inherit</field>
+            <field name="model">maintenance.equipment.category</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_category_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Plantillas de Checklist">
+                            <group>
+                                <field name="x_entry_checklist_template" widget="html"/>
+                            </group>
+                            <group>
+                                <field name="x_exit_checklist_template" widget="html"/>
+                            </group>
+                        </page>
+                        <page string="Base de Conocimiento">
+                            <group>
+                                <div class="oe_button_box" name="button_box">
+                                    <button name="action_view_knowledge_base" 
+                                            type="object" 
+                                            class="oe_stat_button" 
+                                            icon="fa-book">
+                                        <field name="x_knowledge_base_count" widget="statinfo" string="Documentos"/>
+                                    </button>
+                                </div>
+                            </group>
+                            <group>
+                                <p>Los documentos de la base de conocimiento se gestionan a través de los adjuntos de esta categoría.</p>
+                                <p>Haga clic en el botón "Documentos" para agregar o ver los archivos técnicos relacionados con esta categoría de equipos.</p>
+                            </group>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista lista extendida para mostrar información de checklists -->
+        <record id="maintenance_equipment_category_tree_view_inherit" model="ir.ui.view">
+            <field name="name">maintenance.equipment.category.tree.inherit</field>
+            <field name="model">maintenance.equipment.category</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_category_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="x_knowledge_base_count" string="Docs"/>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

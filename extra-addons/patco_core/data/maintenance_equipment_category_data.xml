@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- CATEGORÍAS PRINCIPALES -->
+        
+        <!-- Cocina y Procesamiento de Alimentos -->
+        <record id="category_cocina" model="maintenance.equipment.category">
+            <field name="name">Cocina y Procesamiento de Alimentos (COC)</field>
+        </record>
+        
+        <!-- Refrigeración y Climatización -->
+        <record id="category_refrigeracion" model="maintenance.equipment.category">
+            <field name="name">Refrigeración y Climatización (REF/AC)</field>
+        </record>
+        
+        <!-- Lavandería Industrial -->
+        <record id="category_lavanderia" model="maintenance.equipment.category">
+            <field name="name">Lavandería Industrial (LAV)</field>
+        </record>
+        
+        <!-- Equipos de Bar y Cafetería -->
+        <record id="category_bar_cafeteria" model="maintenance.equipment.category">
+            <field name="name">Equipos de Bar y Cafetería</field>
+        </record>
+        
+        <!-- Sistemas Eléctricos y Fontanería -->
+        <record id="category_electrico_fontaneria" model="maintenance.equipment.category">
+            <field name="name">Sistemas Eléctricos y Fontanería (ELEC/FONT)</field>
+        </record>
+        
+        <!-- SUBCATEGORÍAS DE COCINA -->
+        
+        <!-- Equipos de Cocción -->
+        <record id="category_coccion" model="maintenance.equipment.category">
+            <field name="name">Equipos de Cocción</field>
+            <field name="parent_id" ref="category_cocina"/>
+        </record>
+        
+        <!-- Hornos -->
+        <record id="category_horno_conveccion" model="maintenance.equipment.category">
+            <field name="name">Hornos de Convección</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_horno_combinado" model="maintenance.equipment.category">
+            <field name="name">Hornos Combinados (Vapor y Convección)</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_horno_pizza" model="maintenance.equipment.category">
+            <field name="name">Hornos de Pizza</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_horno_regenerador" model="maintenance.equipment.category">
+            <field name="name">Hornos Regeneradores</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_horno_tandoor" model="maintenance.equipment.category">
+            <field name="name">Hornos Tandoor</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <!-- Estufas y Planchas -->
+        <record id="category_cocina_industrial" model="maintenance.equipment.category">
+            <field name="name">Cocinas Industriales (a gas/eléctricas)</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_plancha" model="maintenance.equipment.category">
+            <field name="name">Planchas</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_parrilla" model="maintenance.equipment.category">
+            <field name="name">Parrillas</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_frytop" model="maintenance.equipment.category">
+            <field name="name">Fry-tops</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_barbacoa" model="maintenance.equipment.category">
+            <field name="name">Barbacoas de piedra volcánica</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <!-- Freidoras -->
+        <record id="category_freidora_alto_rendimiento" model="maintenance.equipment.category">
+            <field name="name">Freidoras de alto rendimiento</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_freidora_presion" model="maintenance.equipment.category">
+            <field name="name">Freidoras a presión</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_freidora_sobremesa" model="maintenance.equipment.category">
+            <field name="name">Freidoras de sobremesa</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <!-- Elementos Especializados -->
+        <record id="category_salamandra" model="maintenance.equipment.category">
+            <field name="name">Salamandras</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_gratinador" model="maintenance.equipment.category">
+            <field name="name">Gratinadores</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_roner" model="maintenance.equipment.category">
+            <field name="name">Roners (Cocción a baja temperatura)</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_marmita" model="maintenance.equipment.category">
+            <field name="name">Marmitas</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <record id="category_sarten_basculante" model="maintenance.equipment.category">
+            <field name="name">Sartenes Basculantes</field>
+            <field name="parent_id" ref="category_coccion"/>
+        </record>
+        
+        <!-- Equipos de Preparación -->
+        <record id="category_preparacion" model="maintenance.equipment.category">
+            <field name="name">Equipos de Preparación</field>
+            <field name="parent_id" ref="category_cocina"/>
+        </record>
+        
+        <!-- Procesamiento Mecánico -->
+        <record id="category_procesador_alimentos" model="maintenance.equipment.category">
+            <field name="name">Procesadores de alimentos</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <record id="category_cutter" model="maintenance.equipment.category">
+            <field name="name">Cutters</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <record id="category_cortadora_hortalizas" model="maintenance.equipment.category">
+            <field name="name">Cortadoras de hortalizas</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <record id="category_peladora_patatas" model="maintenance.equipment.category">
+            <field name="name">Peladoras de patatas</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <!-- Mezclado y Amasado -->
+        <record id="category_batidora_planetaria" model="maintenance.equipment.category">
+            <field name="name">Batidoras-amasadoras planetarias</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <record id="category_batidora_brazo" model="maintenance.equipment.category">
+            <field name="name">Batidoras de brazo</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <record id="category_amasadora_espiral" model="maintenance.equipment.category">
+            <field name="name">Amasadoras de espiral</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <!-- Corte -->
+        <record id="category_cortadora_fiambres" model="maintenance.equipment.category">
+            <field name="name">Cortadoras de fiambres</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <record id="category_sierra_huesos" model="maintenance.equipment.category">
+            <field name="name">Sierras de huesos</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <!-- Conservación -->
+        <record id="category_envasado_vacio" model="maintenance.equipment.category">
+            <field name="name">Máquinas de envasado al vacío</field>
+            <field name="parent_id" ref="category_preparacion"/>
+        </record>
+        
+        <!-- Equipos de Lavado de Vajilla -->
+        <record id="category_lavado_vajilla" model="maintenance.equipment.category">
+            <field name="name">Equipos de Lavado de Vajilla (COC-LAV)</field>
+            <field name="parent_id" ref="category_cocina"/>
+        </record>
+        
+        <record id="category_lavavajillas_cupula" model="maintenance.equipment.category">
+            <field name="name">Lavavajillas de Cúpula</field>
+            <field name="parent_id" ref="category_lavado_vajilla"/>
+        </record>
+        
+        <record id="category_lavavajillas_arrastre" model="maintenance.equipment.category">
+            <field name="name">Lavavajillas de Arrastre o de Túnel</field>
+            <field name="parent_id" ref="category_lavado_vajilla"/>
+        </record>
+        
+        <record id="category_lava_utensilios" model="maintenance.equipment.category">
+            <field name="name">Lava-utensilios o Perolas</field>
+            <field name="parent_id" ref="category_lavado_vajilla"/>
+        </record>
+        
+        <!-- Sistemas de Ventilación y Extracción -->
+        <record id="category_ventilacion" model="maintenance.equipment.category">
+            <field name="name">Sistemas de Ventilación y Extracción</field>
+            <field name="parent_id" ref="category_cocina"/>
+        </record>
+        
+        <record id="category_campana_extractora" model="maintenance.equipment.category">
+            <field name="name">Campanas Extractoras</field>
+            <field name="parent_id" ref="category_ventilacion"/>
+        </record>
+        
+        <record id="category_aporte_aire" model="maintenance.equipment.category">
+            <field name="name">Sistemas de Aporte de Aire</field>
+            <field name="parent_id" ref="category_ventilacion"/>
+        </record>
+        
+        <record id="category_extincion_incendios" model="maintenance.equipment.category">
+            <field name="name">Sistemas de Extinción de Incendios para Cocinas</field>
+            <field name="parent_id" ref="category_ventilacion"/>
+        </record>
+        
+        <!-- SUBCATEGORÍAS DE REFRIGERACIÓN -->
+        
+        <!-- Refrigeración Comercial -->
+        <record id="category_refrigeracion_comercial" model="maintenance.equipment.category">
+            <field name="name">Refrigeración Comercial</field>
+            <field name="parent_id" ref="category_refrigeracion"/>
+        </record>
+        
+        <!-- Almacenamiento Vertical -->
+        <record id="category_armario_frigorifico" model="maintenance.equipment.category">
+            <field name="name">Armarios frigoríficos (refrigeración/congelación)</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <record id="category_congelador_vertical" model="maintenance.equipment.category">
+            <field name="name">Congeladores verticales</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <!-- Almacenamiento Horizontal -->
+        <record id="category_arcon_congelador" model="maintenance.equipment.category">
+            <field name="name">Arcones congeladores</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <record id="category_mesa_fria" model="maintenance.equipment.category">
+            <field name="name">Mesas frías (de preparación)</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <record id="category_botellero" model="maintenance.equipment.category">
+            <field name="name">Botelleros</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <!-- Exhibición -->
+        <record id="category_vitrina_pastelera" model="maintenance.equipment.category">
+            <field name="name">Vitrinas refrigeradas pasteleras</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <record id="category_vitrina_tapas" model="maintenance.equipment.category">
+            <field name="name">Vitrinas refrigeradas de tapas</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <record id="category_vitrina_mural" model="maintenance.equipment.category">
+            <field name="name">Vitrinas refrigeradas murales</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <!-- Procesos Fríos -->
+        <record id="category_abatidor_temperatura" model="maintenance.equipment.category">
+            <field name="name">Abatidores de temperatura</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <record id="category_camara_frigorifica" model="maintenance.equipment.category">
+            <field name="name">Cámaras frigoríficas (de paneles)</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <record id="category_fabricador_hielo" model="maintenance.equipment.category">
+            <field name="name">Fabricadores de hielo</field>
+            <field name="parent_id" ref="category_refrigeracion_comercial"/>
+        </record>
+        
+        <!-- Climatización (HVAC) -->
+        <record id="category_climatizacion" model="maintenance.equipment.category">
+            <field name="name">Climatización (HVAC)</field>
+            <field name="parent_id" ref="category_refrigeracion"/>
+        </record>
+        
+        <record id="category_split_multisplit" model="maintenance.equipment.category">
+            <field name="name">Unidades de Aire Acondicionado tipo Split y Multi-Split</field>
+            <field name="parent_id" ref="category_climatizacion"/>
+        </record>
+        
+        <record id="category_conductos_centralizados" model="maintenance.equipment.category">
+            <field name="name">Sistemas de conductos (centralizados)</field>
+            <field name="parent_id" ref="category_climatizacion"/>
+        </record>
+        
+        <record id="category_uma" model="maintenance.equipment.category">
+            <field name="name">Unidades Manejadoras de Aire (UMAs)</field>
+            <field name="parent_id" ref="category_climatizacion"/>
+        </record>
+        
+        <!-- SUBCATEGORÍAS DE LAVANDERÍA -->
+        
+        <!-- Equipos de Lavado -->
+        <record id="category_lavado_industrial" model="maintenance.equipment.category">
+            <field name="name">Equipos de Lavado</field>
+            <field name="parent_id" ref="category_lavanderia"/>
+        </record>
+        
+        <record id="category_lavadora_industrial" model="maintenance.equipment.category">
+            <field name="name">Lavadoras Industriales de carga frontal</field>
+            <field name="parent_id" ref="category_lavado_industrial"/>
+        </record>
+        
+        <record id="category_lavadora_barrera" model="maintenance.equipment.category">
+            <field name="name">Lavadoras con barrera sanitaria</field>
+            <field name="parent_id" ref="category_lavado_industrial"/>
+        </record>
+        
+        <!-- Equipos de Secado -->
+        <record id="category_secado_industrial" model="maintenance.equipment.category">
+            <field name="name">Equipos de Secado</field>
+            <field name="parent_id" ref="category_lavanderia"/>
+        </record>
+        
+        <record id="category_secadora_industrial" model="maintenance.equipment.category">
+            <field name="name">Secadoras Industriales rotativas</field>
+            <field name="parent_id" ref="category_secado_industrial"/>
+        </record>
+        
+        <!-- Equipos de Planchado y Acabado -->
+        <record id="category_planchado_acabado" model="maintenance.equipment.category">
+            <field name="name">Equipos de Planchado y Acabado</field>
+            <field name="parent_id" ref="category_lavanderia"/>
+        </record>
+        
+        <record id="category_calandra" model="maintenance.equipment.category">
+            <field name="name">Calandras (Planchadoras de rodillo)</field>
+            <field name="parent_id" ref="category_planchado_acabado"/>
+        </record>
+        
+        <record id="category_prensa_planchado" model="maintenance.equipment.category">
+            <field name="name">Prensas y Mesas de planchado</field>
+            <field name="parent_id" ref="category_planchado_acabado"/>
+        </record>
+        
+        <!-- SUBCATEGORÍAS DE BAR Y CAFETERÍA -->
+        
+        <record id="category_maquina_cafe" model="maintenance.equipment.category">
+            <field name="name">Máquinas de Café Espresso</field>
+            <field name="parent_id" ref="category_bar_cafeteria"/>
+        </record>
+        
+        <record id="category_molinillo_cafe" model="maintenance.equipment.category">
+            <field name="name">Molinillos de Café</field>
+            <field name="parent_id" ref="category_bar_cafeteria"/>
+        </record>
+        
+        <record id="category_licuadora_batidora" model="maintenance.equipment.category">
+            <field name="name">Licuadoras y Batidoras de vaso</field>
+            <field name="parent_id" ref="category_bar_cafeteria"/>
+        </record>
+        
+        <record id="category_exprimidor_citricos" model="maintenance.equipment.category">
+            <field name="name">Exprimidores de Cítricos</field>
+            <field name="parent_id" ref="category_bar_cafeteria"/>
+        </record>
+        
+        <!-- SUBCATEGORÍAS DE ELÉCTRICO Y FONTANERÍA -->
+        
+        <!-- Sistemas Eléctricos -->
+        <record id="category_sistemas_electricos" model="maintenance.equipment.category">
+            <field name="name">Sistemas Eléctricos</field>
+            <field name="parent_id" ref="category_electrico_fontaneria"/>
+        </record>
+        
+        <record id="category_grupo_electrogeno" model="maintenance.equipment.category">
+            <field name="name">Grupos Electrógenos (Generadores)</field>
+            <field name="parent_id" ref="category_sistemas_electricos"/>
+        </record>
+        
+        <record id="category_sai_ups" model="maintenance.equipment.category">
+            <field name="name">Sistemas de Alimentación Ininterrumpida (SAI/UPS)</field>
+            <field name="parent_id" ref="category_sistemas_electricos"/>
+        </record>
+        
+        <!-- Sistemas de Agua y Fontanería -->
+        <record id="category_sistemas_fontaneria" model="maintenance.equipment.category">
+            <field name="name">Sistemas de Agua y Fontanería</field>
+            <field name="parent_id" ref="category_electrico_fontaneria"/>
+        </record>
+        
+        <record id="category_sistema_bombeo" model="maintenance.equipment.category">
+            <field name="name">Sistemas de Bombeo y Grupos de Presión</field>
+            <field name="parent_id" ref="category_sistemas_fontaneria"/>
+        </record>
+        
+        <record id="category_caldera_termotanque" model="maintenance.equipment.category">
+            <field name="name">Calderas y Termotanques industriales</field>
+            <field name="parent_id" ref="category_sistemas_fontaneria"/>
+        </record>
+        
+    </data>
+</odoo>

@@ -9,12 +9,11 @@
             <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
         </record>
         
-        <!-- Reglas de acceso comentadas temporalmente hasta resolver external ID -->
-        <!-- 
-        <record id="patco_customer_equipment_user_rule" model="ir.rule">
-            <field name="name">Equipos de Cliente: Acceso de Usuario</field>
-            <field name="model_id" ref="model_patco_customer_equipment"/>
-            <field name="domain_force">['|', ('partner_id.user_id', '=', user.id), ('partner_id.user_id', '=', False)]</field>
+        <!-- Reglas de acceso para Equipos de Mantenimiento PATCO -->
+        <record id="maintenance_equipment_patco_user_rule" model="ir.rule">
+            <field name="name">Equipos PATCO: Acceso de Usuario</field>
+            <field name="model_id" ref="maintenance.model_maintenance_equipment"/>
+            <field name="domain_force">['|', ('x_customer_id.user_id', '=', user.id), ('x_customer_id.user_id', '=', False)]</field>
             <field name="groups" eval="[(4, ref('base.group_user'))]" />
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="True"/>
@@ -22,9 +21,9 @@
             <field name="perm_unlink" eval="False"/>
         </record>
         
-        <record id="patco_customer_equipment_manager_rule" model="ir.rule">
-            <field name="name">Equipos de Cliente: Acceso de Gestor</field>
-            <field name="model_id" ref="model_patco_customer_equipment"/>
+        <record id="maintenance_equipment_patco_manager_rule" model="ir.rule">
+            <field name="name">Equipos PATCO: Acceso de Gestor</field>
+            <field name="model_id" ref="maintenance.model_maintenance_equipment"/>
             <field name="domain_force">[(1, '=', 1)]</field>
             <field name="groups" eval="[(4, ref('group_equipment_manager'))]" />
             <field name="perm_read" eval="True"/>
@@ -33,17 +32,16 @@
             <field name="perm_unlink" eval="True"/>
         </record>
         
-        <record id="patco_customer_equipment_portal_rule" model="ir.rule">
-            <field name="name">Equipos de Cliente: Acceso Portal</field>
-            <field name="model_id" ref="model_patco_customer_equipment"/>
-            <field name="domain_force">[('partner_id', '=', user.partner_id.id)]</field>
+        <record id="maintenance_equipment_patco_portal_rule" model="ir.rule">
+            <field name="name">Equipos PATCO: Acceso Portal</field>
+            <field name="model_id" ref="maintenance.model_maintenance_equipment"/>
+            <field name="domain_force">[('x_customer_id', '=', user.partner_id.id)]</field>
             <field name="groups" eval="[(4, ref('base.group_portal'))]" />
             <field name="perm_read" eval="True"/>
             <field name="perm_write" eval="False"/>
             <field name="perm_create" eval="False"/>
             <field name="perm_unlink" eval="False"/>
         </record>
-        -->
         
     </data>
 </odoo>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Tipos de Habilidades Técnicas PATCO -->
+        
+        <!-- COC - Cocina -->
+        <record id="skill_type_coc" model="hr.skill.type">
+            <field name="name">COC - Cocina</field>
+            <field name="skill_level_ids" eval="[(6, 0, [ref('skill_level_n1'), ref('skill_level_n2'), ref('skill_level_n3')])]"/>
+        </record>
+        
+        <!-- REF - Refrigeración -->
+        <record id="skill_type_ref" model="hr.skill.type">
+            <field name="name">REF - Refrigeración</field>
+            <field name="skill_level_ids" eval="[(6, 0, [ref('skill_level_n1'), ref('skill_level_n2'), ref('skill_level_n3')])]"/>
+        </record>
+        
+        <!-- LAV - Lavandería -->
+        <record id="skill_type_lav" model="hr.skill.type">
+            <field name="name">LAV - Lavandería</field>
+            <field name="skill_level_ids" eval="[(6, 0, [ref('skill_level_n1'), ref('skill_level_n2'), ref('skill_level_n3')])]"/>
+        </record>
+        
+        <!-- ELEC - Eléctrico -->
+        <record id="skill_type_elec" model="hr.skill.type">
+            <field name="name">ELEC - Eléctrico</field>
+            <field name="skill_level_ids" eval="[(6, 0, [ref('skill_level_n1'), ref('skill_level_n2'), ref('skill_level_n3')])]"/>
+        </record>
+        
+        <!-- FONT - Fontanería -->
+        <record id="skill_type_font" model="hr.skill.type">
+            <field name="name">FONT - Fontanería</field>
+            <field name="skill_level_ids" eval="[(6, 0, [ref('skill_level_n1'), ref('skill_level_n2'), ref('skill_level_n3')])]"/>
+        </record>
+        
+    </data>
+</odoo>

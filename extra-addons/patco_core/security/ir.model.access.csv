@@ -5,3 +5,12 @@ access_patco_service_area_user,patco.service.area.user,model_patco_service_area,
 access_patco_service_area_manager,patco.service.area.manager,model_patco_service_area,base.group_system,1,1,1,1
 access_patco_service_complexity_user,patco.service.complexity.user,model_patco_service_complexity,base.group_user,1,0,0,0
 access_patco_service_complexity_manager,patco.service.complexity.manager,model_patco_service_complexity,base.group_system,1,1,1,1
+access_fsm_order_consumed_part_user,fsm.order.consumed.part.user,model_fsm_order_consumed_part,fieldservice.group_fsm_user,1,1,1,0
+access_fsm_order_consumed_part_manager,fsm.order.consumed.part.manager,model_fsm_order_consumed_part,fieldservice.group_fsm_manager,1,1,1,1
+access_fsm_consume_parts_wizard_user,fsm.order.consume.parts.wizard.user,model_fsm_consume_parts_wizard,fieldservice.group_fsm_user,1,1,1,1
+access_fsm_consume_parts_wizard_line_user,fsm.order.consume.parts.wizard.line.user,model_fsm_consume_parts_wizard_line,fieldservice.group_fsm_user,1,1,1,1
+access_fsm_order_consume_parts_wizard_line_manager,fsm.order.consume.parts.wizard.line.manager,model_fsm_consume_parts_wizard_line,fieldservice.group_fsm_manager,1,1,1,1
+access_stock_transfer_request_user,stock.transfer.request.user,model_stock_transfer_request,fieldservice.group_fsm_user,1,1,1,0
+access_stock_transfer_request_manager,stock.transfer.request.manager,model_stock_transfer_request,fieldservice.group_fsm_manager,1,1,1,1
+access_stock_transfer_request_line_user,stock.transfer.request.line.user,model_stock_transfer_request_line,fieldservice.group_fsm_user,1,1,1,0
+access_stock_transfer_request_line_manager,stock.transfer.request.line.manager,model_stock_transfer_request_line,fieldservice.group_fsm_manager,1,1,1,1

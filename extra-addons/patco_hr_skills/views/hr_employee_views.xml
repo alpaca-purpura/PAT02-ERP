@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista de formulario extendida para hr.employee -->
+        <record id="view_employee_form_skills" model="ir.ui.view">
+            <field name="name">hr.employee.form.skills</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page string="Habilidades Técnicas" name="technical_skills">
+                        <group>
+                            <group>
+                                <field name="is_field_technician"/>
+                                <field name="main_skills" readonly="1"/>
+                            </group>
+                        </group>
+                        <separator string="Habilidades Técnicas"/>
+                        <field name="technical_skill_ids">
+                            <tree editable="bottom">
+                                <field name="skill_id"/>
+                                <field name="skill_level_id"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de lista extendida para hr.employee -->
+        <record id="view_employee_tree_skills" model="ir.ui.view">
+            <field name="name">hr.employee.tree.skills</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='job_id']" position="after">
+                    <field name="is_field_technician" string="Técnico"/>
+                    <field name="main_skills"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de búsqueda extendida para hr.employee -->
+        <record id="view_employee_filter_skills" model="ir.ui.view">
+            <field name="name">hr.employee.search.skills</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='inactive']" position="after">
+                    <separator/>
+                    <filter string="Técnicos de Campo" name="field_technicians" domain="[('is_field_technician', '=', True)]"/>
+                </xpath>
+                <xpath expr="//group" position="inside">
+                    <filter string="Por Tipo de Habilidad" name="group_by_skill_type" context="{'group_by': 'technical_skill_ids.skill_id.skill_type_id'}"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Acción para ver técnicos de campo -->
+        <record id="action_field_technicians" model="ir.actions.act_window">
+            <field name="name">Técnicos de Campo</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_field_technician', '=', True)]</field>
+            <field name="context">{'search_default_field_technicians': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Agrega tu primer técnico de campo!
+                </p>
+                <p>
+                    Los técnicos de campo son empleados especializados en servicios técnicos HORECA.
+                    Puedes asignarles habilidades específicas y gestionar sus órdenes de servicio.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Menú para técnicos de campo -->
+        <menuitem id="menu_field_technicians"
+                  name="Técnicos de Campo"
+                  parent="hr.menu_hr_root"
+                  action="action_field_technicians"
+                  sequence="15"/>
+                  
+    </data>
+</odoo>

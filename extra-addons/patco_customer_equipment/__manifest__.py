@@ -22,6 +22,8 @@
     'depends': [
         'base',
         'mail',
+        'maintenance',
+        'maintenance_equipment_category_hierarchy',
         'patco_core',
         'fieldservice',
         'helpdesk_mgmt',
