@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Configuración de la Suite PATCO -->
+        <record id="patco_suite_config" model="ir.config_parameter">
+            <field name="key">patco_suite.version</field>
+            <field name="value">18.0.1.0.0</field>
+        </record>
+        
+        <record id="patco_suite_install_date" model="ir.config_parameter">
+            <field name="key">patco_suite.install_date</field>
+            <field name="value" eval="datetime.now().strftime('%Y-%m-%d %H:%M:%S')"/>
+        </record>
+        
+        <!-- Nota informativa sobre el módulo orquestador -->
+        <record id="patco_suite_note" model="ir.config_parameter">
+            <field name="key">patco_suite.description</field>
+            <field name="value">Módulo orquestador que instala automáticamente toda la suite PATCO para mantenimiento HORECA. Incluye patco_core, patco_customer_equipment y patco_hr_skills con sus dependencias OCA.</field>
+        </record>
+        
+    </data>
+</odoo>

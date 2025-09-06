@@ -8,16 +8,16 @@
             <form string="Solicitud de Transferencia de Stock">
                 <header>
                     <button name="action_confirm" string="Confirmar" type="object" 
-                            class="btn-primary" states="draft"/>
+                            class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_create_transfer" string="Crear Transferencia" type="object" 
-                            class="btn-primary" states="confirmed"/>
+                            class="btn-primary" invisible="state != 'confirmed'"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_view_pickings" type="object" 
                                 class="oe_stat_button" icon="fa-truck" 
-                                attrs="{'invisible': [('picking_count', '=', 0)]}">
+                                invisible="picking_count == 0">
                             <field name="picking_count" widget="statinfo" string="Transferencias"/>
                         </button>
                     </div>
@@ -37,7 +37,7 @@
                     <notebook>
                         <page string="Productos a Transferir">
                             <field name="line_ids">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="product_id"/>
                                     <field name="product_uom_id"/>
@@ -45,7 +45,7 @@
                                     <field name="quantity_available"/>
                                     <field name="quantity_to_transfer"/>
                                     <field name="notes"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                         <page string="Notas">
@@ -66,7 +66,7 @@
         <field name="name">stock.transfer.request.tree</field>
         <field name="model">stock.transfer.request</field>
         <field name="arch" type="xml">
-            <tree string="Solicitudes de Transferencia">
+            <list string="Solicitudes de Transferencia">
                 <field name="date"/>
                 <field name="technician_id"/>
                 <field name="vehicle_location_id"/>
@@ -74,7 +74,7 @@
                 <field name="state" decoration-info="state == 'draft'" 
                        decoration-warning="state == 'confirmed'" 
                        decoration-success="state == 'done'"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -159,7 +159,7 @@
         <field name="arch" type="xml">
             <field name="origin" position="after">
                 <field name="x_transfer_request_id" readonly="1" 
-                       attrs="{'invisible': [('x_transfer_request_id', '=', False)]}"/>
+                        invisible="not x_transfer_request_id"/>
             </field>
         </field>
     </record>

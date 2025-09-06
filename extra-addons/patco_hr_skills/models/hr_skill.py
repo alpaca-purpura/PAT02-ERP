@@ -19,23 +19,24 @@ class HrSkillType(models.Model):
     )
 
 
-# class HrSkillLevel(models.Model):
-#     """Extensión del nivel de competencia para habilidades"""
-#     _inherit = 'hr.skill.level'
+class HrSkillLevel(models.Model):
+    """Extensión del nivel de competencia para habilidades"""
+    _inherit = 'hr.skill.level'
 
-#     level_progress = fields.Integer(
-#         'Progreso (%)',
-#         required=True,
-#         help='Porcentaje de progreso (0-100)'
-#     )
+    level_progress = fields.Integer(
+        'Progreso (%)',
+        required=True,
+        default=0,
+        help='Porcentaje de progreso (0-100)'
+    )
 
-#     @api.constrains('level_progress')
-#     def _check_level_progress(self):
-#         for record in self:
-#             if not 0 <= record.level_progress <= 100:
-#                 raise models.ValidationError(
-#                     'El progreso debe estar entre 0 y 100%'
-#                 )
+    @api.constrains('level_progress')
+    def _check_level_progress(self):
+        for record in self:
+            if not 0 <= record.level_progress <= 100:
+                raise models.ValidationError(
+                    'El progreso debe estar entre 0 y 100%'
+                )
 
 
 class HrSkill(models.Model):
@@ -87,6 +88,12 @@ class HrEmployeeSkill(models.Model):
     skill_type_id = fields.Many2one(
         related='skill_id.skill_type_id',
         string='Tipo de Habilidad',
+        store=True,
+        readonly=True
+    )
+    level_progress = fields.Integer(
+        related='skill_level_id.level_progress',
+        string='Progreso (%)',
         store=True,
         readonly=True
     )

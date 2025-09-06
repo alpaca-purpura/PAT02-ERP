@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Menú principal PATCO Field Service -->
+        <record id="menu_patco_field_service" model="ir.ui.menu">
+            <field name="name">PATCO Field Service</field>
+            <field name="sequence">5</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Submenú: Órdenes de Servicio -->
+        <record id="menu_patco_fsm_orders" model="ir.ui.menu">
+            <field name="name">Órdenes de Servicio</field>
+            <field name="parent_id" ref="menu_patco_field_service"/>
+            <field name="action" ref="fieldservice.action_fsm_dash_order"/>
+            <field name="sequence">10</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Submenú: Mis Órdenes (para técnicos) -->
+        <record id="menu_patco_my_orders" model="ir.ui.menu">
+            <field name="name">Mis Órdenes</field>
+            <field name="parent_id" ref="menu_patco_field_service"/>
+            <field name="action" ref="action_fsm_order_my_orders"/>
+            <field name="sequence">5</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Submenú: Hojas de Trabajo -->
+        <record id="menu_patco_worksheets" model="ir.ui.menu">
+            <field name="name">Hojas de Trabajo</field>
+            <field name="parent_id" ref="menu_patco_field_service"/>
+            <field name="action" ref="action_fsm_worksheet"/>
+            <field name="sequence">20</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Submenú: Registro de Tiempo -->
+        <record id="menu_patco_timesheet" model="ir.ui.menu">
+            <field name="name">Registro de Tiempo</field>
+            <field name="parent_id" ref="menu_patco_field_service"/>
+            <field name="action" ref="hr_timesheet.act_hr_timesheet_line"/>
+            <field name="sequence">30</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Submenú: Consumo de Repuestos -->
+        <record id="menu_patco_consumed_parts" model="ir.ui.menu">
+            <field name="name">Consumo de Repuestos</field>
+            <field name="parent_id" ref="menu_patco_field_service"/>
+            <field name="action" ref="action_fsm_order_consumed_part"/>
+            <field name="sequence">40</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Submenú: Configuración (solo para líderes y administradores) -->
+        <record id="menu_patco_configuration" model="ir.ui.menu">
+            <field name="name">Configuración</field>
+            <field name="parent_id" ref="menu_patco_field_service"/>
+            <field name="sequence">100</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+        <!-- Submenú: Ubicaciones -->
+        <record id="menu_patco_locations" model="ir.ui.menu">
+            <field name="name">Ubicaciones</field>
+            <field name="parent_id" ref="menu_patco_configuration"/>
+            <field name="action" ref="fieldservice.action_fsm_location"/>
+            <field name="sequence">10</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+        <!-- Submenú: Personas -->
+        <record id="menu_patco_persons" model="ir.ui.menu">
+            <field name="name">Técnicos</field>
+            <field name="parent_id" ref="menu_patco_configuration"/>
+            <field name="action" ref="fieldservice.action_fsm_person"/>
+            <field name="sequence">20</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+        <!-- Submenú: Reportes (solo para líderes y administradores) -->
+        <record id="menu_patco_reports" model="ir.ui.menu">
+            <field name="name">Reportes</field>
+            <field name="parent_id" ref="menu_patco_field_service"/>
+            <field name="sequence">90</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+        <!-- Submenú: Facturación (solo para administradores) -->
+        <record id="menu_patco_invoicing" model="ir.ui.menu">
+            <field name="name">Facturación</field>
+            <field name="parent_id" ref="menu_patco_field_service"/>
+            <field name="sequence">80</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_admin'))]"/>
+        </record>
+        
+        <!-- Ocultar menús de aplicaciones para técnicos -->
+        <record id="base.menu_administration" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <record id="stock.menu_stock_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <record id="account.menu_finance" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <record id="hr.menu_hr_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <record id="project.menu_main_pm" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Mantener acceso limitado para líderes técnicos -->
+        <record id="stock.menu_stock_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+        <record id="account.menu_finance" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+    </data>
+</odoo>

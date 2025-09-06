@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de lista para timesheet con FSM -->
+    <record id="view_account_analytic_line_fsm_tree" model="ir.ui.view">
+        <field name="name">account.analytic.line.fsm.tree</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="fsm_order_id" optional="show"/>
+                <field name="fsm_location" optional="show"/>
+                <field name="fsm_customer" optional="show"/>
+            </xpath>
+            <xpath expr="//field[@name='unit_amount']" position="after">
+                <field name="is_timer_running" invisible="1"/>
+                <button name="action_start_timer" type="object" 
+                        icon="fa-play" title="Iniciar Timer"
+                        invisible="is_timer_running == True"/>
+                <button name="action_stop_timer" type="object" 
+                        icon="fa-stop" title="Detener Timer"
+                        invisible="is_timer_running == False"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista de formulario para timesheet con FSM -->
+    <record id="view_account_analytic_line_fsm_form" model="ir.ui.view">
+        <field name="name">account.analytic.line.fsm.form</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="fsm_order_id" invisible="not fsm_order_id"/>
+            </xpath>
+            <xpath expr="//field[@name='unit_amount']" position="after">
+                <field name="date_time" invisible="is_timer_running == False"/>
+                <field name="is_timer_running" readonly="1"/>
+            </xpath>
+            <xpath expr="//sheet" position="inside">
+                <div class="oe_button_box" name="button_box">
+                    <button name="action_start_timer" type="object" 
+                            string="Iniciar Timer" class="btn-primary"
+                            invisible="is_timer_running == True"/>
+                    <button name="action_stop_timer" type="object" 
+                            string="Detener Timer" class="btn-warning"
+                            invisible="is_timer_running == False"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Acción para timesheet desde FSM -->
+    <record id="action_hr_timesheet_fsm" model="ir.actions.act_window">
+        <field name="name">Registro de Tiempo - FSM</field>
+        <field name="res_model">account.analytic.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('fsm_order_id', '!=', False)]</field>
+        <field name="context">{
+            'default_project_id': False,
+            'search_default_fsm_order_id': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Registra tiempo de trabajo en órdenes de servicio!
+            </p>
+            <p>
+                Aquí puedes ver y gestionar todos los registros de tiempo
+                asociados a órdenes de servicio de campo.
+            </p>
+        </field>
+    </record>
+
+    <!-- Filtros de búsqueda -->
+    <record id="view_account_analytic_line_fsm_search" model="ir.ui.view">
+        <field name="name">account.analytic.line.fsm.search</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="after">
+                <field name="fsm_order_id"/>
+                <field name="fsm_location"/>
+                <field name="fsm_customer"/>
+            </xpath>
+            <xpath expr="//filter[@name='groupby_project']" position="after">
+                <filter name="groupby_fsm_order" string="Orden FSM" 
+                        context="{'group_by': 'fsm_order_id'}"/>
+                <filter name="groupby_fsm_customer" string="Cliente FSM" 
+                        context="{'group_by': 'fsm_customer'}"/>
+            </xpath>
+            <xpath expr="//search" position="inside">
+                <!-- Filtro removido: is_timer_running no es un campo buscable -->
+            </xpath>
+        </field>
+    </record>
+</odoo>

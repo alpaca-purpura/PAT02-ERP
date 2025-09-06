@@ -13,6 +13,7 @@
         'maintenance',
         'product',
         'stock',
+        'hr_timesheet',
 
         # --- OCA Agreement Management ---
         'agreement',
@@ -27,8 +28,8 @@
         'fieldservice_account',
         'fieldservice_stock',
         'fieldservice_sale',
-        'hr_skills',  # Requerido para matriz de competencias
-        'fieldservice_skill',  # Disponible en OCA v18
+        # 'hr_skills',  # Enterprise module, not available in Community
+        # 'fieldservice_skill',  # Depends on hr_skills
         #'fieldservice_tag',
         #'fieldservice_asset',
         #'fieldservice_calendar',
@@ -48,26 +49,24 @@
         #'base_geolocalize',
     ],
     'data': [
+        'security/patco_security.xml',
         'security/ir.model.access.csv',
-        'data/stock_locations_data.xml',
-        # 'data/product_spare_parts_data.xml',  # Temporalmente comentado
-        'data/service_catalog_data.xml',
-        'data/agreement_type_data.xml',
-        'data/maintenance_equipment_category_data.xml',
-        'data/patco_service_nature_data.xml',
-        'data/patco_service_area_data.xml',
-        'data/patco_service_complexity_data.xml',
-        # 'data/stock_rules_data.xml',  # Temporalmente comentado - depende de productos
-        # 'data/stock_initial_data.xml',  # Temporalmente comentado - depende de productos
-        # 'data/stock_vehicle_data.xml',  # Temporalmente comentado - contiene productos
+        'security/patco_record_rules.xml',
+        'data/patco_actions.xml',
+        'data/patco_menu_visibility.xml',
+        'data/patco_module_restrictions.xml',
         'views/fsm_order_views.xml',
-        'views/maintenance_equipment_category_views.xml',
+        'views/fsm_worksheet_views.xml',
+        'views/fsm_worksheet_signature_wizard_views.xml',
+        'wizards/fsm_consume_parts_wizard_views.xml',
+        'wizards/fsm_worksheet_customer_approval_wizard_views.xml',
+        'views/account_analytic_line_views.xml',
         'views/patco_service_nature_views.xml',
         'views/patco_service_area_views.xml',
         'views/patco_service_complexity_views.xml',
         'views/patco_menus.xml',
     ],
     'installable': True,
-    'application': False, # Lo hacemos aplicación para encontrarlo fácil
+    'application': False,
     'auto_install': False,
 }

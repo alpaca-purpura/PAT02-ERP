@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario para Hoja de Trabajo -->
+    <record id="view_fsm_worksheet_form" model="ir.ui.view">
+        <field name="name">fsm.worksheet.form</field>
+        <field name="model">fsm.worksheet</field>
+        <field name="arch" type="xml">
+            <form string="Hoja de Trabajo Digital">
+                <header>
+                    <button name="action_start_work" type="object" string="Iniciar Trabajo" 
+                        class="btn-primary" invisible="state != 'draft'"/>
+                    <button name="action_complete_work" type="object" string="Completar Trabajo" 
+                        class="btn-primary" invisible="state != 'in_progress'"/>
+                    <button name="action_sign_technician" type="object" string="Firmar Técnico" 
+                        class="btn-success" invisible="state != 'completed'"/>
+                    <button name="action_sign_customer" type="object" string="Firmar Cliente" 
+                        class="btn-success" invisible="not technician_signature or state == 'signed'"/>
+                    <button name="action_generate_pdf" type="object" string="Generar PDF" 
+                        class="btn-info" invisible="not customer_signature"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,completed,signed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_generate_pdf" type="object" class="oe_stat_button" icon="fa-file-pdf-o"
+                                invisible="not pdf_report">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">PDF</span>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre de la hoja de trabajo..."/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="order_id" readonly="1"/>
+                            <field name="template_id" readonly="state != 'draft'"/>
+                            <field name="technician_id" readonly="1"/>
+                            <field name="customer_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="start_datetime" readonly="state in ['completed', 'signed']"/>
+                            <field name="end_datetime" readonly="state in ['completed', 'signed']"/>
+                            <field name="duration" widget="float_time"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Datos del Formulario" name="worksheet_data">
+                            <group>
+                                <field name="worksheet_data" widget="ace" options="{'mode': 'json'}" 
+                                       readonly="state == 'signed'"/>
+                            </group>
+                        </page>
+                        
+                        <page string="Firmas" name="signatures">
+                            <group>
+                                <group string="Firma del Técnico">
+                            <field name="technician_signature" widget="signature"/>
+                            <field name="technician_signature_date" readonly="1"/>
+                        </group>
+                    </group>
+                </page>
+                
+                <page string="Conformidad del Cliente">
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_customer_approval" type="object" 
+                                string="Solicitar Conformidad" 
+                                class="oe_stat_button" 
+                                icon="fa-edit"
+                                invisible="approval_status in ['approved', 'rejected']"/>
+                        <button name="action_download_signed_pdf" type="object" 
+                                string="Descargar PDF Firmado" 
+                                class="oe_stat_button" 
+                                icon="fa-download"
+                                invisible="not signed_pdf"/>
+                    </div>
+                    
+                    <group>
+                        <group string="Estado de Conformidad">
+                            <field name="approval_status" readonly="1"/>
+                            <field name="customer_signature_date" readonly="1" invisible="not customer_signature_date"/>
+                        </group>
+                        
+                        <group string="Datos del Cliente" invisible="not customer_name">
+                            <field name="customer_name" readonly="1"/>
+                            <field name="customer_document" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Firma del Cliente" invisible="not customer_signature">
+                        <field name="customer_signature" widget="image" readonly="1"/>
+                    </group>
+                    
+                    <group string="Comentarios del Cliente" invisible="not customer_comments">
+                        <field name="customer_comments" readonly="1" nolabel="1"/>
+                    </group>
+                    
+                    <group string="Documento Firmado" invisible="not signed_pdf_filename">
+                        <field name="signed_pdf_filename" readonly="1"/>
+                    </group>
+                </page>
+                        
+                        <page string="Observaciones" name="observations">
+                            <group>
+                                <field name="observations" nolabel="1" placeholder="Observaciones generales..."/>
+                                <field name="internal_notes" nolabel="1" placeholder="Notas internas (solo visible para el equipo)..."/>
+                            </group>
+                        </page>
+                        
+                        <page string="Archivos Adjuntos" name="attachments">
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Vista de lista para Hojas de Trabajo -->
+    <record id="view_fsm_worksheet_tree" model="ir.ui.view">
+        <field name="name">fsm.worksheet.tree</field>
+        <field name="model">fsm.worksheet</field>
+        <field name="arch" type="xml">
+            <list string="Hojas de Trabajo" decoration-info="state == 'draft'" 
+                  decoration-warning="state == 'in_progress'" decoration-success="state == 'signed'">
+                <field name="name"/>
+                <field name="order_id"/>
+                <field name="technician_id"/>
+                <field name="customer_id"/>
+                <field name="template_id"/>
+                <field name="start_datetime"/>
+                <field name="duration" widget="float_time"/>
+                <field name="state" widget="badge" decoration-info="state == 'draft'" 
+                       decoration-warning="state == 'in_progress'" decoration-success="state == 'signed'"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Vista de búsqueda para Hojas de Trabajo -->
+    <record id="view_fsm_worksheet_search" model="ir.ui.view">
+        <field name="name">fsm.worksheet.search</field>
+        <field name="model">fsm.worksheet</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Hojas de Trabajo">
+                <field name="name"/>
+                <field name="order_id"/>
+                <field name="technician_id"/>
+                <field name="customer_id"/>
+                <field name="template_id"/>
+                
+                <filter string="Borradores" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="En Progreso" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter string="Completadas" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Firmadas" name="signed" domain="[('state', '=', 'signed')]"/>
+                
+                <separator/>
+                <filter string="Mis Hojas" name="my_worksheets" 
+                        domain="[('technician_id.user_id', '=', uid)]"/>
+                <filter string="Hoy" name="today" 
+                        domain="[('start_datetime', '>=', context_today())]"/>
+                
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Técnico" name="group_technician" context="{'group_by': 'technician_id'}"/>
+                    <filter string="Cliente" name="group_customer" context="{'group_by': 'customer_id'}"/>
+                    <filter string="Plantilla" name="group_template" context="{'group_by': 'template_id'}"/>
+                    <filter string="Fecha" name="group_date" context="{'group_by': 'start_datetime:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <!-- Acción para Hojas de Trabajo -->
+    <record id="action_fsm_worksheet" model="ir.actions.act_window">
+        <field name="name">Hojas de Trabajo</field>
+        <field name="res_model">fsm.worksheet</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'search_default_my_worksheets': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primera hoja de trabajo digital!
+            </p>
+            <p>
+                Las hojas de trabajo digitales te permiten capturar información
+                detallada del servicio realizado, incluyendo firmas digitales
+                del técnico y del cliente.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Vista de formulario para Plantillas de Hoja de Trabajo -->
+    <record id="view_fsm_worksheet_template_form" model="ir.ui.view">
+        <field name="name">fsm.worksheet.template.form</field>
+        <field name="model">fsm.worksheet.template</field>
+        <field name="arch" type="xml">
+            <form string="Plantilla de Hoja de Trabajo">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nombre de la plantilla..."/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group>
+                            <field name="sequence"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Descripción de la plantilla..."/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Configuración de Campos" name="field_config">
+                            <field name="field_config" widget="ace" options="{'mode': 'json'}"/>
+                        </page>
+                        
+                        <page string="Aplicabilidad" name="applicability">
+                            <group>
+                                <group string="Categorías de Equipos">
+                                    <field name="equipment_category_ids" nolabel="1"/>
+                                </group>
+                                <group string="Naturalezas de Servicio">
+                                    <field name="service_nature_ids" nolabel="1"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Vista de lista para Plantillas -->
+    <record id="view_fsm_worksheet_template_tree" model="ir.ui.view">
+        <field name="name">fsm.worksheet.template.tree</field>
+        <field name="model">fsm.worksheet.template</field>
+        <field name="arch" type="xml">
+            <list string="Plantillas de Hoja de Trabajo" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="description"/>
+                <field name="equipment_category_ids" widget="many2many_tags"/>
+                <field name="service_nature_ids" widget="many2many_tags"/>
+                <field name="active"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Acción para Plantillas -->
+    <record id="action_fsm_worksheet_template" model="ir.actions.act_window">
+        <field name="name">Plantillas de Hoja de Trabajo</field>
+        <field name="res_model">fsm.worksheet.template</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primera plantilla de hoja de trabajo!
+            </p>
+            <p>
+                Las plantillas definen la estructura y campos que tendrán
+                las hojas de trabajo digitales para diferentes tipos de servicio.
+            </p>
+        </field>
+    </record>
+</odoo>

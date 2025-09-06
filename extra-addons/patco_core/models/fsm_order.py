@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
+from datetime import datetime, timedelta
 
 
 class FSMOrder(models.Model):
@@ -148,18 +149,17 @@ class FSMOrder(models.Model):
     def action_consume_parts(self):
         """Acción para abrir el wizard de consumo de repuestos"""
         self.ensure_one()
-        if not self.x_vehicle_location_id:
-            raise UserError(_('Debe asignar un técnico con vehículo para consumir repuestos.'))
+        if not self.person_id:
+            raise UserError(_('Debe asignar un técnico para consumir repuestos.'))
         
         return {
             'name': _('Consumir Repuestos'),
             'type': 'ir.actions.act_window',
-            'res_model': 'fsm.order.consume.parts.wizard',
+            'res_model': 'fsm.consume.parts.wizard',
             'view_mode': 'form',
             'target': 'new',
             'context': {
-                'default_order_id': self.id,
-                'default_location_id': self.x_vehicle_location_id.id,
+                'default_fsm_order_id': self.id,
             }
         }
     
@@ -181,6 +181,88 @@ class FSMOrder(models.Model):
         'hr.skill.type',
         string='Tipos de Habilidad Requeridos',
         help='Tipos de habilidades necesarias para esta orden'
+    )
+    
+    # Hojas de trabajo digitales
+    worksheet_ids = fields.One2many(
+        'fsm.worksheet',
+        'order_id',
+        string='Hojas de Trabajo',
+        help='Hojas de trabajo digitales asociadas a esta orden'
+    )
+    
+    worksheet_count = fields.Integer(
+        string='Número de Hojas de Trabajo',
+        compute='_compute_worksheet_count'
+    )
+    
+    has_signed_worksheet = fields.Boolean(
+        string='Tiene Hoja Firmada',
+        compute='_compute_worksheet_status',
+        store=True,
+        help='Indica si hay al menos una hoja de trabajo firmada por el cliente'
+    )
+    
+    worksheet_completion_rate = fields.Float(
+        string='% Completitud Hojas',
+        compute='_compute_worksheet_status',
+        store=True,
+        help='Porcentaje de hojas de trabajo completadas'
+    )
+    
+    # Campos relacionados con timesheet
+    timesheet_ids = fields.One2many(
+        'account.analytic.line',
+        'fsm_order_id',
+        string='Registros de Tiempo',
+        domain=[('project_id', '!=', False)]
+    )
+    
+    timesheet_count = fields.Integer(
+        string='Registros de Tiempo',
+        compute='_compute_timesheet_count'
+    )
+    
+    total_timesheet_time = fields.Float(
+        string='Tiempo Total (Horas)',
+        compute='_compute_timesheet_time'
+    )
+    
+    is_timer_running = fields.Boolean(
+        string='Timer Activo',
+        compute='_compute_timer_status'
+    )
+    
+    current_timesheet_id = fields.Many2one(
+        'account.analytic.line',
+        string='Timesheet Actual',
+        compute='_compute_timer_status'
+    )
+    
+    # Campos de facturación
+    invoice_policy = fields.Selection([
+        ('manual', 'Manual'),
+        ('auto_on_close', 'Automática al Cerrar'),
+        ('auto_on_done', 'Automática al Completar')
+    ], string='Política de Facturación', default='manual')
+    
+    service_product_id = fields.Many2one(
+        'product.product',
+        string='Producto de Servicio',
+        domain=[('type', '=', 'service')],
+        help='Producto que se facturará por las horas de servicio'
+    )
+    
+    auto_invoice_time = fields.Boolean(
+        string='Facturar Tiempo Automáticamente',
+        default=True,
+        help='Si está marcado, se facturarán automáticamente las horas registradas'
+    )
+    
+    auto_invoice_materials = fields.Boolean(
+        string='Facturar Materiales Automáticamente',
+        default=True,
+        help='Si está marcado, se facturarán automáticamente los repuestos consumidos'
     )
     
     x_min_skill_level = fields.Many2one(
@@ -217,6 +299,13 @@ class FSMOrder(models.Model):
         string='Marca y Modelo',
         compute='_compute_equipment_info',
         help='Marca y modelo del equipo'
+    )
+    
+    # Campo computado para contar repuestos consumidos
+    consumed_parts_count = fields.Integer(
+        string='Repuestos Consumidos',
+        compute='_compute_consumed_parts_count',
+        store=False
     )
     
     @api.depends('x_required_skill_types', 'x_min_skill_level', 'location_id')
@@ -311,6 +400,311 @@ class FSMOrder(models.Model):
                 'available_technicians': available_techs.ids,
             }
         }
+    
+    def action_suggest_technicians(self):
+        """Abre wizard para sugerir técnicos basado en habilidades"""
+        self.ensure_one()
+        return {
+            'name': _('Técnicos Sugeridos'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'fsm.technician.suggestion.wizard',
+            'view_mode': 'form',
+            'target': 'new',
+            'context': {
+                'default_order_id': self.id,
+                'default_required_skill_ids': [(6, 0, self.required_skill_ids.ids)]
+            }
+        }
+    
+    @api.depends('worksheet_ids')
+    def _compute_worksheet_count(self):
+        """Calcula el número de hojas de trabajo"""
+        for order in self:
+            order.worksheet_count = len(order.worksheet_ids)
+    
+    @api.depends('x_consumed_parts_ids')
+    def _compute_consumed_parts_count(self):
+        """Computar el número de repuestos consumidos"""
+        for record in self:
+            record.consumed_parts_count = len(record.x_consumed_parts_ids)
+    
+    @api.depends('worksheet_ids', 'worksheet_ids.state')
+    def _compute_worksheet_status(self):
+        """Calcula el estado de las hojas de trabajo"""
+        for order in self:
+            worksheets = order.worksheet_ids
+            if not worksheets:
+                order.has_signed_worksheet = False
+                order.worksheet_completion_rate = 0.0
+            else:
+                signed_count = len(worksheets.filtered(lambda w: w.state == 'signed'))
+                order.has_signed_worksheet = signed_count > 0
+                order.worksheet_completion_rate = (signed_count / len(worksheets)) * 100
+    
+    @api.depends('timesheet_ids')
+    def _compute_timesheet_count(self):
+        """Calcula el número de registros de tiempo"""
+        for order in self:
+            order.timesheet_count = len(order.timesheet_ids)
+    
+    @api.depends('timesheet_ids', 'timesheet_ids.unit_amount')
+    def _compute_timesheet_time(self):
+        """Calcula el tiempo total registrado"""
+        for order in self:
+            order.total_timesheet_time = sum(order.timesheet_ids.mapped('unit_amount'))
+    
+    @api.depends('timesheet_ids', 'timesheet_ids.date_time')
+    def _compute_timer_status(self):
+        """Verifica si hay un timer activo"""
+        for order in self:
+            running_timesheet = order.timesheet_ids.filtered(
+                lambda t: not t.unit_amount and t.date_time
+            )
+            order.is_timer_running = bool(running_timesheet)
+            order.current_timesheet_id = running_timesheet[:1] if running_timesheet else False
+    
+    def action_view_worksheets(self):
+        """Abre la vista de hojas de trabajo"""
+        self.ensure_one()
+        action = self.env.ref('patco_core.action_fsm_worksheet').read()[0]
+        
+        if len(self.worksheet_ids) > 1:
+            action['domain'] = [('order_id', '=', self.id)]
+        elif len(self.worksheet_ids) == 1:
+            action['views'] = [(self.env.ref('patco_core.view_fsm_worksheet_form').id, 'form')]
+            action['res_id'] = self.worksheet_ids.id
+        else:
+            # No hay hojas de trabajo, crear una nueva
+            return self.action_create_worksheet()
+        
+        action['context'] = {
+            'default_order_id': self.id,
+            'search_default_order_id': self.id
+        }
+        return action
+    
+    def action_create_invoice(self):
+        """Crea una factura basada en tiempo y materiales"""
+        self.ensure_one()
+        
+        if not self.location_id:
+            raise UserError(_('Debe especificar una ubicación para crear la factura.'))
+        
+        # Crear la factura
+        invoice_vals = {
+            'move_type': 'out_invoice',
+            'partner_id': self.location_id.id,
+            'invoice_date': fields.Date.today(),
+            'invoice_line_ids': [],
+        }
+        
+        invoice_lines = []
+        
+        # Agregar líneas por tiempo si está habilitado
+        if self.auto_invoice_time and self.service_product_id:
+            timesheet_lines = self.env['account.analytic.line'].search([
+                ('fsm_order_id', '=', self.id)
+            ])
+            
+            total_hours = sum(timesheet_lines.mapped('unit_amount'))
+            if total_hours > 0:
+                invoice_lines.append((0, 0, {
+                    'product_id': self.service_product_id.id,
+                    'name': f'Servicio técnico - {self.name}',
+                    'quantity': total_hours,
+                    'price_unit': self.service_product_id.list_price,
+                    'product_uom_id': self.service_product_id.uom_id.id,
+                }))
+        
+        # Agregar líneas por materiales si está habilitado
+        if self.auto_invoice_materials:
+            consumed_parts = self.env['fsm.order.consumed.part'].search([
+                ('order_id', '=', self.id),
+                ('state', '=', 'confirmed')
+            ])
+            
+            for part in consumed_parts:
+                invoice_lines.append((0, 0, {
+                    'product_id': part.product_id.id,
+                    'name': f'Material - {part.product_id.name}',
+                    'quantity': part.quantity,
+                    'price_unit': part.unit_cost,
+                    'product_uom_id': part.product_uom_id.id,
+                }))
+        
+        if not invoice_lines:
+            raise UserError(_('No hay elementos para facturar. Verifique que tenga tiempo registrado o materiales consumidos.'))
+        
+        invoice_vals['invoice_line_ids'] = invoice_lines
+        
+        # Crear la factura
+        invoice = self.env['account.move'].create(invoice_vals)
+        
+        return {
+            'name': _('Factura Creada'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move',
+            'view_mode': 'form',
+            'res_id': invoice.id,
+            'target': 'current',
+        }
+    
+    def _auto_invoice_on_stage_change(self):
+        """Crea factura automáticamente según la política configurada"""
+        for record in self:
+            if record.invoice_policy == 'auto_on_done' and record.stage_id.is_closed:
+                record.action_create_invoice()
+            elif record.invoice_policy == 'auto_on_close' and record.stage_id.is_closed:
+                 record.action_create_invoice()
+    
+    def write(self, vals):
+        """Sobrescribir write para activar facturación automática"""
+        result = super(FSMOrder, self).write(vals)
+        
+        # Si se cambió el stage_id, verificar facturación automática
+        if 'stage_id' in vals:
+            self._auto_invoice_on_stage_change()
+        
+        return result
+    
+    def action_view_timesheet(self):
+        """Acción para ver los registros de tiempo"""
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': 'Registros de Tiempo',
+            'res_model': 'account.analytic.line',
+            'view_mode': 'tree,form',
+            'domain': [('fsm_order_id', '=', self.id)],
+            'context': {
+                'default_fsm_order_id': self.id,
+                'default_project_id': self.project_id.id if self.project_id else False,
+                'default_task_id': self.task_id.id if self.task_id else False,
+                'default_name': f'Trabajo en {self.location_id.name or self.name}',
+            },
+        }
+    
+    def action_start_timer(self):
+        """Inicia el timer de trabajo"""
+        self.ensure_one()
+        if self.is_timer_running:
+            raise UserError(_("Ya hay un timer activo para esta orden."))
+        
+        # Crear nuevo registro de timesheet
+        timesheet_vals = {
+            'fsm_order_id': self.id,
+            'project_id': self.project_id.id if self.project_id else False,
+            'task_id': self.task_id.id if self.task_id else False,
+            'name': f'Trabajo en {self.location_id.name or self.name}',
+            'date': fields.Date.today(),
+            'date_time': fields.Datetime.now(),
+            'user_id': self.env.user.id,
+            'employee_id': self.env.user.employee_id.id if self.env.user.employee_id else False,
+        }
+        
+        timesheet = self.env['account.analytic.line'].create(timesheet_vals)
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'message': _("Timer iniciado correctamente."),
+                'type': 'success',
+                'sticky': False,
+            }
+        }
+    
+    def action_stop_timer(self):
+        """Detiene el timer de trabajo"""
+        self.ensure_one()
+        if not self.is_timer_running:
+            raise UserError(_("No hay timer activo para esta orden."))
+        
+        current_timesheet = self.current_timesheet_id
+        if current_timesheet and current_timesheet.date_time:
+            # Calcular tiempo transcurrido
+            start_time = current_timesheet.date_time
+            end_time = fields.Datetime.now()
+            duration = (end_time - start_time).total_seconds() / 3600  # Convertir a horas
+            
+            current_timesheet.write({
+                'unit_amount': duration,
+                'date_time': False,  # Limpiar para indicar que terminó
+            })
+            
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'message': _("Timer detenido. Tiempo registrado: %.2f horas.") % duration,
+                    'type': 'success',
+                    'sticky': False,
+                }
+            }
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'message': _("Error al detener el timer."),
+                'type': 'warning',
+                'sticky': False,
+            }
+        }
+    
+    def action_create_worksheet(self):
+        """Crea una nueva hoja de trabajo"""
+        self.ensure_one()
+        
+        # Buscar plantilla por defecto o por categoría de equipo
+        template = self._get_default_worksheet_template()
+        
+        if not template:
+            raise UserError(_("No se encontró una plantilla de hoja de trabajo adecuada. "
+                            "Configure plantillas en el menú de Field Service."))
+        
+        # Crear la hoja de trabajo
+        worksheet = self.env['fsm.worksheet'].create({
+            'order_id': self.id,
+            'template_id': template.id,
+            'name': f"Hoja de Trabajo - {self.name}"
+        })
+        
+        # Abrir la hoja de trabajo creada
+        return {
+            'name': _('Nueva Hoja de Trabajo'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'fsm.worksheet',
+            'res_id': worksheet.id,
+            'view_mode': 'form',
+            'target': 'current'
+        }
+    
+    def _get_default_worksheet_template(self):
+        """Obtiene la plantilla por defecto para esta orden"""
+        self.ensure_one()
+        
+        # Buscar por categoría de equipo
+        if self.equipment_id and self.equipment_id.category_id:
+            template = self.env['fsm.worksheet.template'].search([
+                ('equipment_category_ids', 'in', self.equipment_id.category_id.id),
+                ('active', '=', True)
+            ], limit=1)
+            if template:
+                return template
+        
+        # Buscar por naturaleza del servicio
+        if hasattr(self, 'service_nature_id') and self.service_nature_id:
+            template = self.env['fsm.worksheet.template'].search([
+                ('service_nature_ids', 'in', self.service_nature_id.id),
+                ('active', '=', True)
+            ], limit=1)
+            if template:
+                return template
+        
+        # Plantilla por defecto
+        return self.env['fsm.worksheet.template'].search([
+            ('active', '=', True)
+        ], limit=1)
     
     @api.depends('equipment_id')
     def _compute_equipment_info(self):

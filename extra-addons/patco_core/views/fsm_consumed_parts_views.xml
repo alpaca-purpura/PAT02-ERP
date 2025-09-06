@@ -8,9 +8,9 @@
             <form string="Repuesto Consumido">
                 <header>
                     <button name="action_confirm" string="Confirmar" type="object" 
-                            class="btn-primary" states="draft"/>
+                            class="btn-primary" invisible="state != 'draft'"/>
                     <button name="action_cancel" string="Cancelar" type="object" 
-                            states="draft,confirmed"/>
+                            invisible="state not in ('draft', 'confirmed')"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done"/>
                 </header>
                 <sheet>
@@ -39,7 +39,7 @@
         <field name="name">fsm.order.consumed.part.tree</field>
         <field name="model">fsm.order.consumed.part</field>
         <field name="arch" type="xml">
-            <tree string="Repuestos Consumidos" editable="bottom">
+            <list string="Repuestos Consumidos" editable="bottom">
                 <field name="sequence" widget="handle"/>
                 <field name="order_id" optional="hide"/>
                 <field name="product_id"/>
@@ -53,7 +53,7 @@
                        decoration-info="state == 'confirmed'"
                        decoration-muted="state == 'cancel'"/>
                 <field name="notes" optional="hide"/>
-            </tree>
+            </list>
         </field>
     </record>
 
@@ -111,7 +111,7 @@
                     <notebook>
                         <page string="Repuestos a Consumir">
                             <field name="line_ids">
-                                <tree editable="bottom">
+                                <list editable="bottom">
                                     <field name="product_id"/>
                                     <field name="available_qty" readonly="1"/>
                                     <field name="quantity"/>
@@ -119,7 +119,7 @@
                                     <field name="unit_cost" readonly="1"/>
                                     <field name="total_cost" readonly="1" sum="Total"/>
                                     <field name="notes"/>
-                                </tree>
+                                </list>
                             </field>
                         </page>
                     </notebook>

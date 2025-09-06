@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Ocultar aplicaciones completas para técnicos -->
+        <!-- Mantenimiento -->
+        <record id="maintenance.menu_maintenance_title" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Inventario (excepto acceso contextual) -->
+        <record id="stock.menu_stock_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Contabilidad -->
+        <record id="account.menu_finance" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Recursos Humanos (excepto timesheet) -->
+        <record id="hr.menu_hr_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Proyectos -->
+        <record id="project.menu_main_pm" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Ventas -->
+        <record id="sale.sale_menu_root" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Configuración -->
+        <record id="base.menu_administration" model="ir.ui.menu">
+            <field name="groups_id" eval="[(3, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Restricciones adicionales para líderes técnicos -->
+        <!-- Los líderes técnicos heredan las mismas restricciones que los técnicos -->
+        <!-- pero con acceso adicional a configuración y reportes -->
+        
+        <!-- Accesos contextuales desde Field Service -->
+        <!-- Permitir acceso a productos desde órdenes de servicio -->
+        <record id="stock.product_product_menu" model="ir.ui.menu">
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Permitir acceso a partners desde órdenes de servicio -->
+        <record id="contacts.menu_contacts" model="ir.ui.menu">
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_technician'))]"/>
+        </record>
+        
+        <!-- Crear menú contextual para productos en Field Service -->
+        <record id="menu_patco_products_context" model="ir.ui.menu">
+            <field name="name">Productos</field>
+            <field name="parent_id" ref="menu_patco_configuration"/>
+            <field name="action" ref="product.product_normal_action"/>
+            <field name="sequence">30</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+        <!-- Crear menú contextual para clientes en Field Service -->
+        <record id="menu_patco_customers_context" model="ir.ui.menu">
+            <field name="name">Clientes</field>
+            <field name="parent_id" ref="menu_patco_configuration"/>
+            <field name="action" ref="base.action_partner_form"/>
+            <field name="sequence">40</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+        <!-- Crear menú contextual para equipos en Field Service -->
+        <record id="menu_patco_equipment_context" model="ir.ui.menu">
+            <field name="name">Equipos</field>
+            <field name="parent_id" ref="menu_patco_configuration"/>
+            <field name="action" ref="fieldservice.action_fsm_equipment"/>
+            <field name="sequence">50</field>
+            <field name="groups_id" eval="[(4, ref('patco_core.group_patco_tech_leader'))]"/>
+        </record>
+        
+    </data>
+</odoo>

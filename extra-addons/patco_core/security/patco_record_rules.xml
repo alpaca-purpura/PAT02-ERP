@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Regla: Técnicos solo ven sus propias órdenes de servicio -->
+        <record id="fsm_order_technician_rule" model="ir.rule">
+            <field name="name">FSM Order: Técnicos ven solo sus órdenes</field>
+            <field name="model_id" ref="fieldservice.model_fsm_order"/>
+            <field name="domain_force">[('person_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('group_patco_technician'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- Regla: Líderes técnicos ven órdenes de su equipo -->
+        <record id="fsm_order_leader_rule" model="ir.rule">
+            <field name="name">FSM Order: Líderes ven órdenes de su equipo</field>
+            <field name="model_id" ref="fieldservice.model_fsm_order"/>
+            <field name="domain_force">['|', ('person_ids', 'in', [user.id]), ('person_ids.parent_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_tech_leader'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- Regla: Administradores ven todas las órdenes -->
+        <record id="fsm_order_admin_rule" model="ir.rule">
+            <field name="name">FSM Order: Administradores ven todas las órdenes</field>
+            <field name="model_id" ref="fieldservice.model_fsm_order"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- Regla: Hojas de trabajo - Técnicos ven solo las suyas -->
+        <record id="fsm_worksheet_technician_rule" model="ir.rule">
+            <field name="name">FSM Worksheet: Técnicos ven solo sus hojas</field>
+            <field name="model_id" ref="model_fsm_worksheet"/>
+            <field name="domain_force">[('order_id.person_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('group_patco_technician'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- Regla: Hojas de trabajo - Líderes ven las de su equipo -->
+        <record id="fsm_worksheet_leader_rule" model="ir.rule">
+            <field name="name">FSM Worksheet: Líderes ven hojas de su equipo</field>
+            <field name="model_id" ref="model_fsm_worksheet"/>
+            <field name="domain_force">['|', ('order_id.person_ids', 'in', [user.id]), ('order_id.person_ids.parent_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_tech_leader'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- Regla: Hojas de trabajo - Administradores ven todas -->
+        <record id="fsm_worksheet_admin_rule" model="ir.rule">
+            <field name="name">FSM Worksheet: Administradores ven todas las hojas</field>
+            <field name="model_id" ref="model_fsm_worksheet"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- Regla: Consumo de repuestos - Técnicos ven solo los suyos -->
+        <record id="fsm_consumed_part_technician_rule" model="ir.rule">
+            <field name="name">FSM Consumed Part: Técnicos ven solo sus consumos</field>
+            <field name="model_id" ref="model_fsm_order_consumed_part"/>
+            <field name="domain_force">[('order_id.person_ids', 'in', [user.id])]</field>
+            <field name="groups" eval="[(4, ref('group_patco_technician'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- Regla: Consumo de repuestos - Líderes ven los de su equipo -->
+        <record id="fsm_consumed_part_leader_rule" model="ir.rule">
+            <field name="name">FSM Consumed Part: Líderes ven consumos de su equipo</field>
+            <field name="model_id" ref="model_fsm_order_consumed_part"/>
+            <field name="domain_force">['|', ('order_id.person_ids', 'in', [user.id]), ('order_id.person_ids.parent_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_tech_leader'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- Regla: Consumo de repuestos - Administradores ven todos -->
+        <record id="fsm_consumed_part_admin_rule" model="ir.rule">
+            <field name="name">FSM Consumed Part: Administradores ven todos los consumos</field>
+            <field name="model_id" ref="model_fsm_order_consumed_part"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- Regla: Timesheet - Técnicos ven solo sus registros -->
+        <record id="timesheet_technician_rule" model="ir.rule">
+            <field name="name">Timesheet: Técnicos ven solo sus registros</field>
+            <field name="model_id" ref="hr_timesheet.model_account_analytic_line"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_technician'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- Regla: Timesheet - Líderes ven los de su equipo -->
+        <record id="timesheet_leader_rule" model="ir.rule">
+            <field name="name">Timesheet: Líderes ven registros de su equipo</field>
+            <field name="model_id" ref="hr_timesheet.model_account_analytic_line"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('user_id.partner_id.parent_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_tech_leader'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <!-- Regla: Timesheet - Administradores ven todos -->
+        <record id="timesheet_admin_rule" model="ir.rule">
+            <field name="name">Timesheet: Administradores ven todos los registros</field>
+            <field name="model_id" ref="hr_timesheet.model_account_analytic_line"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_patco_admin'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+    </data>
+</odoo>

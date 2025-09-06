@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Categoría de aplicación PATCO -->
+        <record id="module_category_patco" model="ir.module.category">
+            <field name="name">PATCO Field Service</field>
+            <field name="description">Gestión de Servicios de Campo PATCO</field>
+            <field name="sequence">10</field>
+        </record>
+        
+        <!-- Grupo: PATCO Técnico -->
+        <record id="group_patco_technician" model="res.groups">
+            <field name="name">PATCO Técnico</field>
+            <field name="category_id" ref="module_category_patco"/>
+            <field name="comment">Técnicos de campo con acceso limitado a ejecución de órdenes de servicio</field>
+        </record>
+        
+        <!-- Grupo: PATCO Líder Técnico -->
+        <record id="group_patco_technical_leader" model="res.groups">
+            <field name="name">PATCO Líder Técnico</field>
+            <field name="category_id" ref="module_category_patco"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_technician'))]"/>
+            <field name="comment">Líderes técnicos con capacidades de supervisión y gestión de equipos</field>
+        </record>
+        
+        <!-- Grupo: PATCO Administrador -->
+        <record id="group_patco_administrator" model="res.groups">
+            <field name="name">PATCO Administrador</field>
+            <field name="category_id" ref="module_category_patco"/>
+            <field name="implied_ids" eval="[(4, ref('group_patco_technical_leader'))]"/>
+            <field name="comment">Administradores con acceso completo al sistema PATCO</field>
+        </record>
+        
+        <!-- Permisos base para Field Service -->
+        <record id="fieldservice.access_fsm_location_user" model="ir.model.access">
+            <field name="group_id" ref="group_patco_technician"/>
+        </record>
+        
+        <record id="fieldservice.access_fsm_order_user" model="ir.model.access">
+            <field name="group_id" ref="group_patco_technician"/>
+        </record>
+        
+        <record id="fieldservice.access_fsm_person_user" model="ir.model.access">
+            <field name="group_id" ref="group_patco_technician"/>
+        </record>
+        
+        <!-- Permisos específicos para modelos PATCO -->
+        <record id="access_fsm_worksheet_technician" model="ir.model.access">
+            <field name="name">fsm.worksheet.technician</field>
+            <field name="model_id" ref="model_fsm_worksheet"/>
+            <field name="group_id" ref="group_patco_technician"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <record id="access_fsm_order_consumed_part_technician" model="ir.model.access">
+            <field name="name">fsm.order.consumed.part.technician</field>
+            <field name="model_id" ref="model_fsm_order_consumed_part"/>
+            <field name="group_id" ref="group_patco_technician"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+        
+        <!-- Permisos para Líder Técnico -->
+        <record id="access_fsm_worksheet_leader" model="ir.model.access">
+            <field name="name">fsm.worksheet.leader</field>
+            <field name="model_id" ref="model_fsm_worksheet"/>
+            <field name="group_id" ref="group_patco_technical_leader"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+        <record id="access_fsm_order_consumed_part_leader" model="ir.model.access">
+            <field name="name">fsm.order.consumed.part.leader</field>
+            <field name="model_id" ref="model_fsm_order_consumed_part"/>
+            <field name="group_id" ref="group_patco_technical_leader"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+        
+
+        
+    </data>
+</odoo>

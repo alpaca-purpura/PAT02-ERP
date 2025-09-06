@@ -39,5 +39,10 @@
                   action="action_patco_service_complexity"
                   sequence="30"/>
 
+        <menuitem id="menu_fsm_timesheet" name="Registro de Tiempo" 
+                  parent="menu_patco_main" 
+                  action="action_hr_timesheet_fsm" 
+                  sequence="50"/>
+
     </data>
 </odoo>

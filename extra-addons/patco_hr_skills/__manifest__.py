@@ -19,7 +19,7 @@
     'website': 'https://www.patco.com',
     'depends': [
         'hr',
-        'hr_skills',
+        # 'hr_skills',  # Enterprise module, not available in Community
     ],
     'data': [
         'security/ir.model.access.csv',

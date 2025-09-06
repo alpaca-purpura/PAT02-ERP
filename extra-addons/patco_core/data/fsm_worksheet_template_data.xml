@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <!-- Plantilla para Mantenimiento Preventivo -->
+        <record id="worksheet_template_preventive" model="fsm.worksheet.template">
+            <field name="name">Mantenimiento Preventivo</field>
+            <field name="description">Plantilla estándar para servicios de mantenimiento preventivo</field>
+            <field name="template_data">{
+  "sections": [
+    {
+      "title": "Inspección Visual",
+      "fields": [
+        {"name": "estado_general", "type": "selection", "label": "Estado General", "options": ["Excelente", "Bueno", "Regular", "Malo"], "required": true},
+        {"name": "limpieza", "type": "selection", "label": "Limpieza", "options": ["Limpio", "Sucio", "Muy Sucio"], "required": true},
+        {"name": "observaciones_visuales", "type": "text", "label": "Observaciones Visuales", "required": false}
+      ]
+    },
+    {
+      "title": "Verificaciones Técnicas",
+      "fields": [
+        {"name": "voltaje", "type": "float", "label": "Voltaje (V)", "required": false},
+        {"name": "corriente", "type": "float", "label": "Corriente (A)", "required": false},
+        {"name": "temperatura", "type": "float", "label": "Temperatura (°C)", "required": false},
+        {"name": "presion", "type": "float", "label": "Presión (PSI)", "required": false}
+      ]
+    },
+    {
+      "title": "Actividades Realizadas",
+      "fields": [
+        {"name": "lubricacion", "type": "boolean", "label": "Lubricación", "required": false},
+        {"name": "ajuste_tornillos", "type": "boolean", "label": "Ajuste de Tornillos", "required": false},
+        {"name": "limpieza_filtros", "type": "boolean", "label": "Limpieza de Filtros", "required": false},
+        {"name": "calibracion", "type": "boolean", "label": "Calibración", "required": false}
+      ]
+    },
+    {
+      "title": "Recomendaciones",
+      "fields": [
+        {"name": "recomendaciones", "type": "text", "label": "Recomendaciones", "required": false},
+        {"name": "proximo_mantenimiento", "type": "date", "label": "Próximo Mantenimiento", "required": false}
+      ]
+    }
+  ]
+}</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Plantilla para Mantenimiento Correctivo -->
+        <record id="worksheet_template_corrective" model="fsm.worksheet.template">
+            <field name="name">Mantenimiento Correctivo</field>
+            <field name="description">Plantilla para servicios de reparación y mantenimiento correctivo</field>
+            <field name="template_data">{
+  "sections": [
+    {
+      "title": "Diagnóstico",
+      "fields": [
+        {"name": "falla_reportada", "type": "text", "label": "Falla Reportada", "required": true},
+        {"name": "causa_raiz", "type": "text", "label": "Causa Raíz", "required": true},
+        {"name": "diagnostico_tecnico", "type": "text", "label": "Diagnóstico Técnico", "required": true}
+      ]
+    },
+    {
+      "title": "Reparación Realizada",
+      "fields": [
+        {"name": "accion_correctiva", "type": "text", "label": "Acción Correctiva", "required": true},
+        {"name": "repuestos_utilizados", "type": "text", "label": "Repuestos Utilizados", "required": false},
+        {"name": "herramientas_especiales", "type": "text", "label": "Herramientas Especiales", "required": false}
+      ]
+    },
+    {
+      "title": "Pruebas de Funcionamiento",
+      "fields": [
+        {"name": "prueba_operacion", "type": "selection", "label": "Prueba de Operación", "options": ["Exitosa", "Parcial", "Fallida"], "required": true},
+        {"name": "parametros_normales", "type": "boolean", "label": "Parámetros Normales", "required": true},
+        {"name": "observaciones_pruebas", "type": "text", "label": "Observaciones de Pruebas", "required": false}
+      ]
+    },
+    {
+      "title": "Garantía y Seguimiento",
+      "fields": [
+        {"name": "garantia_reparacion", "type": "integer", "label": "Garantía (días)", "required": false},
+        {"name": "seguimiento_requerido", "type": "boolean", "label": "Requiere Seguimiento", "required": false},
+        {"name": "fecha_seguimiento", "type": "date", "label": "Fecha de Seguimiento", "required": false}
+      ]
+    }
+  ]
+}</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Plantilla para Instalación -->
+        <record id="worksheet_template_installation" model="fsm.worksheet.template">
+            <field name="name">Instalación de Equipo</field>
+            <field name="description">Plantilla para servicios de instalación de equipos nuevos</field>
+            <field name="template_data">{
+  "sections": [
+    {
+      "title": "Preparación del Sitio",
+      "fields": [
+        {"name": "condiciones_sitio", "type": "selection", "label": "Condiciones del Sitio", "options": ["Adecuadas", "Requiere Preparación", "No Adecuadas"], "required": true},
+        {"name": "espacio_suficiente", "type": "boolean", "label": "Espacio Suficiente", "required": true},
+        {"name": "servicios_disponibles", "type": "text", "label": "Servicios Disponibles (Electricidad, Agua, etc.)", "required": true}
+      ]
+    },
+    {
+      "title": "Instalación",
+      "fields": [
+        {"name": "equipo_instalado", "type": "text", "label": "Equipo Instalado", "required": true},
+        {"name": "numero_serie", "type": "char", "label": "Número de Serie", "required": true},
+        {"name": "ubicacion_final", "type": "text", "label": "Ubicación Final", "required": true},
+        {"name": "conexiones_realizadas", "type": "text", "label": "Conexiones Realizadas", "required": true}
+      ]
+    },
+    {
+      "title": "Configuración y Puesta en Marcha",
+      "fields": [
+        {"name": "configuracion_inicial", "type": "text", "label": "Configuración Inicial", "required": true},
+        {"name": "pruebas_funcionamiento", "type": "selection", "label": "Pruebas de Funcionamiento", "options": ["Exitosas", "Parciales", "Fallidas"], "required": true},
+        {"name": "parametros_operacion", "type": "text", "label": "Parámetros de Operación", "required": false}
+      ]
+    },
+    {
+      "title": "Entrega y Capacitación",
+      "fields": [
+        {"name": "capacitacion_usuario", "type": "boolean", "label": "Capacitación al Usuario", "required": true},
+        {"name": "manual_entregado", "type": "boolean", "label": "Manual Entregado", "required": true},
+        {"name": "garantia_instalacion", "type": "integer", "label": "Garantía de Instalación (días)", "required": false}
+      ]
+    }
+  ]
+}</field>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Plantilla Genérica -->
+        <record id="worksheet_template_generic" model="fsm.worksheet.template">
+            <field name="name">Servicio Genérico</field>
+            <field name="description">Plantilla genérica para cualquier tipo de servicio</field>
+            <field name="template_data">{
+  "sections": [
+    {
+      "title": "Información General",
+      "fields": [
+        {"name": "tipo_servicio", "type": "char", "label": "Tipo de Servicio", "required": true},
+        {"name": "descripcion_trabajo", "type": "text", "label": "Descripción del Trabajo", "required": true},
+        {"name": "tiempo_estimado", "type": "float", "label": "Tiempo Estimado (horas)", "required": false}
+      ]
+    },
+    {
+      "title": "Actividades Realizadas",
+      "fields": [
+        {"name": "actividades", "type": "text", "label": "Actividades Realizadas", "required": true},
+        {"name": "materiales_utilizados", "type": "text", "label": "Materiales Utilizados", "required": false},
+        {"name": "dificultades_encontradas", "type": "text", "label": "Dificultades Encontradas", "required": false}
+      ]
+    },
+    {
+      "title": "Resultados",
+      "fields": [
+        {"name": "resultado_servicio", "type": "selection", "label": "Resultado del Servicio", "options": ["Exitoso", "Parcial", "No Exitoso"], "required": true},
+        {"name": "observaciones_finales", "type": "text", "label": "Observaciones Finales", "required": false},
+        {"name": "recomendaciones_cliente", "type": "text", "label": "Recomendaciones al Cliente", "required": false}
+      ]
+    }
+  ]
+}</field>
+            <field name="active">True</field>
+        </record>
+    </data>
+</odoo>
