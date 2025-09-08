@@ -39,9 +39,7 @@
         #'hr_skill',
         #'base_asset_mro',
         'web_responsive',
-
-
-        #'contacts',
+        'contacts',
         #'account',
         #'hr',
         #'project',
@@ -65,6 +63,7 @@
         'views/patco_service_area_views.xml',
         'views/patco_service_complexity_views.xml',
         'views/patco_menus.xml',
+        'views/clientes_menu.xml',
     ],
     'installable': True,
     'application': False,

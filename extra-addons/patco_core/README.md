@@ -2,40 +2,145 @@
 
 ## Descripción
 
-`patco_core` es el núcleo del sistema PATCO, proporcionando las funcionalidades base y modelos centrales para la gestión de mantenimiento HORECA. Este módulo contiene las extensiones fundamentales de Odoo y los datos maestros necesarios para el funcionamiento del ecosistema PATCO.
+`patco_core` es el núcleo del sistema PATCO, proporcionando las funcionalidades base y modelos centrales para la gestión integral de mantenimiento HORECA. Este módulo contiene las extensiones fundamentales de Odoo, los datos maestros necesarios y todas las funcionalidades avanzadas para el ecosistema PATCO.
 
 ## Funcionalidades Principales
 
-### 1. Gestión de Naturalezas de Servicio
-- **Modelo**: `patco.service.nature`
+### 1. Sistema de Clasificación PATCO
+
+#### Naturalezas de Servicio (`patco.service.nature`)
 - **Propósito**: Clasificación estándar de tipos de servicio según matriz PATCO
-- **Campos principales**:
-  - `name`: Nombre descriptivo (ej. "Correctivo", "Preventivo")
-  - `code`: Código único (ej. "M1", "M2")
-  - `sequence`: Orden de visualización
-  - `active`: Estado del registro
+- **Datos maestros incluidos**:
+  - **M1-Correctivo**: Reparación de fallas y averías
+  - **M2-Preventivo**: Mantenimiento programado y rutinario
+  - **M3-Instalación**: Instalación de nuevos equipos
+  - **M4-Inspección**: Revisiones técnicas y auditorías
 
-### 2. Extensiones de Líneas Analíticas
-- **Modelo extendido**: `account.analytic.line`
-- **Funcionalidades añadidas**:
-  - **Timer de Trabajo**: Control de tiempo en tiempo real
-  - **Integración FSM**: Vinculación con órdenes de servicio de campo
-  - **Gestión de Proyectos**: Asignación automática de proyectos por defecto
+#### Áreas de Servicio (`patco.service.area`)
+- **Propósito**: Clasificación por área técnica especializada
+- **Datos maestros incluidos**:
+  - **COC-CAL**: Cocina - Calor (hornos, freidoras, planchas)
+  - **COC-PRE**: Cocina - Preparación
+  - **COC-LAV**: Cocina - Lavado
+  - **REF-COM**: Refrigeración Comercial
+  - **AC**: Aire Acondicionado
+  - **LAV**: Lavandería Industrial
 
-#### Campos Añadidos:
-- `fsm_order_id`: Relación con orden de servicio (`fsm.order`)
-- `date_time`: Fecha y hora para funcionalidad de timer
-- `is_timer_running`: Estado del timer (activo/inactivo)
+#### Complejidad de Servicio (`patco.service.complexity`)
+- **Propósito**: Clasificación por nivel de dificultad técnica
+- **Datos maestros incluidos**:
+  - **N1-Básico**: Tareas rutinarias y mantenimiento simple
+  - **N2-Intermedio**: Requiere conocimiento técnico especializado
+  - **N3-Avanzado**: Requiere alta especialización técnica
+  - **N4-Crítico**: Requiere experto certificado y experiencia avanzada
 
-#### Métodos Principales:
-- `action_timer_start()`: Inicia el timer de trabajo
+### 2. Gestión Avanzada de Órdenes FSM
+
+#### Extensiones del Modelo `fsm.order`
+- **Clasificación Automática**: Código generado automáticamente (ej. "M1-COC-CAL-N2")
+- **Gestión de Habilidades**: Asignación de técnicos basada en competencias requeridas
+- **Control de Stock en Vehículos**: Gestión de repuestos en ubicaciones móviles
+- **Checklists Dinámicos**: Listas de verificación de entrada y salida
+- **Timer Integrado**: Control de tiempo de trabajo en tiempo real
+- **Facturación Automática**: Políticas configurables de facturación
+
+#### Campos Principales Añadidos:
+- `x_nature_id`, `x_area_id`, `x_complexity_id`: Clasificación PATCO
+- `x_classification_code`: Código automático generado
+- `x_entry_checklist`, `x_exit_checklist`: Checklists dinámicos
+- `x_vehicle_location_id`: Ubicación del vehículo del técnico
+- `x_consumed_parts_ids`: Repuestos consumidos
+- `x_required_skill_types`: Habilidades requeridas
+- `worksheet_ids`: Hojas de trabajo digitales
+- `timesheet_ids`: Registros de tiempo integrados
+
+### 3. Sistema de Hojas de Trabajo Digitales
+
+#### Modelo `fsm.worksheet`
+- **Plantillas Configurables**: Sistema de plantillas con campos dinámicos
+- **Firmas Digitales**: Captura de firmas de técnico y cliente
+- **Estados de Flujo**: Borrador → En Progreso → Completada → Firmada
+- **Aprobación del Cliente**: Proceso de conformidad con firma digital
+- **Generación de PDF**: Documentos firmados automáticamente
+- **Adjuntos**: Soporte para fotos y documentos adicionales
+
+#### Funcionalidades Avanzadas:
+- Control de tiempo automático (inicio/fin)
+- Validaciones de secuencia temporal
+- Integración con órdenes FSM
+- Sistema de aprobación/rechazo del cliente
+- Generación automática de PDFs firmados
+
+### 4. Gestión de Repuestos y Stock
+
+#### Repuestos Consumidos (`fsm.order.consumed.part`)
+- **Trazabilidad Completa**: Seguimiento de cada repuesto utilizado
+- **Cálculo Automático de Costos**: Costos unitarios y totales
+- **Integración con Stock**: Movimientos automáticos de inventario
+- **Estados de Flujo**: Borrador → Confirmado → Realizado
+
+#### Solicitudes de Transferencia (`stock.transfer.request`)
+- **Transferencias a Vehículos**: Gestión de stock móvil para técnicos
+- **Validación de Disponibilidad**: Verificación automática de stock
+- **Generación de Pickings**: Creación automática de transferencias
+- **Seguimiento Completo**: Estados y trazabilidad de movimientos
+
+### 5. Extensiones de Líneas Analíticas
+
+#### Modelo extendido `account.analytic.line`
+- **Timer de Trabajo**: Control de tiempo en tiempo real
+- **Integración FSM**: Vinculación directa con órdenes de servicio
+- **Gestión de Proyectos**: Asignación automática de proyectos
+- **Análisis de Tiempos**: Reportes y análisis de productividad
+
+#### Campos y Métodos Añadidos:
+- `fsm_order_id`: Relación con orden de servicio
+- `date_time`: Fecha y hora para timer
+- `is_timer_running`: Estado del timer
+- `action_timer_start()`: Inicia el timer
+
+### 6. Gestión de Clientes
+
+#### Submenú de Clientes
+- **Acceso Directo**: Submenú "Clientes" bajo el menú principal de Contactos
+- **Filtrado Automático**: Vista filtrada que muestra solo empresas con rango de cliente
+- **Creación Simplificada**: Contexto predefinido para crear nuevos clientes
+- **Integración Nativa**: Utiliza el modelo estándar `res.partner` de Odoo
+
+#### Características:
+- Dominio: `[('is_company', '=', True), ('customer_rank', '>', 0)]`
+- Contexto por defecto: `{'default_is_company': True, 'default_customer_rank': 1}`
+- Vista: Lista y formulario estándar de partners
+- Secuencia: 10 (aparece al inicio del menú Contactos)
 - `action_timer_stop()`: Detiene el timer y calcula duración
-- `_get_default_project()`: Asigna proyecto por defecto para FSM
 
-### 3. Extensiones de Categorías de Equipos
-- **Modelo extendido**: `maintenance.equipment.category`
-- **Propósito**: Categorización especializada para equipos HORECA
-- **Integración**: Preparado para checklists y procedimientos específicos
+### 6. Wizards y Asistentes
+
+#### Wizard de Consumo de Repuestos (`fsm.consume.parts.wizard`)
+- **Selección Inteligente**: Lista de repuestos disponibles en vehículo
+- **Validación de Stock**: Verificación automática de disponibilidad
+- **Procesamiento Automático**: Generación de movimientos de stock
+- **Integración Completa**: Actualización automática de la orden FSM
+
+#### Wizard de Aprobación del Cliente (`fsm.worksheet.customer.approval.wizard`)
+- **Captura de Datos**: Información completa del cliente que aprueba
+- **Firma Digital**: Captura de firma electrónica
+- **Comentarios**: Observaciones del cliente sobre el servicio
+- **Flujo de Aprobación**: Aprobación o rechazo con justificación
+
+### 7. Sistema de Seguridad y Permisos
+
+#### Grupos de Seguridad PATCO:
+- **PATCO Administrador**: Acceso completo al sistema
+- **PATCO Gerente**: Gestión de proyectos, clientes y facturación
+- **PATCO Técnico Líder**: Supervisión de técnicos y aprobaciones
+- **PATCO Técnico**: Acceso a proyectos asignados y mantenimientos
+
+#### Permisos Integrados:
+- Permisos de proyecto por rol
+- Permisos de mantenimiento especializados
+- Permisos de facturación según nivel
+- Reglas de acceso a datos por grupo
 
 ## Estructura de Archivos
 
@@ -45,162 +150,195 @@ patco_core/
 ├── __manifest__.py
 ├── models/
 │   ├── __init__.py
-│   ├── patco_service_nature.py      # Naturalezas de servicio
-│   ├── account_analytic_line.py     # Extensión de timesheets
-│   └── maintenance_equipment_category.py  # Extensión de categorías
-├── data/
-│   └── patco_service_nature_data.xml    # Datos iniciales
+│   ├── account_analytic_line.py          # Extensión de líneas analíticas con timer
+│   ├── fsm_order.py                      # Extensión de órdenes FSM con clasificación PATCO
+│   ├── fsm_order_consumed_part.py        # Modelo de repuestos consumidos
+│   ├── fsm_worksheet.py                  # Sistema de hojas de trabajo digitales
+│   ├── maintenance_equipment_category.py # Extensión de categorías de equipos
+│   ├── patco_service_area.py            # Modelo de áreas de servicio
+│   ├── patco_service_complexity.py      # Modelo de complejidad de servicio
+│   ├── patco_service_nature.py          # Modelo de naturalezas de servicio
+│   └── stock_transfer_request.py        # Modelo de solicitudes de transferencia
+├── wizards/
+│   ├── __init__.py
+│   ├── fsm_consume_parts_wizard.py       # Wizard para consumir repuestos
+│   └── fsm_worksheet_customer_approval_wizard.py # Wizard de aprobación del cliente
 ├── views/
-│   ├── patco_service_nature_views.xml   # Vistas de naturalezas
-│   └── account_analytic_line_views.xml  # Vistas de timesheets
+│   ├── account_analytic_line_views.xml  # Vistas de líneas analíticas
+│   ├── fsm_order_views.xml              # Vistas de órdenes FSM
+│   ├── fsm_worksheet_views.xml          # Vistas de hojas de trabajo
+│   ├── patco_service_area_views.xml     # Vistas de áreas de servicio
+│   ├── patco_service_complexity_views.xml # Vistas de complejidad
+│   ├── patco_service_nature_views.xml   # Vistas de naturalezas de servicio
+│   └── stock_transfer_request_views.xml # Vistas de transferencias
+├── data/
+│   ├── patco_actions.xml                # Acciones y menús del sistema
+│   ├── patco_service_area_data.xml      # Datos maestros de áreas
+│   ├── patco_service_complexity_data.xml # Datos maestros de complejidad
+│   └── patco_service_nature_data.xml    # Datos maestros de naturalezas
 ├── security/
-│   └── ir.model.access.csv              # Permisos de acceso
-└── README.md
+│   ├── ir.model.access.csv              # Permisos de acceso a modelos
+│   └── patco_security.xml               # Grupos de seguridad PATCO
+├── static/
+│   └── description/
+│       ├── icon.png                     # Icono del módulo
+│       └── index.html                   # Descripción HTML del módulo
+└── README.md                            # Documentación completa
 ```
 
-## Datos Iniciales
+### Descripción de Directorios
 
-El módulo incluye datos maestros preconfigurados:
-
-### Naturalezas de Servicio (`patco.service.nature`)
-- **M1-Correctivo**: Reparación de fallas y averías
-- **M2-Preventivo**: Mantenimiento programado y rutinario
-- **M3-Instalación**: Instalación de nuevos equipos
-- **M4-Inspección**: Revisiones técnicas y auditorías
+- **models/**: Modelos Python del núcleo del sistema PATCO
+- **wizards/**: Asistentes para procesos específicos (consumo de repuestos, aprobaciones)
+- **views/**: Definiciones de vistas XML para todos los modelos
+- **data/**: Datos maestros, acciones y configuraciones iniciales
+- **security/**: Grupos de seguridad y permisos de acceso
+- **static/**: Recursos estáticos (iconos, descripciones)
 
 ## Dependencias
 
-### Módulos Odoo Core:
-- `base`: Funcionalidades básicas
-- `hr_timesheet`: Gestión de hojas de tiempo
-- `maintenance`: Gestión de equipos
-- `analytic`: Contabilidad analítica
+### Módulos Base Requeridos
+- `base`: Módulo base de Odoo
+- `project`: Gestión de proyectos y tareas
+- `industry_fsm`: Field Service Management (Gestión de Servicios de Campo)
+- `maintenance`: Gestión de equipos y mantenimiento
+- `hr_timesheet`: Hojas de tiempo y seguimiento de horas
+- `stock`: Gestión de inventario y almacenes
+- `account`: Contabilidad y facturación
 
-### Módulos OCA:
-- `fieldservice`: Gestión de órdenes de servicio de campo
+### Módulos Opcionales
+- `hr_skills`: Gestión de habilidades de empleados (para asignación automática)
+- `website`: Para funcionalidades web (si se requiere portal de cliente)
 
-## Funcionalidades Técnicas
+## Instalación
 
-### 1. Timer de Trabajo en Tiempo Real
-```python
-# Iniciar timer
-analytic_line.action_timer_start()
+### Pasos de Instalación
+1. **Copiar Módulo**: Colocar la carpeta `patco_core` en el directorio `addons` de Odoo
+2. **Actualizar Lista**: Ejecutar "Actualizar Lista de Aplicaciones" en Odoo
+3. **Instalar Dependencias**: Asegurar que todos los módulos dependientes estén instalados
+4. **Instalar PATCO Core**: Instalar el módulo `patco_core`
+5. **Verificar Datos**: Confirmar que los datos maestros se cargaron correctamente
 
-# Detener timer (calcula automáticamente la duración)
-analytic_line.action_timer_stop()
-```
-
-### 2. Integración con FSM
-- Creación automática de líneas analíticas desde órdenes FSM
-- Asignación de proyecto por defecto basado en la orden
-- Validaciones de integridad de datos
-
-### 3. Gestión de Naturalezas
-```python
-# Búsqueda por código
-nature = env['patco.service.nature'].search([('code', '=', 'M1')])
-
-# Visualización personalizada
-print(nature.display_name)  # "M1 - Correctivo"
-```
-
-## Validaciones y Restricciones
-
-### Naturalezas de Servicio:
-- **Código único**: No se permiten códigos duplicados
-- **Nombre único**: No se permiten nombres duplicados
-- **Formato de código**: Validación de estructura
-
-### Líneas Analíticas:
-- **Timer único**: Solo un timer activo por empleado
-- **Validación FSM**: Verificación de coherencia con órdenes
-- **Proyecto obligatorio**: Asignación automática si no se especifica
-
-## Vistas y Interfaz
-
-### Naturalezas de Servicio:
-- **Vista Lista**: Gestión de naturalezas con filtros por estado
-- **Vista Formulario**: Edición completa de naturalezas
-- **Búsqueda**: Filtros por código, nombre y estado
-
-### Líneas Analíticas Extendidas:
-- **Campos FSM**: Integración en vistas existentes
-- **Timer Controls**: Botones de inicio/parada de timer
-- **Filtros FSM**: Búsqueda por orden de servicio
-
-## Seguridad
-
-### Permisos de Acceso:
-- **Naturalezas de Servicio**: Lectura para usuarios, escritura para administradores
-- **Líneas Analíticas**: Permisos heredados de `hr_timesheet`
-- **Categorías de Equipos**: Permisos heredados de `maintenance`
-
-## Integración con Otros Módulos PATCO
-
-### Con `patco_customer_equipment`:
-- Naturalezas de servicio disponibles para clasificación
-- Integración con órdenes FSM generadas
-
-### Con `patco_hr_skills`:
-- Líneas analíticas vinculadas a competencias técnicas
-- Seguimiento de tiempo por tipo de habilidad
-
-### Con `patco_suite`:
-- Instalación automática como dependencia
-- Configuración inicial coordinada
-
-## Casos de Uso
-
-### 1. Registro de Tiempo de Servicio
-```python
-# El técnico inicia el timer al comenzar el trabajo
-self.env['account.analytic.line'].create({
-    'name': 'Reparación freidora',
-    'project_id': fsm_order.project_id.id,
-    'task_id': fsm_order.task_id.id,
-    'employee_id': self.env.user.employee_id.id,
-    'fsm_order_id': fsm_order.id,
-})
-```
-
-### 2. Clasificación de Servicios
-```python
-# Asignación de naturaleza a ticket/orden
-ticket.service_nature_id = env.ref('patco_core.service_nature_corrective')
-```
-
-### 3. Análisis de Tiempos FSM
-```python
-# Consulta de tiempos por naturaleza de servicio
-lines = env['account.analytic.line'].search([
-    ('fsm_order_id', '!=', False),
-    ('fsm_order_id.service_nature_id.code', '=', 'M1')
-])
-```
+### Verificación Post-Instalación
+- Verificar que los grupos de seguridad PATCO estén creados
+- Confirmar que las naturalezas, áreas y complejidades estén disponibles
+- Probar la creación de una orden FSM con clasificación PATCO
 
 ## Configuración
 
-### Instalación:
-1. El módulo se instala automáticamente con `patco_suite`
-2. Los datos iniciales se cargan automáticamente
-3. Las vistas se integran con las existentes
+### Datos Maestros Incluidos
 
-### Configuración Post-Instalación:
-1. **Verificar Naturalezas**: Revisar datos maestros cargados
-2. **Configurar Proyectos**: Asegurar proyectos por defecto para FSM
-3. **Permisos**: Ajustar permisos según roles de usuario
+#### Naturalezas de Servicio (Automáticas)
+- **M1-Correctivo**: Reparación de fallas y averías
+- **M2-Preventivo**: Mantenimiento programado y rutinario  
+- **M3-Instalación**: Instalación de nuevos equipos
+- **M4-Inspección**: Revisiones técnicas y auditorías
 
-## Mantenimiento
+#### Áreas de Servicio (Automáticas)
+- **COC-CAL**: Cocina - Equipos de Calor
+- **COC-PRE**: Cocina - Equipos de Preparación
+- **COC-LAV**: Cocina - Equipos de Lavado
+- **REF-COM**: Refrigeración Comercial
+- **AC**: Aire Acondicionado
+- **LAV**: Lavandería Industrial
 
-### Actualización de Datos Maestros:
-- Las naturalezas de servicio pueden editarse desde la interfaz
-- Nuevas naturalezas pueden añadirse según necesidades del negocio
-- Los códigos deben seguir el estándar PATCO (M1, M2, etc.)
+#### Niveles de Complejidad (Automáticos)
+- **N1-Básico**: Mantenimiento rutinario
+- **N2-Intermedio**: Requiere conocimiento técnico
+- **N3-Avanzado**: Alta especialización técnica
+- **N4-Crítico**: Experto certificado requerido
 
-### Monitoreo:
-- Revisar logs de timer para detectar inconsistencias
-- Validar integridad de datos FSM periódicamente
-- Monitorear rendimiento de consultas analíticas
+### Configuración Inicial Recomendada
+
+1. **Asignar Usuarios a Grupos**: Configurar usuarios en los grupos PATCO apropiados
+2. **Configurar Ubicaciones de Vehículos**: Crear ubicaciones de stock para vehículos de técnicos
+3. **Configurar Proyectos FSM**: Establecer proyectos por defecto para órdenes de servicio
+4. **Configurar Plantillas de Worksheet**: Crear plantillas de hojas de trabajo según necesidades
+5. **Configurar Productos**: Establecer productos/servicios para facturación automática
+
+## Uso del Sistema
+
+### Flujo Típico de Orden de Servicio
+
+1. **Creación**: Crear orden FSM con clasificación PATCO automática
+2. **Asignación**: Asignar técnico basado en habilidades requeridas
+3. **Preparación**: Transferir repuestos al vehículo del técnico
+4. **Ejecución**: Usar timer, checklists y hojas de trabajo
+5. **Consumo**: Registrar repuestos consumidos durante el servicio
+6. **Finalización**: Obtener aprobación del cliente con firma digital
+7. **Facturación**: Generar factura automática según políticas configuradas
+
+### Funcionalidades Clave
+
+#### Timer de Trabajo
+```python
+# Iniciar timer automáticamente al comenzar trabajo
+analytic_line.action_timer_start()
+
+# Detener timer al finalizar
+analytic_line.action_timer_stop()
+```
+
+#### Consumo de Repuestos
+- Usar wizard de consumo desde la orden FSM
+- Validación automática de stock disponible en vehículo
+- Generación automática de movimientos de inventario
+
+#### Hojas de Trabajo Digitales
+- Crear desde plantillas configurables
+- Capturar firmas digitales de técnico y cliente
+- Generar PDFs automáticamente al completar
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Notas Técnicas
+
+### Compatibilidad
+- **Versión Odoo**: 18.0 Community Edition
+- **Python**: 3.11+
+- **Base de Datos**: PostgreSQL 15+
+
+### Características Técnicas
+- Utiliza la nueva API de Odoo 18
+- Implementa patrones de diseño recomendados
+- Código optimizado para rendimiento
+- Preparado para extensiones futuras
+- Cumple con estándares de seguridad de Odoo
+
+### Consideraciones de Rendimiento
+- Los cálculos de clasificación son automáticos y eficientes
+- Las consultas de stock están optimizadas
+- Los timers utilizan campos computados para mejor rendimiento
+
+## Extensibilidad
+
+El módulo está diseñado para ser extendido fácilmente:
+
+- **Nuevas Clasificaciones**: Agregar más naturalezas, áreas o complejidades
+- **Campos Personalizados**: Extender modelos con campos específicos del cliente
+- **Workflows Adicionales**: Implementar flujos de trabajo personalizados
+- **Integraciones**: Conectar con sistemas externos vía API
+
+## Soporte y Mantenimiento
+
+Para soporte técnico, consultas o reportes de errores:
+- Revisar la documentación técnica en cada archivo Python
+- Consultar los comentarios en archivos XML de vistas
+- Contactar al equipo de desarrollo PATCO para soporte especializado
+
+---
+
+**Nota**: Este módulo es el núcleo del ecosistema PATCO y debe instalarse antes que cualquier otro módulo PATCO especializado.
 
 ---
 
