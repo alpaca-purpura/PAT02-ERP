@@ -1,367 +1,330 @@
-# PATCO HR Skills - Gestión de Habilidades de Técnicos
+# PATCO HR Skills - Gestión de Habilidades Técnicas HORECA
 
 ## Descripción
 
-PATCO HR Skills es el módulo especializado en la gestión de competencias y habilidades de técnicos dentro del ecosistema PATCO. Este módulo extiende las capacidades de Field Service Skills de OCA para proporcionar una matriz de competencias específica para el sector de mantenimiento HORECA (Hoteles, Restaurantes y Cafeterías), permitiendo la asignación optimizada de servicios basada en las habilidades requeridas y disponibles.
-
-## Función en el Ecosistema PATCO
-
-Este módulo es fundamental para la optimización de recursos humanos en operaciones de mantenimiento, proporcionando:
-
-- **Matriz de Competencias**: Sistema completo de habilidades técnicas y certificaciones
-- **Asignación Inteligente**: Matching automático entre requerimientos de servicio y capacidades del técnico
-- **Gestión de Certificaciones**: Control de vigencia y renovación de certificaciones
-- **Planificación de Capacitación**: Identificación de brechas de habilidades y necesidades de entrenamiento
-- **Análisis de Productividad**: Métricas de desempeño por habilidad y técnico
-- **Cumplimiento Normativo**: Garantía de que los técnicos tienen las certificaciones requeridas
-
-## Dependencias del Módulo
-
-### Módulos Odoo Core
-- `base`
-- `hr`
-- `fieldservice`
-- `hr_skills` (si está disponible)
-
-### Módulos OCA
-- `fieldservice_skill`
-- `hr_skill`
-
-### Módulos PATCO
-- `patco_core` (para integración con naturalezas de servicio)
+`patco_hr_skills` es el módulo especializado en la gestión integral de habilidades técnicas dentro del ecosistema PATCO. Proporciona un sistema completo para definir, evaluar y gestionar las competencias técnicas específicas del sector HORECA (Hoteles, Restaurantes y Cafeterías), con integración directa al módulo `fieldservice_skill` de OCA para la asignación optimizada de técnicos.
 
 ## Funcionalidades Principales
 
-### 1. Gestión de Habilidades Técnicas
+### 1. Gestión de Habilidades Técnicas HORECA
+- **Modelo base**: Extensión e integración con `fieldservice_skill`
+- **Propósito**: Definir competencias específicas para equipos y servicios HORECA
+- **Integración**: Conexión directa con asignación de técnicos en FSM
 
-#### Categorías de Habilidades HORECA
-- **Refrigeración Comercial**
-  - Sistemas de refrigeración
-  - Cámaras frigoríficas
-  - Vitrinas refrigeradas
-  - Equipos de congelación
+#### Habilidades Técnicas Típicas:
+- **Refrigeración Comercial**: Mantenimiento de cámaras, vitrinas, congeladores
+- **Cocina Industrial**: Hornos, freidoras, planchas, equipos de cocción
+- **Ventilación HVAC**: Campanas extractoras, sistemas de climatización
+- **Lavado Industrial**: Lavavajillas, sistemas de limpieza automatizados
+- **Sistemas Eléctricos**: Instalaciones eléctricas especializadas HORECA
+- **Fontanería Especializada**: Sistemas de agua caliente, vapor, drenajes
+- **Equipos de Bar**: Máquinas de café, dispensadores, equipos de bebidas
+- **Panificación**: Hornos de pan, amasadoras, equipos de panadería
 
-- **Equipos de Cocina**
-  - Hornos industriales
-  - Freidoras
-  - Planchas y parrillas
-  - Equipos de vapor
+### 2. Integración con Field Service Management
+- **Modelo integrado**: `fieldservice_skill` (OCA)
+- **Funcionalidad**: Asignación automática basada en habilidades requeridas
+- **Optimización**: Matching técnico-servicio según competencias
+- **Escalamiento**: Asignación por niveles de experiencia
 
-- **Sistemas de Ventilación**
-  - Campanas extractoras
-  - Sistemas HVAC
-  - Ventilación industrial
-  - Control de calidad del aire
+### 3. Matriz de Competencias por Equipo
+- **Vinculación**: Habilidades requeridas por tipo de equipo
+- **Niveles**: Básico, Intermedio, Avanzado, Especialista
+- **Certificaciones**: Registro de certificaciones técnicas
+- **Experiencia**: Seguimiento de horas de experiencia por habilidad
 
-- **Equipos de Lavado**
-  - Lavavajillas industriales
-  - Sistemas de lavado
-  - Equipos de saneamiento
+### 4. Gestión de Recursos Humanos
+- **Modelo extendido**: `hr.employee` (implícito)
+- **Funcionalidad**: Perfil de habilidades por técnico
+- **Evaluación**: Sistema de evaluación de competencias
+- **Desarrollo**: Planes de capacitación y mejora
 
-- **Sistemas Eléctricos**
-  - Instalaciones eléctricas
-  - Sistemas de control
-  - Automatización
-  - Seguridad eléctrica
+## Estructura de Archivos
 
-#### Niveles de Competencia
-- **Básico**: Conocimientos fundamentales
-- **Intermedio**: Capacidad de trabajo independiente
-- **Avanzado**: Expertise y capacidad de liderazgo
-- **Experto**: Conocimiento especializado y certificaciones
+```
+patco_hr_skills/
+├── __init__.py
+├── __manifest__.py
+├── security/
+│   └── ir.model.access.csv          # Permisos de acceso
+├── static/
+│   └── description/
+│       └── icon.png                 # Icono del módulo
+└── README.md
+```
 
-### 2. Sistema de Certificaciones
+**Nota**: El módulo actualmente tiene una estructura mínima con archivos de vistas y datos comentados en el manifiesto, indicando que está en fase de desarrollo o configuración inicial.
 
-#### Tipos de Certificaciones
-- **Certificaciones de Fabricante**: Específicas por marca de equipo
-- **Certificaciones de Seguridad**: Manejo de gases, electricidad, etc.
-- **Certificaciones Normativas**: Cumplimiento de regulaciones sanitarias
-- **Certificaciones Técnicas**: Especialización en tecnologías específicas
+## Dependencias
 
-#### Gestión de Vigencia
-- Control automático de fechas de vencimiento
-- Alertas de renovación próxima
-- Bloqueo de asignaciones con certificaciones vencidas
-- Historial completo de certificaciones
+### Módulos Odoo Core:
+- `hr`: Gestión de recursos humanos base
+- `base`: Funcionalidades básicas del sistema
 
-### 3. Matriz de Competencias por Técnico
+### Módulos OCA (Integración):
+- `fieldservice_skill`: Sistema de habilidades para servicios de campo
+- `hr_skill`: Gestión avanzada de habilidades (si está disponible)
 
-#### Perfil de Habilidades
-- Evaluación individual por habilidad
-- Nivel de competencia actual
-- Fecha de última evaluación
-- Certificaciones asociadas
-- Plan de desarrollo personal
+### Módulos PATCO:
+- `patco_core`: Funcionalidades centrales y naturalezas de servicio
+- `patco_customer_equipment`: Vinculación de habilidades con tipos de equipo
 
-#### Evaluación y Seguimiento
-- Evaluaciones periódicas de competencias
-- Registro de mejoras y capacitaciones
-- Métricas de desempeño por habilidad
-- Identificación de fortalezas y áreas de mejora
+## Funcionalidades Técnicas (Planificadas)
 
-### 4. Asignación Inteligente de Servicios
+### 1. Definición de Habilidades HORECA
+```python
+# Ejemplo de estructura de habilidades
+skills_horeca = {
+    'refrigeration': {
+        'name': 'Refrigeración Comercial',
+        'category': 'Equipos de Frío',
+        'levels': ['Básico', 'Intermedio', 'Avanzado', 'Especialista'],
+        'equipment_types': ['Cámaras frigoríficas', 'Vitrinas', 'Congeladores']
+    },
+    'industrial_cooking': {
+        'name': 'Cocina Industrial',
+        'category': 'Equipos de Cocción',
+        'levels': ['Básico', 'Intermedio', 'Avanzado', 'Especialista'],
+        'equipment_types': ['Hornos', 'Freidoras', 'Planchas', 'Parrillas']
+    }
+}
+```
 
-#### Matching Automático
-- Análisis de requerimientos de la orden de servicio
-- Comparación con habilidades disponibles
-- Sugerencia de técnicos más calificados
-- Consideración de carga de trabajo actual
+### 2. Asignación Automática de Técnicos
+```python
+# Lógica de asignación basada en habilidades
+def assign_technician_by_skills(self, fsm_order):
+    required_skills = fsm_order.equipment_id.required_skills
+    available_technicians = self.env['hr.employee'].search([
+        ('is_technician', '=', True),
+        ('skill_ids.skill_id', 'in', required_skills.ids),
+        ('available', '=', True)
+    ])
+    
+    # Ordenar por nivel de competencia y experiencia
+    best_match = available_technicians.sorted(
+        key=lambda t: t.get_skill_level(required_skills)
+    )
+    
+    return best_match[0] if best_match else False
+```
 
-#### Criterios de Asignación
-- Nivel de habilidad requerido vs. disponible
-- Certificaciones necesarias
-- Experiencia previa con el tipo de equipo
-- Proximidad geográfica
-- Disponibilidad de agenda
+### 3. Evaluación de Competencias
+```python
+# Sistema de evaluación de habilidades
+def evaluate_technician_skill(self, technician, skill, level):
+    evaluation = self.env['hr.skill.evaluation'].create({
+        'employee_id': technician.id,
+        'skill_id': skill.id,
+        'level': level,
+        'evaluation_date': fields.Date.today(),
+        'evaluator_id': self.env.user.id,
+    })
+    
+    # Actualizar perfil del técnico
+    technician.update_skill_profile(skill, level)
+    
+    return evaluation
+```
 
-## Configuración Necesaria
+## Casos de Uso Principales
 
-### Configuración Inicial de Habilidades
+### 1. Configuración de Habilidades por Equipo
+```python
+# Definir habilidades requeridas para un tipo de equipo
+equipment_category = self.env['maintenance.equipment.category'].search([
+    ('name', '=', 'Freidoras Industriales')
+])
 
-1. **Creación de Categorías de Habilidades**
-   ```
-   - Refrigeración
-   - Cocina
-   - Ventilación
-   - Lavado
-   - Eléctrico
-   - Seguridad
-   ```
+required_skills = [
+    ('industrial_cooking', 'Intermedio'),
+    ('electrical_systems', 'Básico'),
+    ('safety_protocols', 'Avanzado')
+]
 
-2. **Definición de Habilidades Específicas**
-   ```
-   Refrigeración:
-   - Diagnóstico de sistemas de frío
-   - Reparación de compresores
-   - Manejo de gases refrigerantes
-   - Instalación de equipos
-   ```
+equipment_category.required_skill_ids = [(6, 0, skill_ids)]
+```
 
-3. **Configuración de Niveles**
-   - Definir escalas de competencia
-   - Establecer criterios de evaluación
-   - Configurar requisitos por nivel
+### 2. Asignación Automática en Órdenes FSM
+```python
+# Asignación basada en habilidades al crear orden de servicio
+fsm_order = self.env['fsm.order'].create({
+    'name': 'Mantenimiento Freidora Industrial',
+    'equipment_id': equipment.id,
+    'location_id': customer.id,
+})
 
-### Configuración de Certificaciones
+# El sistema asigna automáticamente el técnico más competente
+best_technician = fsm_order.auto_assign_technician()
+fsm_order.person_id = best_technician.id
+```
 
-1. **Tipos de Certificación**
-   - Crear categorías de certificaciones
-   - Definir organismos certificadores
-   - Establecer períodos de vigencia
+### 3. Evaluación Post-Servicio
+```python
+# Evaluación de desempeño después del servicio
+def complete_service_evaluation(self, fsm_order):
+    technician = fsm_order.person_id
+    skills_used = fsm_order.equipment_id.required_skills
+    
+    for skill in skills_used:
+        # Incrementar experiencia
+        technician.add_skill_experience(skill, fsm_order.duration)
+        
+        # Evaluación de calidad del servicio
+        if fsm_order.customer_rating >= 4:
+            technician.improve_skill_level(skill)
+```
 
-2. **Requisitos por Habilidad**
-   - Asociar certificaciones obligatorias
-   - Definir certificaciones recomendadas
-   - Establecer equivalencias
+## Integración con Otros Módulos PATCO
 
-### Configuración de Evaluaciones
+### Con `patco_core`:
+- **Naturalezas de Servicio**: Habilidades específicas por tipo de servicio
+- **Líneas Analíticas**: Registro de tiempo por habilidad desarrollada
+- **Clasificación**: Servicios categorizados por complejidad técnica
 
-1. **Criterios de Evaluación**
-   - Definir métricas de desempeño
-   - Establecer frecuencia de evaluaciones
-   - Configurar escalas de calificación
+### Con `patco_customer_equipment`:
+- **Equipos Especializados**: Habilidades requeridas por tipo de equipo
+- **Historial de Servicios**: Seguimiento de técnicos por equipo
+- **Especialización**: Desarrollo de expertise en equipos específicos
 
-2. **Proceso de Evaluación**
-   - Definir evaluadores autorizados
-   - Establecer procedimientos
-   - Configurar aprobaciones
+### Con `fieldservice` (OCA):
+- **Asignación Inteligente**: Matching automático técnico-servicio
+- **Optimización de Rutas**: Considerando habilidades y ubicación
+- **Escalamiento**: Reasignación por falta de competencias
 
-## Relación con Otros Módulos del Ecosistema
+## Flujos de Trabajo
 
-### Integración con patco_core
-- **Naturalezas de Servicio**: Cada naturaleza requiere habilidades específicas
-- **Órdenes de Servicio**: Asignación automática basada en habilidades
-- **Análisis de Servicios**: Métricas de eficiencia por habilidad
+### 1. Onboarding de Técnicos
+1. **Evaluación Inicial**: Identificación de habilidades actuales
+2. **Perfil de Competencias**: Creación del perfil técnico
+3. **Asignación de Nivel**: Clasificación por experiencia
+4. **Plan de Desarrollo**: Identificación de áreas de mejora
+5. **Certificación**: Registro de certificaciones técnicas
 
-### Integración con fieldservice
-- **Asignación de Técnicos**: Filtrado por habilidades requeridas
-- **Planificación**: Optimización basada en competencias
-- **Reportes**: Análisis de utilización de habilidades
+### 2. Asignación de Servicios
+1. **Análisis de Requerimientos**: Identificación de habilidades necesarias
+2. **Búsqueda de Técnicos**: Filtrado por competencias disponibles
+3. **Evaluación de Candidatos**: Ranking por nivel y experiencia
+4. **Asignación Óptima**: Selección del mejor candidato
+5. **Confirmación**: Validación de disponibilidad y asignación
 
-### Integración con HR
-- **Perfiles de Empleado**: Extensión con matriz de competencias
-- **Evaluaciones**: Integración con sistema de evaluación de desempeño
-- **Capacitación**: Identificación de necesidades de entrenamiento
+### 3. Desarrollo de Competencias
+1. **Evaluación Continua**: Seguimiento de desempeño en servicios
+2. **Identificación de Brechas**: Análisis de competencias faltantes
+3. **Plan de Capacitación**: Diseño de programa de desarrollo
+4. **Ejecución**: Implementación de capacitaciones
+5. **Certificación**: Validación de nuevas competencias
 
-## Casos de Uso Específicos
+## Métricas y KPIs
 
-### Según el Documento Funcional
+### Por Técnico:
+- **Nivel de Competencias**: Promedio por área técnica
+- **Especialización**: Áreas de mayor expertise
+- **Desarrollo**: Progreso en habilidades a lo largo del tiempo
+- **Utilización**: Porcentaje de servicios asignados vs. disponibilidad
 
-#### MACRO-PROCESO 1: Comercial y Onboarding
+### Por Habilidad:
+- **Demanda**: Frecuencia de requerimiento en servicios
+- **Disponibilidad**: Número de técnicos competentes
+- **Brecha**: Diferencia entre demanda y disponibilidad
+- **Desarrollo**: Técnicos en proceso de capacitación
 
-**Evaluación de Capacidades**
-- Análisis de habilidades disponibles vs. requerimientos del cliente
-- Identificación de necesidades de capacitación
-- Planificación de recursos humanos
+### Operacionales:
+- **Efectividad de Asignación**: Servicios completados exitosamente
+- **Tiempo de Asignación**: Rapidez en encontrar técnico competente
+- **Satisfacción del Cliente**: Rating por nivel de competencia del técnico
+- **Desarrollo de Talento**: Progresión de técnicos en competencias
 
-**Certificación de Técnicos**
-- Validación de competencias para nuevos contratos
-- Obtención de certificaciones específicas del cliente
-- Cumplimiento de requisitos normativos
+## Configuración y Personalización
 
-#### MACRO-PROCESO 2: Operaciones de Servicio
+### Configuración Inicial:
+1. **Catálogo de Habilidades**: Definir competencias específicas HORECA
+2. **Niveles de Competencia**: Establecer escalas de evaluación
+3. **Matriz Equipo-Habilidad**: Vincular equipos con competencias requeridas
+4. **Perfiles de Técnicos**: Evaluar y registrar habilidades actuales
 
-**Asignación Optimizada**
-- Matching automático técnico-servicio
-- Consideración de habilidades y certificaciones
-- Optimización de rutas y cargas de trabajo
-
-**Escalamiento Inteligente**
-- Identificación automática de servicios complejos
-- Asignación a técnicos con mayor experiencia
-- Soporte de especialistas cuando es necesario
-
-#### MACRO-PROCESO 3: Ejecución en Campo
-
-**Validación de Competencias**
-- Verificación de habilidades antes del servicio
-- Acceso a información técnica específica
-- Soporte remoto de especialistas
-
-**Registro de Experiencia**
-- Actualización automática de experiencia
-- Registro de nuevas habilidades adquiridas
-- Feedback de calidad del servicio
-
-#### MACRO-PROCESO 4: Análisis y Mejora
-
-**Análisis de Competencias**
-- Identificación de brechas de habilidades
-- Planificación de capacitaciones
-- Análisis de ROI de entrenamientos
-
-**Optimización de Recursos**
-- Redistribución de cargas de trabajo
-- Identificación de especialistas clave
-- Planificación de sucesión
-
-## Tipos de Usuario y Permisos
-
-### PATCO Administrador
-- Configuración completa del sistema de habilidades
-- Gestión de certificaciones y evaluaciones
-- Acceso a todos los reportes y análisis
-- Configuración de criterios de asignación
-
-### PATCO Líder Técnico
-- Evaluación de competencias de su equipo
-- Asignación manual considerando habilidades
-- Reportes de utilización de competencias
-- Identificación de necesidades de capacitación
-
-### PATCO Técnico
-- Visualización de su perfil de habilidades
-- Registro de nuevas certificaciones
-- Acceso a materiales de capacitación
-- Autoevaluación de competencias
-
-### Gerente de RRHH
-- Gestión de evaluaciones de desempeño
-- Planificación de capacitaciones
-- Análisis de competencias organizacionales
-- Reportes de certificaciones
-
-## Flujos de Trabajo Principales
-
-### 1. Evaluación de Competencias
-1. Programación de evaluación
-2. Ejecución de evaluación técnica
-3. Registro de resultados
-4. Actualización del perfil del técnico
-5. Identificación de brechas
-6. Planificación de capacitación
-
-### 2. Asignación Basada en Habilidades
-1. Análisis de requerimientos del servicio
-2. Búsqueda de técnicos calificados
-3. Evaluación de disponibilidad
-4. Asignación automática o manual
-5. Validación de certificaciones
-6. Confirmación de asignación
-
-### 3. Gestión de Certificaciones
-1. Registro de nueva certificación
-2. Validación de documentos
-3. Actualización del perfil
-4. Configuración de alertas de vencimiento
-5. Programación de renovaciones
-6. Seguimiento de cumplimiento
-
-## Métricas y KPIs Soportados
-
-### Métricas de Competencias
-- Distribución de habilidades por técnico
-- Cobertura de habilidades por área geográfica
-- Tiempo promedio de servicio por nivel de habilidad
-- Tasa de éxito por competencia
-
-### Métricas de Certificaciones
-- Porcentaje de técnicos certificados por habilidad
-- Certificaciones próximas a vencer
-- Cumplimiento normativo por cliente
-- ROI de programas de certificación
-
-### Métricas de Asignación
-- Efectividad del matching automático
-- Tiempo de resolución por nivel de habilidad
-- Satisfacción del cliente por competencia del técnico
-- Utilización de habilidades especializadas
-
-## Reportes Disponibles
-
-### Reportes Operacionales
-- Matriz de competencias por técnico
-- Disponibilidad de habilidades por región
-- Servicios pendientes por falta de habilidades
-- Utilización de competencias especializadas
-
-### Reportes Estratégicos
-- Análisis de brechas de competencias
-- Plan de desarrollo de habilidades
-- ROI de programas de capacitación
-- Proyección de necesidades futuras
-
-### Reportes de Cumplimiento
-- Estado de certificaciones por técnico
-- Cumplimiento normativo por cliente
-- Certificaciones próximas a vencer
-- Historial de evaluaciones
+### Personalización Avanzada:
+- **Habilidades Específicas**: Competencias únicas del cliente
+- **Criterios de Evaluación**: Métricas personalizadas de competencia
+- **Algoritmos de Asignación**: Lógica específica de matching
+- **Reportes Customizados**: Análisis según necesidades del negocio
 
 ## Beneficios del Módulo
 
-1. **Optimización de Asignaciones**: Técnico correcto para cada servicio
-2. **Mejora de Calidad**: Servicios realizados por personal calificado
-3. **Cumplimiento Normativo**: Garantía de certificaciones vigentes
-4. **Desarrollo del Personal**: Identificación clara de necesidades de capacitación
-5. **Eficiencia Operacional**: Reducción de tiempos de servicio
-6. **Satisfacción del Cliente**: Mejor calidad de servicio
-7. **Gestión de Riesgos**: Control de competencias críticas
-8. **Planificación Estratégica**: Visibilidad de capacidades organizacionales
+### Operacionales:
+1. **Asignación Optimizada**: Técnico correcto para cada servicio
+2. **Reducción de Errores**: Competencias adecuadas para cada tarea
+3. **Eficiencia**: Menor tiempo de resolución por mayor expertise
+4. **Calidad**: Mejor resultado por especialización técnica
 
-## Integración con Sistemas Externos
+### Estratégicos:
+1. **Desarrollo de Talento**: Crecimiento sistemático de competencias
+2. **Planificación de RRHH**: Identificación de necesidades de contratación
+3. **Ventaja Competitiva**: Equipo técnico altamente especializado
+4. **Satisfacción del Cliente**: Servicio de mayor calidad técnica
 
-### Plataformas de Capacitación
-- Integración con LMS (Learning Management Systems)
-- Sincronización de certificaciones
-- Tracking de progreso de capacitaciones
+## Casos de Uso según Documento Funcional
 
-### Organismos Certificadores
-- Validación automática de certificaciones
-- Actualización de estados de vigencia
-- Notificaciones de renovaciones
+### Matriz de Competencias (Configuración Inicial):
+- Definición de habilidades técnicas por área HORECA
+- Evaluación inicial de técnicos existentes
+- Creación de perfiles de competencia
+- Establecimiento de planes de desarrollo
 
-## Versión
+### Asignación de Técnicos (Macro-proceso 2):
+- Matching automático basado en habilidades requeridas
+- Consideración de nivel de experiencia necesario
+- Optimización por disponibilidad y ubicación
+- Escalamiento por falta de competencias
 
-Compatible con Odoo 18 Community Edition.
+### Desarrollo Continuo (Macro-proceso 4):
+- Evaluación post-servicio de desempeño
+- Identificación de brechas de competencias
+- Planificación de capacitaciones específicas
+- Seguimiento de progreso en habilidades
 
-## Soporte y Implementación
+## Estado Actual del Módulo
 
-Este módulo requiere configuración detallada de la matriz de competencias específica para cada organización. Se recomienda:
+### Implementación:
+- **Estructura Base**: Manifiesto y configuración inicial completados
+- **Dependencias**: Integración con `hr` y `fieldservice_skill` definida
+- **Desarrollo Pendiente**: Vistas y datos comentados en manifiesto
+- **Funcionalidades**: En fase de desarrollo o configuración
 
-1. **Análisis de Competencias**: Identificar habilidades críticas del negocio
-2. **Definición de Niveles**: Establecer criterios claros de evaluación
-3. **Capacitación de Usuarios**: Entrenar a evaluadores y administradores
-4. **Implementación Gradual**: Comenzar con habilidades críticas
-5. **Monitoreo Continuo**: Ajustar criterios basado en resultados
+### Próximos Pasos:
+1. **Desarrollo de Modelos**: Implementación de extensiones específicas
+2. **Creación de Vistas**: Interfaces para gestión de habilidades
+3. **Datos Iniciales**: Catálogo base de habilidades HORECA
+4. **Integración FSM**: Conexión completa con asignación de servicios
 
-La implementación exitosa de este módulo es clave para maximizar la eficiencia operacional y la calidad del servicio en el ecosistema PATCO.
+## Integración con fieldservice_skill (OCA)
+
+### Funcionalidades Heredadas:
+- **Modelo de Habilidades**: Base para competencias técnicas
+- **Asignación por Skills**: Lógica de matching técnico-servicio
+- **Niveles de Competencia**: Sistema de evaluación escalable
+- **Reportes**: Análisis de habilidades y asignaciones
+
+### Extensiones PATCO:
+- **Habilidades HORECA**: Competencias específicas del sector
+- **Evaluación Continua**: Sistema de mejora basado en servicios
+- **Certificaciones**: Registro de certificaciones técnicas
+- **Desarrollo de Carrera**: Planes de crecimiento profesional
+
+## Mantenimiento y Soporte
+
+### Tareas de Mantenimiento:
+- **Actualización de Habilidades**: Incorporación de nuevas competencias
+- **Evaluación de Técnicos**: Revisión periódica de niveles
+- **Optimización de Asignaciones**: Ajuste de algoritmos de matching
+- **Análisis de Brechas**: Identificación de necesidades de capacitación
+
+### Monitoreo:
+- **Efectividad de Asignaciones**: Seguimiento de éxito en servicios
+- **Desarrollo de Competencias**: Progreso de técnicos en habilidades
+- **Demanda vs. Oferta**: Balance entre necesidades y disponibilidad
+- **Satisfacción**: Impacto de competencias en calidad de servicio
+
+---
+
+**PATCO HR Skills** - Gestión inteligente de competencias técnicas HORECA

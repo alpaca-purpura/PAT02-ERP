@@ -41,6 +41,7 @@ services:
       - odoo-web-data:/var/lib/odoo
       - ./config:/etc/odoo
       - ./extra-addons:/mnt/extra-addons
+      - ./logs:/var/log/odoo
     restart: unless-stopped
     networks:
       - odoo-network

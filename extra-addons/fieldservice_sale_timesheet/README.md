@@ -1,133 +1,102 @@
-# Field Service Sale Timesheet - Integración de Hojas de Tiempo con Ventas
+# Field Service Sale Timesheet - Módulo Puente para Integración de Hojas de Tiempo
 
 ## Descripción
 
-Field Service Sale Timesheet es un módulo especializado que integra las hojas de tiempo de servicios de campo con el sistema de ventas y facturación de Odoo. Este módulo es esencial en el ecosistema PATCO para automatizar el proceso de facturación basado en tiempo real trabajado, materiales consumidos y servicios prestados en operaciones de mantenimiento HORECA.
+**NOTA IMPORTANTE**: Este es un módulo puente (bridge) que facilita la integración automática entre `fieldservice_sale` y `hr_timesheet`. La funcionalidad principal de integración de hojas de tiempo con ventas se ha movido al módulo `patco_core` para una mejor organización arquitectónica.
+
+Field Service Sale Timesheet es un módulo de auto-instalación que se activa automáticamente cuando están presentes tanto `fieldservice_sale` como `hr_timesheet`, proporcionando las extensiones mínimas necesarias para que funcionen correctamente juntos en el ecosistema PATCO.
 
 ## Función en el Ecosistema PATCO
 
-Este módulo actúa como el puente entre la ejecución operacional y la facturación comercial, proporcionando:
+Este módulo actúa como un **conector técnico** entre los módulos OCA de Field Service y las funcionalidades de timesheet, proporcionando:
 
-- **Facturación Automática**: Conversión automática de tiempo trabajado en líneas de factura
-- **Integración Tiempo-Venta**: Vinculación directa entre órdenes de servicio y órdenes de venta
-- **Costeo Preciso**: Cálculo automático de costos basado en tiempo real y materiales
-- **Análisis de Rentabilidad**: Métricas de margen por servicio y cliente
-- **Facturación Diferenciada**: Tarifas específicas por tipo de servicio y técnico
-- **Cumplimiento Contractual**: Validación automática contra acuerdos de servicio
+- **Auto-instalación**: Se instala automáticamente cuando se detectan las dependencias necesarias
+- **Extensiones de Vista**: Añade campos de FSM Order al análisis de timesheets
+- **Compatibilidad**: Asegura que los módulos OCA funcionen correctamente con las extensiones PATCO
+- **Delegación**: Redirige la lógica de negocio compleja al módulo `patco_core`
+
+> **Para funcionalidades avanzadas de facturación y análisis de rentabilidad, consulte el módulo `patco_core`.**
 
 ## Dependencias del Módulo
 
-### Módulos Odoo Core
-- `base`
-- `sale`
-- `account`
-- `hr_timesheet`
-- `fieldservice`
-- `sale_timesheet`
+### Módulos Core de Odoo
+- `hr_timesheet`: Gestión de hojas de tiempo por empleado
+- `sale_timesheet`: Facturación basada en tiempo (opcional)
 
-### Módulos OCA
-- `fieldservice_sale`
-- `fieldservice_account_analytic`
-- `sale_timesheet_existing_project`
+### Módulos OCA (Odoo Community Association)
+- `fieldservice`: Gestión de órdenes de servicio de campo
+- `fieldservice_sale`: Integración de field service con ventas
 
 ### Módulos PATCO
-- `patco_core` (para naturalezas de servicio)
-- `fieldservice_timesheet` (para registro de tiempo)
+- `patco_core`: **Contiene la lógica principal de integración timesheet-ventas**
 
-## Funcionalidades Principales
+## Funcionalidades Técnicas
 
-### 1. Integración Automática Tiempo-Facturación
+### 1. Extensión de Vistas
+- Añade el campo `fsm_order_id` al modelo `timesheets.analysis.report`
+- Permite análisis de timesheets vinculados a órdenes de servicio
+- Mantiene compatibilidad con reportes estándar de OCA
 
-#### Conversión Automática
-- **Tiempo a Líneas de Venta**: Conversión automática de horas trabajadas en líneas facturables
-- **Tarifas Dinámicas**: Aplicación de tarifas específicas por tipo de servicio, técnico y cliente
-- **Agrupación Inteligente**: Consolidación de tiempo por período, proyecto o tipo de servicio
-- **Validación de Tiempo**: Verificación de horas registradas antes de facturación
+### 2. Auto-instalación Inteligente
+- Se instala automáticamente cuando se detectan `fieldservice_sale` y `hr_timesheet`
+- No requiere instalación manual
+- Configuración mínima necesaria
 
-#### Configuración de Tarifas
-- **Tarifas por Naturaleza de Servicio**: Precios diferenciados según tipo de trabajo
-- **Tarifas por Técnico**: Valorización según nivel de experiencia y certificaciones
-- **Tarifas por Cliente**: Precios contractuales específicos
-- **Tarifas por Horario**: Diferenciación entre horario normal, nocturno y festivos
+### 3. Delegación a PATCO Core
+- **Importante**: Las funcionalidades de facturación, análisis de rentabilidad y gestión avanzada de timesheet están implementadas en `patco_core`
+- Este módulo solo proporciona la "cola" técnica necesaria para la integración
 
-### 2. Gestión de Órdenes de Venta Vinculadas
+## Estructura del Módulo
 
-#### Creación Automática
-- Generación automática de órdenes de venta desde órdenes de servicio
-- Pre-población con información del cliente y proyecto
-- Configuración automática de productos y servicios
-- Aplicación de descuentos y condiciones contractuales
+### Archivos Principales
+- `__manifest__.py`: Configuración de auto-instalación
+- `views/timesheets_analysis_views.xml`: Extensión de vistas de análisis
+- `models/`: Vacío (funcionalidad delegada a patco_core)
 
-#### Seguimiento de Facturación
-- Estado de facturación por orden de servicio
-- Seguimiento de tiempo facturable vs. facturado
-- Control de límites contractuales
-- Alertas de excesos o desviaciones
+### Dependencias Técnicas
+```python
+'depends': [
+    'fieldservice_sale',
+    'hr_timesheet', 
+    'patco_core'
+],
+'auto_install': True  # Instalación automática
+```
 
-### 3. Análisis de Rentabilidad
+## Notas Técnicas
 
-#### Métricas por Servicio
-- **Costo Real**: Tiempo invertido valorizado + materiales + gastos
-- **Precio de Venta**: Valor facturado al cliente
-- **Margen Bruto**: Diferencia entre precio de venta y costo
-- **Margen Porcentual**: Rentabilidad relativa del servicio
+### Arquitectura
+Este módulo sigue el patrón de "módulo puente" donde:
+- **Responsabilidad mínima**: Solo extensiones de vista necesarias
+- **Delegación**: Lógica de negocio en `patco_core`
+- **Auto-instalación**: Activación automática por dependencias
 
-#### Análisis Comparativo
-- Rentabilidad por cliente
-- Rentabilidad por tipo de servicio
-- Rentabilidad por técnico
-- Tendencias de margen por período
+### Mantenimiento
+- **Actualizaciones**: Compatible con actualizaciones de módulos OCA
+- **Extensibilidad**: Puede extenderse sin modificar código base
+- **Migración**: Datos y configuraciones se mantienen en `patco_core`
 
-### 4. Facturación Diferenciada
+---
 
-#### Tipos de Facturación
-- **Por Tiempo**: Facturación basada en horas trabajadas
-- **Por Servicio**: Tarifa fija por tipo de trabajo realizado
-- **Mixta**: Combinación de tiempo base + materiales + extras
-- **Contractual**: Según términos de acuerdos de servicio
+**Importante**: Para implementar funcionalidades de facturación, análisis de rentabilidad, configuración de tarifas y gestión avanzada de timesheet, consulte la documentación del módulo `patco_core`.
 
-#### Configuración Avanzada
-- Redondeo de tiempo (15 min, 30 min, 1 hora)
-- Tiempo mínimo facturable por servicio
-- Descuentos automáticos por volumen
-- Recargos por servicios de emergencia
+## Configuración
 
-### 5. Integración con Contratos de Servicio
+### Instalación Automática
+Este módulo se instala automáticamente cuando están presentes:
+- `fieldservice_sale`
+- `hr_timesheet`
+- `patco_core`
 
-#### Validación Contractual
-- Verificación de límites de horas incluidas
-- Control de servicios cubiertos vs. adicionales
-- Aplicación automática de tarifas contractuales
-- Alertas de excesos de consumo
+### Configuración Avanzada
+Para configuraciones avanzadas de facturación, productos de servicio, tarifas y análisis de rentabilidad, consulte la documentación del módulo `patco_core`.
 
-#### Facturación de Excesos
-- Identificación automática de servicios fuera de contrato
-- Aplicación de tarifas de exceso
-- Generación de facturas separadas para adicionales
-- Notificación automática al cliente
-
-## Configuración Necesaria
-
-### Configuración de Productos de Servicio
-
-1. **Productos por Naturaleza de Servicio**
-   ```
-   - Mantenimiento Preventivo
-     - Precio: $X por hora
-     - Cuenta contable: Ingresos por Mantenimiento
-   - Mantenimiento Correctivo
-     - Precio: $Y por hora
-     - Cuenta contable: Ingresos por Reparación
-   - Servicio de Emergencia
-     - Precio: $Z por hora (recargo incluido)
-     - Cuenta contable: Ingresos por Emergencia
-   ```
-
-2. **Configuración de Empleados**
-   - Costo por hora de cada técnico
-   - Tarifa de venta por técnico
-   - Categoría de facturación
-   - Cuenta analítica por defecto
+### Verificación de Instalación
+Puede verificar que el módulo está funcionando correctamente accediendo a:
+```
+Timesheet > Reportes > Análisis de Timesheets
+```
+Debe ver el campo "FSM Order" disponible en las vistas de análisis.
 
 ### Configuración de Tarifas
 

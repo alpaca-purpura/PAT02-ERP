@@ -3,7 +3,7 @@
     <data>
         <!-- Main Menu -->
         <menuitem id="menu_patco_main"
-                  name="PATCO"
+                  name="Activos de Cliente"
                   sequence="10"/>
 
         <!-- Configuration Menu -->

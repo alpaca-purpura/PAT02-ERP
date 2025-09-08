@@ -188,7 +188,7 @@ class StockTransferRequest(models.Model):
                 'name': _('Transferencias de Stock'),
                 'type': 'ir.actions.act_window',
                 'res_model': 'stock.picking',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'domain': [('id', 'in', self.picking_ids.ids)],
                 'target': 'current',
             }

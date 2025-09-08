@@ -6,7 +6,7 @@
         <record id="action_fsm_order_my_orders" model="ir.actions.act_window">
             <field name="name">Mis Órdenes de Servicio</field>
             <field name="res_model">fsm.order</field>
-            <field name="view_mode">kanban,tree,form,calendar</field>
+            <field name="view_mode">kanban,list,form,calendar</field>
             <field name="domain">[('person_ids', 'in', [uid])]</field>
             <field name="context">{
                 'default_person_ids': [(4, uid)],
@@ -27,7 +27,7 @@
         <record id="action_fsm_worksheet" model="ir.actions.act_window">
             <field name="name">Hojas de Trabajo</field>
             <field name="res_model">fsm.worksheet</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="context">{}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -43,7 +43,7 @@
         <record id="action_fsm_order_consumed_part" model="ir.actions.act_window">
             <field name="name">Consumo de Repuestos</field>
             <field name="res_model">fsm.order.consumed.part</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="context">{}</field>
             <field name="help" type="html">
                 <p class="o_view_nocontent_smiling_face">
@@ -59,7 +59,7 @@
         <record id="action_fsm_timesheet" model="ir.actions.act_window">
             <field name="name">Registro de Tiempo - Field Service</field>
             <field name="res_model">account.analytic.line</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">list,form</field>
             <field name="domain">[('fsm_order_id', '!=', False)]</field>
             <field name="context">{
                 'search_default_user_id': [uid],

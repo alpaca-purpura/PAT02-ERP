@@ -39,7 +39,7 @@ class MaintenanceEquipmentCategory(models.Model):
             'name': f'Base de Conocimiento - {self.name}',
             'type': 'ir.actions.act_window',
             'res_model': 'ir.attachment',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('res_model', '=', 'maintenance.equipment.category'), ('res_id', '=', self.id)],
             'context': {
                 'default_res_model': 'maintenance.equipment.category',

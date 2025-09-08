@@ -239,7 +239,7 @@ class MaintenanceEquipment(models.Model):
             return {
                 'name': _('Órdenes de Servicio'),
                 'type': 'ir.actions.act_window',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'res_model': 'fsm.order',
                 'domain': [('id', 'in', service_ids)],
                 'context': {'default_x_equipment_id': self.id}
@@ -248,7 +248,7 @@ class MaintenanceEquipment(models.Model):
             return {
                 'name': _('Órdenes de Servicio'),
                 'type': 'ir.actions.act_window',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'res_model': 'fsm.order',
                 'domain': [('id', 'in', service_ids)],
                 'context': {'default_x_equipment_id': self.id}
@@ -257,7 +257,7 @@ class MaintenanceEquipment(models.Model):
             return {
                 'name': _('Tickets de Soporte'),
                 'type': 'ir.actions.act_window',
-                'view_mode': 'tree,form',
+                'view_mode': 'list,form',
                 'res_model': 'helpdesk.ticket',
                 'domain': [('id', 'in', ticket_ids)],
                 'context': {'default_x_equipment_id': self.id}
@@ -266,7 +266,7 @@ class MaintenanceEquipment(models.Model):
             return {
                 'name': _('Sin Servicios'),
                 'type': 'ir.actions.act_window',
-                'view_mode': 'tree',
+                'view_mode': 'list',
                 'res_model': 'fsm.order',
                 'domain': [('id', 'in', [])],
                 'context': {'default_x_equipment_id': self.id}
@@ -281,7 +281,7 @@ class MaintenanceEquipment(models.Model):
         return {
             'name': _('Tickets de Soporte'),
             'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'res_model': 'helpdesk.ticket',
             'domain': [('id', 'in', ticket_ids)],
             'context': {'default_x_equipment_id': self.id}

@@ -170,7 +170,7 @@ class FSMOrder(models.Model):
             'name': _('Repuestos Consumidos'),
             'type': 'ir.actions.act_window',
             'res_model': 'fsm.order.consumed.part',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('order_id', '=', self.id)],
             'context': {'default_order_id': self.id},
             'target': 'current',
@@ -574,7 +574,7 @@ class FSMOrder(models.Model):
             'type': 'ir.actions.act_window',
             'name': 'Registros de Tiempo',
             'res_model': 'account.analytic.line',
-            'view_mode': 'tree,form',
+            'view_mode': 'list,form',
             'domain': [('fsm_order_id', '=', self.id)],
             'context': {
                 'default_fsm_order_id': self.id,

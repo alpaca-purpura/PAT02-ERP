@@ -50,7 +50,7 @@
     <record id="action_stock_location_vehicle" model="ir.ui.act_window">
         <field name="name">Ubicaciones de Vehículos</field>
         <field name="res_model">stock.location</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">list,form</field>
         <field name="domain">[('is_vehicle_location', '=', True)]</field>
         <field name="context">{'default_is_vehicle_location': True, 'default_usage': 'internal'}</field>
     </record>

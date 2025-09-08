@@ -1,257 +1,207 @@
-# PATCO Core - Funcionalidades Centrales del Sistema
+# PATCO Core - Motor Central del Sistema
 
 ## Descripción
 
-PATCO Core es el módulo central del ecosistema PATCO que proporciona las funcionalidades fundamentales para la digitalización de operaciones de mantenimiento HORECA (Hoteles, Restaurantes y Cafeterías). Este módulo extiende las capacidades de Field Service de Odoo con características específicas para el sector de mantenimiento de equipos comerciales.
-
-## Función en el Ecosistema PATCO
-
-Este módulo actúa como el núcleo funcional del sistema PATCO, proporcionando:
-
-- **Clasificación de Servicios**: Sistema de naturalezas de servicio para categorizar trabajos
-- **Gestión Avanzada de Órdenes**: Extensiones a las órdenes de servicio con campos específicos PATCO
-- **Checklists Digitales**: Sistema de verificación para garantizar calidad del servicio
-- **Gestión de Stock en Vehículos**: Control de repuestos y materiales en vehículos de técnicos
-- **Integración con Hojas de Trabajo**: Base para el registro de tiempo y actividades
-- **Base de Conocimiento**: Acceso rápido a información técnica durante el servicio
-
-## Dependencias del Módulo
-
-### Módulos Odoo Core
-- `base`
-- `fieldservice`
-- `stock`
-- `hr`
-- `knowledge` (opcional)
-
-### Módulos OCA
-- `fieldservice_stock`
-- `fieldservice_skill`
-- `fieldservice_account_analytic`
+`patco_core` es el núcleo del sistema PATCO, proporcionando las funcionalidades base y modelos centrales para la gestión de mantenimiento HORECA. Este módulo contiene las extensiones fundamentales de Odoo y los datos maestros necesarios para el funcionamiento del ecosistema PATCO.
 
 ## Funcionalidades Principales
 
-### 1. Modelo de Naturaleza de Servicio (patco.service.nature)
+### 1. Gestión de Naturalezas de Servicio
+- **Modelo**: `patco.service.nature`
+- **Propósito**: Clasificación estándar de tipos de servicio según matriz PATCO
+- **Campos principales**:
+  - `name`: Nombre descriptivo (ej. "Correctivo", "Preventivo")
+  - `code`: Código único (ej. "M1", "M2")
+  - `sequence`: Orden de visualización
+  - `active`: Estado del registro
 
-#### Características
-- **Código único**: Identificador alfanumérico para cada naturaleza
-- **Nombre descriptivo**: Descripción clara del tipo de servicio
-- **Secuenciación**: Orden de presentación en interfaces
-- **Validación**: Restricciones de unicidad para código y nombre
+### 2. Extensiones de Líneas Analíticas
+- **Modelo extendido**: `account.analytic.line`
+- **Funcionalidades añadidas**:
+  - **Timer de Trabajo**: Control de tiempo en tiempo real
+  - **Integración FSM**: Vinculación con órdenes de servicio de campo
+  - **Gestión de Proyectos**: Asignación automática de proyectos por defecto
 
-#### Casos de Uso
-- Clasificación de servicios (Preventivo, Correctivo, Instalación, etc.)
-- Reportes por tipo de servicio
-- Asignación automática basada en naturaleza
-- Análisis de tendencias de mantenimiento
+#### Campos Añadidos:
+- `fsm_order_id`: Relación con orden de servicio (`fsm.order`)
+- `date_time`: Fecha y hora para funcionalidad de timer
+- `is_timer_running`: Estado del timer (activo/inactivo)
 
-### 2. Extensión de Órdenes de Servicio (fsm.order)
+#### Métodos Principales:
+- `action_timer_start()`: Inicia el timer de trabajo
+- `action_timer_stop()`: Detiene el timer y calcula duración
+- `_get_default_project()`: Asigna proyecto por defecto para FSM
 
-#### Campos Agregados
-- **Naturaleza del Servicio**: Clasificación del tipo de trabajo
-- **Área de Servicio**: Zona específica donde se realiza el trabajo
-- **Complejidad**: Nivel de dificultad del servicio (Baja, Media, Alta)
-- **Checklist de Verificación**: Lista de tareas a completar
-- **Observaciones del Checklist**: Notas adicionales sobre verificaciones
-- **Vehículo Asignado**: Vehículo del técnico para gestión de stock
+### 3. Extensiones de Categorías de Equipos
+- **Modelo extendido**: `maintenance.equipment.category`
+- **Propósito**: Categorización especializada para equipos HORECA
+- **Integración**: Preparado para checklists y procedimientos específicos
 
-#### Funcionalidades Avanzadas
-- **Consumo de Repuestos**: Botón para registrar materiales utilizados
-- **Acceso a Base de Conocimiento**: Enlace directo a información técnica
-- **Validación de Campos**: Controles de integridad de datos
-- **Integración con Stock**: Movimientos automáticos de inventario
+## Estructura de Archivos
 
-### 3. Gestión de Stock en Vehículos
+```
+patco_core/
+├── __init__.py
+├── __manifest__.py
+├── models/
+│   ├── __init__.py
+│   ├── patco_service_nature.py      # Naturalezas de servicio
+│   ├── account_analytic_line.py     # Extensión de timesheets
+│   └── maintenance_equipment_category.py  # Extensión de categorías
+├── data/
+│   └── patco_service_nature_data.xml    # Datos iniciales
+├── views/
+│   ├── patco_service_nature_views.xml   # Vistas de naturalezas
+│   └── account_analytic_line_views.xml  # Vistas de timesheets
+├── security/
+│   └── ir.model.access.csv              # Permisos de acceso
+└── README.md
+```
 
-#### Características
-- Asignación de vehículos a órdenes de servicio
-- Control de inventario móvil
-- Registro de consumos en campo
-- Trazabilidad de materiales utilizados
+## Datos Iniciales
 
-#### Beneficios
-- Optimización de rutas de reabastecimiento
-- Control preciso de costos por servicio
-- Reducción de tiempos muertos por falta de repuestos
-- Mejora en la planificación de inventarios
+El módulo incluye datos maestros preconfigurados:
 
-### 4. Sistema de Checklists
+### Naturalezas de Servicio (`patco.service.nature`)
+- **M1-Correctivo**: Reparación de fallas y averías
+- **M2-Preventivo**: Mantenimiento programado y rutinario
+- **M3-Instalación**: Instalación de nuevos equipos
+- **M4-Inspección**: Revisiones técnicas y auditorías
 
-#### Funcionalidad
-- Listas de verificación personalizables por tipo de servicio
-- Registro de cumplimiento de tareas
-- Observaciones específicas por ítem
-- Validación de completitud antes del cierre
+## Dependencias
 
-#### Aplicaciones
-- Verificaciones de seguridad
-- Controles de calidad
-- Procedimientos estándar
-- Cumplimiento normativo
+### Módulos Odoo Core:
+- `base`: Funcionalidades básicas
+- `hr_timesheet`: Gestión de hojas de tiempo
+- `maintenance`: Gestión de equipos
+- `analytic`: Contabilidad analítica
 
-## Configuración Necesaria
+### Módulos OCA:
+- `fieldservice`: Gestión de órdenes de servicio de campo
 
-### Configuración Inicial
-1. **Naturalezas de Servicio**: Crear las clasificaciones necesarias
-   - Mantenimiento Preventivo
-   - Mantenimiento Correctivo
-   - Instalación
-   - Garantía
-   - Emergencia
+## Funcionalidades Técnicas
 
-2. **Áreas de Servicio**: Definir zonas de trabajo
-   - Cocina
-   - Comedor
-   - Bar
-   - Almacén
-   - Área Técnica
+### 1. Timer de Trabajo en Tiempo Real
+```python
+# Iniciar timer
+analytic_line.action_timer_start()
 
-3. **Niveles de Complejidad**: Configurar escalas
-   - Baja: Servicios rutinarios
-   - Media: Servicios especializados
-   - Alta: Servicios complejos o críticos
+# Detener timer (calcula automáticamente la duración)
+analytic_line.action_timer_stop()
+```
 
-### Configuración de Vehículos
-1. Registrar vehículos de la flota
-2. Asignar técnicos a vehículos
-3. Configurar ubicaciones de stock móvil
-4. Establecer niveles mínimos de inventario
+### 2. Integración con FSM
+- Creación automática de líneas analíticas desde órdenes FSM
+- Asignación de proyecto por defecto basado en la orden
+- Validaciones de integridad de datos
 
-## Relación con Otros Módulos del Ecosistema
+### 3. Gestión de Naturalezas
+```python
+# Búsqueda por código
+nature = env['patco.service.nature'].search([('code', '=', 'M1')])
 
-### Integración con patco_hr_skills
-- Las naturalezas de servicio se relacionan con habilidades requeridas
-- Asignación automática basada en competencias del técnico
-- Validación de capacidades antes de asignación
+# Visualización personalizada
+print(nature.display_name)  # "M1 - Correctivo"
+```
 
-### Integración con patco_customer_equipment
-- Órdenes de servicio vinculadas a equipos específicos
-- Historial de servicios por activo
-- Programación de mantenimientos preventivos
+## Validaciones y Restricciones
 
-### Integración con fieldservice_timesheet
-- Registro de tiempo por naturaleza de servicio
-- Análisis de productividad por tipo de trabajo
-- Costeo preciso de servicios
+### Naturalezas de Servicio:
+- **Código único**: No se permiten códigos duplicados
+- **Nombre único**: No se permiten nombres duplicados
+- **Formato de código**: Validación de estructura
 
-### Integración con fieldservice_sale_timesheet
-- Facturación diferenciada por naturaleza
-- Precios específicos por complejidad
-- Integración con contratos de mantenimiento
+### Líneas Analíticas:
+- **Timer único**: Solo un timer activo por empleado
+- **Validación FSM**: Verificación de coherencia con órdenes
+- **Proyecto obligatorio**: Asignación automática si no se especifica
 
-## Casos de Uso Específicos
+## Vistas y Interfaz
 
-### Según el Documento Funcional
+### Naturalezas de Servicio:
+- **Vista Lista**: Gestión de naturalezas con filtros por estado
+- **Vista Formulario**: Edición completa de naturalezas
+- **Búsqueda**: Filtros por código, nombre y estado
 
-#### MACRO-PROCESO 2: Operaciones de Servicio
+### Líneas Analíticas Extendidas:
+- **Campos FSM**: Integración en vistas existentes
+- **Timer Controls**: Botones de inicio/parada de timer
+- **Filtros FSM**: Búsqueda por orden de servicio
 
-**Clasificación y Asignación**
-- Recepción de tickets con naturaleza de servicio
-- Asignación automática basada en habilidades y complejidad
-- Planificación optimizada de rutas
+## Seguridad
 
-**Gestión de Recursos**
-- Control de stock en vehículos
-- Asignación de materiales por tipo de servicio
-- Optimización de inventarios móviles
+### Permisos de Acceso:
+- **Naturalezas de Servicio**: Lectura para usuarios, escritura para administradores
+- **Líneas Analíticas**: Permisos heredados de `hr_timesheet`
+- **Categorías de Equipos**: Permisos heredados de `maintenance`
 
-#### MACRO-PROCESO 3: Ejecución en Campo
+## Integración con Otros Módulos PATCO
 
-**Trabajo Estructurado**
-- Checklists específicos por naturaleza de servicio
-- Registro sistemático de actividades
-- Validación de procedimientos estándar
+### Con `patco_customer_equipment`:
+- Naturalezas de servicio disponibles para clasificación
+- Integración con órdenes FSM generadas
 
-**Control de Calidad**
-- Verificaciones obligatorias por tipo de trabajo
-- Documentación de observaciones
-- Trazabilidad completa del servicio
+### Con `patco_hr_skills`:
+- Líneas analíticas vinculadas a competencias técnicas
+- Seguimiento de tiempo por tipo de habilidad
 
-**Gestión de Materiales**
-- Consumo directo desde vehículo
-- Registro automático de costos
-- Control de inventario en tiempo real
+### Con `patco_suite`:
+- Instalación automática como dependencia
+- Configuración inicial coordinada
 
-#### MACRO-PROCESO 4: Cierre y Análisis
+## Casos de Uso
 
-**Análisis de Servicios**
-- Reportes por naturaleza de servicio
-- Análisis de tendencias por complejidad
-- Métricas de eficiencia por área
+### 1. Registro de Tiempo de Servicio
+```python
+# El técnico inicia el timer al comenzar el trabajo
+self.env['account.analytic.line'].create({
+    'name': 'Reparación freidora',
+    'project_id': fsm_order.project_id.id,
+    'task_id': fsm_order.task_id.id,
+    'employee_id': self.env.user.employee_id.id,
+    'fsm_order_id': fsm_order.id,
+})
+```
 
-**Optimización Continua**
-- Identificación de patrones de fallas
-- Mejora de procedimientos
-- Optimización de recursos
+### 2. Clasificación de Servicios
+```python
+# Asignación de naturaleza a ticket/orden
+ticket.service_nature_id = env.ref('patco_core.service_nature_corrective')
+```
 
-## Tipos de Usuario y Permisos
+### 3. Análisis de Tiempos FSM
+```python
+# Consulta de tiempos por naturaleza de servicio
+lines = env['account.analytic.line'].search([
+    ('fsm_order_id', '!=', False),
+    ('fsm_order_id.service_nature_id.code', '=', 'M1')
+])
+```
 
-### PATCO Administrador
-- Configuración de naturalezas de servicio
-- Gestión de checklists
-- Configuración de vehículos y stock
-- Acceso a todos los reportes
+## Configuración
 
-### PATCO Líder Técnico
-- Asignación de órdenes de servicio
-- Supervisión de checklists
-- Gestión de inventarios móviles
-- Reportes operacionales
+### Instalación:
+1. El módulo se instala automáticamente con `patco_suite`
+2. Los datos iniciales se cargan automáticamente
+3. Las vistas se integran con las existentes
 
-### PATCO Técnico
-- Ejecución de órdenes asignadas
-- Completado de checklists
-- Consumo de repuestos
-- Acceso a base de conocimiento
+### Configuración Post-Instalación:
+1. **Verificar Naturalezas**: Revisar datos maestros cargados
+2. **Configurar Proyectos**: Asegurar proyectos por defecto para FSM
+3. **Permisos**: Ajustar permisos según roles de usuario
 
-## Flujos de Trabajo Principales
+## Mantenimiento
 
-### 1. Creación de Orden de Servicio
-1. Selección de naturaleza de servicio
-2. Definición de área y complejidad
-3. Asignación de técnico y vehículo
-4. Generación de checklist automático
+### Actualización de Datos Maestros:
+- Las naturalezas de servicio pueden editarse desde la interfaz
+- Nuevas naturalezas pueden añadirse según necesidades del negocio
+- Los códigos deben seguir el estándar PATCO (M1, M2, etc.)
 
-### 2. Ejecución en Campo
-1. Acceso a información del equipo
-2. Consulta de base de conocimiento
-3. Ejecución de checklist
-4. Consumo de repuestos
-5. Registro de observaciones
+### Monitoreo:
+- Revisar logs de timer para detectar inconsistencias
+- Validar integridad de datos FSM periódicamente
+- Monitorear rendimiento de consultas analíticas
 
-### 3. Cierre de Servicio
-1. Validación de checklist completo
-2. Confirmación de consumos
-3. Registro de tiempo total
-4. Generación de reporte de servicio
+---
 
-## Métricas y KPIs Soportados
-
-### Operacionales
-- Tiempo promedio por naturaleza de servicio
-- Tasa de completitud de checklists
-- Consumo de materiales por tipo de trabajo
-- Eficiencia por técnico y área
-
-### Estratégicos
-- Distribución de servicios por naturaleza
-- Tendencias de complejidad
-- Optimización de inventarios móviles
-- Análisis de productividad
-
-## Beneficios del Módulo
-
-1. **Estandarización**: Procedimientos uniformes para todos los servicios
-2. **Trazabilidad**: Registro completo de actividades y recursos
-3. **Eficiencia**: Optimización de tiempos y recursos
-4. **Calidad**: Garantía de cumplimiento de estándares
-5. **Control**: Visibilidad completa de operaciones
-6. **Análisis**: Base de datos para mejora continua
-
-## Versión
-
-Compatible con Odoo 18 Community Edition.
-
-## Soporte Técnico
-
-Este módulo requiere configuración inicial y puede necesitar personalización según las necesidades específicas del negocio. Se recomienda trabajar con un consultor especializado en PATCO para la implementación óptima.
+**PATCO Core** - La base sólida para la digitalización del mantenimiento HORECA

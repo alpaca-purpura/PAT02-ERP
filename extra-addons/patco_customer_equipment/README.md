@@ -1,394 +1,324 @@
-# PATCO Customer Equipment - Gestión de Activos de Clientes
+# PATCO Customer Equipment - Gestión Avanzada de Equipos
 
 ## Descripción
 
-PATCO Customer Equipment es el módulo especializado en la gestión integral de activos y equipos de clientes dentro del ecosistema PATCO. Este módulo extiende las capacidades del módulo de mantenimiento de Odoo para proporcionar un registro maestro completo de equipos HORECA (Hoteles, Restaurantes y Cafeterías), incluyendo trazabilidad mediante códigos QR, historial de servicios y métricas de rendimiento.
-
-## Función en el Ecosistema PATCO
-
-Este módulo es el corazón del registro maestro de activos, proporcionando:
-
-- **Registro Maestro de Equipos**: Base de datos completa de todos los activos de clientes
-- **Trazabilidad con QR**: Identificación única y acceso rápido a información del equipo
-- **Historial de Servicios**: Registro completo de mantenimientos y reparaciones
-- **Métricas de Rendimiento**: KPIs de disponibilidad, confiabilidad y costos
-- **Gestión de Ubicaciones**: Control preciso de ubicación de equipos en instalaciones del cliente
-- **Integración con Servicios**: Vinculación directa con órdenes de servicio y tickets
-- **Planificación Predictiva**: Base para mantenimientos preventivos y predictivos
-
-## Dependencias del Módulo
-
-### Módulos Odoo Core
-- `base`
-- `maintenance`
-- `fieldservice`
-- `helpdesk`
-- `partner`
-
-### Módulos OCA
-- `maintenance_equipment_category_hierarchy`
-- `fieldservice_maintenance`
-
-### Módulos PATCO
-- `patco_core` (para integración con órdenes de servicio)
+`patco_customer_equipment` es el módulo especializado en la gestión integral de equipos de clientes dentro del ecosistema PATCO. Proporciona funcionalidades avanzadas para el registro, seguimiento y mantenimiento de activos HORECA, incluyendo generación automática de códigos QR, historial de servicios y integración completa con órdenes de trabajo.
 
 ## Funcionalidades Principales
 
-### 1. Extensión del Modelo de Equipos (maintenance.equipment)
+### 1. Extensión de Equipos de Mantenimiento
+- **Modelo extendido**: `maintenance.equipment`
+- **Propósito**: Gestión especializada de equipos HORECA con trazabilidad completa
+- **Integración**: Conexión directa con FSM, Helpdesk y servicios de campo
 
-#### Campos Específicos PATCO
-- **Código PATCO**: Identificador único interno del sistema
-- **Cliente**: Relación directa con el partner propietario del equipo
-- **Ubicación de Servicio**: Ubicación específica dentro de las instalaciones del cliente
-- **Código QR**: Generado automáticamente para identificación rápida
-- **Fecha de Instalación**: Control de antigüedad y garantías
-- **Estado Operacional**: Operativo, Fuera de Servicio, En Mantenimiento
+#### Campos Añadidos:
+- `x_patco_code`: Código único PATCO para identificación rápida
+- `x_customer_id`: Relación con cliente propietario del equipo
+- `x_qr_code`: Código QR generado automáticamente
+- `x_service_count`: Contador de servicios realizados
+- `x_last_service_date`: Fecha del último servicio
+- `x_next_service_date`: Fecha programada del próximo servicio
+- `x_warranty_expiry`: Fecha de vencimiento de garantía
+- `x_installation_date`: Fecha de instalación del equipo
+- `x_brand`: Marca del equipo
+- `x_model_number`: Número de modelo específico
+- `x_serial_number`: Número de serie del fabricante
+- `x_location_details`: Ubicación detallada dentro del establecimiento
 
-#### Campos Calculados
-- **Número de Servicios**: Contador automático de servicios realizados
-- **Fecha del Último Servicio**: Timestamp del último mantenimiento
-- **Próximo Mantenimiento**: Cálculo automático basado en frecuencia
-- **Tiempo Promedio de Servicio**: Métrica de eficiencia
-- **Costo Total de Mantenimiento**: Acumulado de costos de servicios
+### 2. Generación Automática de Códigos QR
+- **Funcionalidad**: Creación automática de códigos QR únicos
+- **Contenido del QR**: URL con información del equipo para acceso móvil
+- **Actualización**: Regeneración automática cuando cambian datos clave
+- **Formato**: Compatible con lectores QR estándar
 
-### 2. Sistema de Códigos QR
+### 3. Gestión de Servicios y Historial
+- **Contador de Servicios**: Seguimiento automático de intervenciones
+- **Historial Completo**: Registro de todos los servicios realizados
+- **Fechas Clave**: Control de último servicio y próximo programado
+- **Análisis de Tendencias**: Datos para optimización de mantenimiento
 
-#### Generación Automática
-- Código QR único por equipo
-- Generación automática al crear el equipo
-- Regeneración manual cuando sea necesario
-- Formato optimizado para lectura móvil
+### 4. Integración con Helpdesk
+- **Modelo extendido**: `helpdesk.ticket`
+- **Funcionalidad**: Vinculación directa de tickets con equipos
+- **Automatización**: Creación de órdenes FSM desde tickets
+- **Trazabilidad**: Seguimiento completo desde incidencia hasta resolución
 
-#### Información Codificada
-- ID del equipo en el sistema
-- Código PATCO del equipo
-- URL de acceso directo a la ficha del equipo
-- Información básica para trabajo offline
+### 5. Integración con FSM (Field Service Management)
+- **Modelo extendido**: `fsm.order`
+- **Funcionalidad**: Órdenes de servicio vinculadas a equipos específicos
+- **Automatización**: Actualización automática de contadores y fechas
+- **Optimización**: Datos para planificación de rutas y recursos
 
-#### Casos de Uso del QR
-- **Identificación Rápida**: Escaneo para acceso inmediato a información
-- **Creación de Tickets**: Generación automática de tickets desde el equipo
-- **Registro de Servicios**: Inicio directo de órdenes de servicio
-- **Verificación de Ubicación**: Confirmación de que el técnico está en el equipo correcto
+## Estructura de Archivos
 
-### 3. Gestión de Ubicaciones de Servicio
+```
+patco_customer_equipment/
+├── __init__.py
+├── __manifest__.py
+├── models/
+│   ├── __init__.py
+│   ├── patco_customer_equipment.py    # Extensión de equipos
+│   ├── helpdesk_ticket.py             # Integración con tickets
+│   └── fsm_order.py                   # Integración con FSM
+├── views/
+│   ├── patco_customer_equipment_views.xml  # Vistas de equipos
+│   ├── helpdesk_ticket_views.xml           # Vistas de tickets
+│   └── fsm_order_views.xml                 # Vistas de órdenes FSM
+├── security/
+│   └── ir.model.access.csv                 # Permisos de acceso
+├── static/
+│   └── description/
+│       └── icon.png                        # Icono del módulo
+└── README.md
+```
 
-#### Estructura Jerárquica
-- **Edificio/Sucursal**: Nivel superior de ubicación
-- **Piso/Área**: Subdivisión del edificio
-- **Zona Específica**: Ubicación exacta (Cocina, Comedor, Bar, etc.)
-- **Posición**: Descripción detallada de la ubicación
+## Dependencias
 
-#### Beneficios
-- Localización rápida de equipos
-- Optimización de rutas de técnicos
-- Planificación eficiente de mantenimientos
-- Control de acceso por áreas
+### Módulos Odoo Core:
+- `base`: Funcionalidades básicas
+- `maintenance`: Gestión de equipos base
+- `helpdesk`: Sistema de tickets de soporte
 
-### 4. Historial y Trazabilidad
+### Módulos OCA:
+- `fieldservice`: Gestión de órdenes de servicio de campo
+- `fieldservice_maintenance`: Integración FSM-Mantenimiento
 
-#### Registro de Servicios
-- Vinculación automática con órdenes de servicio
-- Historial completo de mantenimientos
-- Registro de repuestos utilizados
-- Tiempo invertido por servicio
-- Técnicos que han trabajado en el equipo
+### Módulos PATCO:
+- `patco_core`: Funcionalidades centrales y naturalezas de servicio
 
-#### Métricas Automáticas
-- **MTBF (Mean Time Between Failures)**: Tiempo promedio entre fallas
-- **MTTR (Mean Time To Repair)**: Tiempo promedio de reparación
-- **Disponibilidad**: Porcentaje de tiempo operativo
-- **Costo por Hora de Operación**: Eficiencia económica
+## Funcionalidades Técnicas
 
-### 5. Integración con Tickets de Soporte
+### 1. Generación de Códigos QR
+```python
+# Generación automática al crear/modificar equipo
+def _compute_qr_code(self):
+    for equipment in self:
+        if equipment.x_patco_code:
+            # URL con información del equipo
+            qr_url = f"{base_url}/equipment/{equipment.x_patco_code}"
+            equipment.x_qr_code = self._generate_qr_code(qr_url)
+```
 
-#### Creación Automática
-- Generación de tickets desde códigos QR
-- Vinculación automática equipo-ticket
-- Información pre-poblada del equipo
-- Escalamiento automático según criticidad
+### 2. Cálculo de Contadores de Servicio
+```python
+# Actualización automática de estadísticas
+def _compute_service_stats(self):
+    for equipment in self:
+        # Contar servicios FSM completados
+        fsm_orders = self.env['fsm.order'].search([
+            ('equipment_id', '=', equipment.id),
+            ('stage_id.is_closed', '=', True)
+        ])
+        equipment.x_service_count = len(fsm_orders)
+        
+        # Última fecha de servicio
+        if fsm_orders:
+            equipment.x_last_service_date = max(fsm_orders.mapped('date_end'))
+```
 
-#### Seguimiento
-- Estado de tickets por equipo
-- Historial de incidencias
-- Patrones de fallas
-- Análisis de tendencias
+### 3. Validaciones de Integridad
+```python
+# Validaciones de datos
+@api.constrains('x_patco_code')
+def _check_patco_code_unique(self):
+    if self.x_patco_code:
+        existing = self.search([
+            ('x_patco_code', '=', self.x_patco_code),
+            ('id', '!=', self.id)
+        ])
+        if existing:
+            raise ValidationError("El código PATCO debe ser único")
+```
 
-## Configuración Necesaria
-
-### Configuración Inicial de Equipos
-
-1. **Categorías de Equipos HORECA**
-   ```
-   - Refrigeración
-     - Cámaras frigoríficas
-     - Vitrinas refrigeradas
-     - Congeladores
-   - Cocina
-     - Hornos
-     - Freidoras
-     - Planchas
-   - Ventilación
-     - Campanas extractoras
-     - Sistemas HVAC
-   - Lavado
-     - Lavavajillas
-     - Sistemas de limpieza
-   ```
-
-2. **Estados Operacionales**
-   - Operativo
-   - Fuera de Servicio
-   - En Mantenimiento
-   - Pendiente de Instalación
-   - Dado de Baja
-
-3. **Tipos de Ubicación**
-   - Cocina Principal
-   - Cocina Auxiliar
-   - Comedor
-   - Bar/Cafetería
-   - Almacén
-   - Área Técnica
-   - Oficinas
-
-### Configuración de Códigos QR
-
-1. **Formato de Códigos**
-   - Tamaño optimizado para impresión
-   - Nivel de corrección de errores
-   - Formato de datos codificados
-
-2. **Etiquetas Físicas**
-   - Material resistente a ambientes HORECA
-   - Tamaño apropiado para cada tipo de equipo
-   - Información adicional impresa
-
-### Configuración de Mantenimientos
-
-1. **Frecuencias de Mantenimiento**
-   - Mantenimiento preventivo por tipo de equipo
-   - Calendarios de inspección
-   - Alertas automáticas
-
-2. **Procedimientos Estándar**
-   - Checklists por tipo de equipo
-   - Procedimientos de seguridad
-   - Documentación técnica
-
-## Relación con Otros Módulos del Ecosistema
-
-### Integración con patco_core
-- **Órdenes de Servicio**: Vinculación automática equipo-servicio
-- **Naturalezas de Servicio**: Clasificación de trabajos por tipo de equipo
-- **Checklists**: Procedimientos específicos por modelo de equipo
-
-### Integración con patco_hr_skills
-- **Habilidades Requeridas**: Cada equipo requiere habilidades específicas
-- **Asignación de Técnicos**: Matching basado en experiencia con el tipo de equipo
-- **Especialización**: Desarrollo de expertise por categoría de equipo
-
-### Integración con fieldservice
-- **Creación de Órdenes**: Generación automática desde equipos
-- **Planificación**: Optimización basada en ubicación de equipos
-- **Reportes**: Análisis de servicios por equipo y ubicación
-
-### Integración con helpdesk
-- **Tickets de Soporte**: Creación automática desde códigos QR
-- **Escalamiento**: Basado en criticidad del equipo
-- **SLA**: Tiempos de respuesta según tipo de equipo
-
-## Casos de Uso Específicos
-
-### Según el Documento Funcional
-
-#### MACRO-PROCESO 1: Comercial y Onboarding
-
-**Registro de Activos del Cliente**
-- Inventario completo de equipos durante onboarding
-- Generación de códigos QR para todos los equipos
-- Configuración de ubicaciones y responsables
-- Establecimiento de planes de mantenimiento
-
-**Configuración de Servicios**
-- Definición de SLAs por tipo de equipo
-- Configuración de mantenimientos preventivos
-- Asignación de técnicos especializados
-
-#### MACRO-PROCESO 2: Operaciones de Servicio
-
-**Identificación Rápida**
-- Escaneo de QR para identificar equipo
-- Acceso inmediato a historial de servicios
-- Información técnica y manuales
-- Contactos de emergencia
-
-**Creación de Tickets**
-- Generación automática desde código QR
-- Pre-población de datos del equipo
-- Clasificación automática por tipo de equipo
-- Asignación basada en ubicación y habilidades
-
-#### MACRO-PROCESO 3: Ejecución en Campo
-
-**Verificación de Equipo**
-- Confirmación de ubicación mediante QR
-- Acceso a información técnica específica
-- Historial de servicios anteriores
-- Procedimientos de seguridad
-
-**Registro de Servicios**
-- Vinculación automática servicio-equipo
-- Actualización de métricas de rendimiento
-- Registro de repuestos utilizados
-- Actualización de estado operacional
-
-#### MACRO-PROCESO 4: Análisis y Optimización
-
-**Análisis de Rendimiento**
-- Métricas de disponibilidad por equipo
-- Análisis de costos de mantenimiento
-- Identificación de equipos problemáticos
-- Optimización de frecuencias de mantenimiento
-
-**Planificación Predictiva**
-- Análisis de patrones de fallas
-- Predicción de necesidades de mantenimiento
-- Optimización de inventarios de repuestos
-- Planificación de reemplazos
-
-## Tipos de Usuario y Permisos
-
-### PATCO Administrador
-- Configuración completa de equipos y ubicaciones
-- Gestión de códigos QR y etiquetas
-- Acceso a todos los reportes y métricas
-- Configuración de mantenimientos preventivos
-
-### PATCO Líder Técnico
-- Gestión de equipos de su área
-- Planificación de mantenimientos
-- Análisis de rendimiento de equipos
-- Asignación de servicios por equipo
-
-### PATCO Técnico
-- Acceso a información de equipos asignados
-- Escaneo de códigos QR
-- Registro de servicios realizados
-- Actualización de estado de equipos
-
-### Cliente/Usuario Final
-- Visualización de sus equipos (solo lectura)
-- Creación de tickets mediante QR
-- Consulta de historial de servicios
-- Acceso a manuales y documentación
-
-## Flujos de Trabajo Principales
+## Casos de Uso Principales
 
 ### 1. Registro de Nuevo Equipo
-1. Creación del registro de equipo
-2. Asignación de código PATCO
-3. Configuración de ubicación
-4. Generación automática de código QR
-5. Impresión y colocación de etiqueta
-6. Configuración de mantenimiento preventivo
+```python
+# Creación de equipo con datos PATCO
+equipment = self.env['maintenance.equipment'].create({
+    'name': 'Freidora Industrial FI-001',
+    'x_patco_code': 'EQ-REST-001-FI',
+    'x_customer_id': customer.id,
+    'x_brand': 'Rational',
+    'x_model_number': 'SCC-101',
+    'x_serial_number': 'RAT2024001',
+    'x_installation_date': fields.Date.today(),
+    'x_location_details': 'Cocina - Zona de fritura',
+    'category_id': fryer_category.id,
+})
+# El código QR se genera automáticamente
+```
 
-### 2. Servicio desde Código QR
-1. Escaneo del código QR del equipo
-2. Acceso automático a ficha del equipo
-3. Creación de ticket o orden de servicio
-4. Ejecución del servicio
-5. Registro de actividades realizadas
-6. Actualización de métricas del equipo
+### 2. Creación de Ticket desde Equipo
+```python
+# Ticket vinculado a equipo específico
+ticket = self.env['helpdesk.ticket'].create({
+    'name': 'Falla en freidora - No calienta',
+    'equipment_id': equipment.id,
+    'partner_id': equipment.x_customer_id.id,
+    'description': 'El equipo no alcanza la temperatura requerida',
+})
+# Se puede generar orden FSM automáticamente
+```
+
+### 3. Orden de Servicio desde Ticket
+```python
+# Conversión automática de ticket a orden FSM
+fsm_order = ticket.action_create_fsm_order()
+fsm_order.update({
+    'equipment_id': ticket.equipment_id.id,
+    'location_id': ticket.equipment_id.x_customer_id.id,
+    'description': ticket.description,
+})
+```
+
+## Vistas y Interfaz de Usuario
+
+### Vista de Equipos Extendida:
+- **Información PATCO**: Campos específicos en pestañas organizadas
+- **Código QR**: Visualización y descarga del código generado
+- **Historial de Servicios**: Lista de todas las intervenciones
+- **Botones de Acción**: Crear ticket, orden FSM, ver historial
+
+### Vista de Tickets Integrada:
+- **Selección de Equipo**: Campo de relación con búsqueda avanzada
+- **Información Contextual**: Datos del equipo en el ticket
+- **Acciones Rápidas**: Crear orden FSM, ver equipo
+
+### Vista de Órdenes FSM:
+- **Datos del Equipo**: Información completa en la orden
+- **Historial**: Servicios previos del mismo equipo
+- **Ubicación**: Detalles de localización del equipo
+
+## Seguridad y Permisos
+
+### Grupos de Acceso:
+- **PATCO User**: Lectura de equipos y creación de tickets
+- **PATCO Technician**: Acceso completo a órdenes FSM
+- **PATCO Manager**: Gestión completa de equipos y configuración
+
+### Reglas de Seguridad:
+- **Equipos por Cliente**: Los usuarios solo ven equipos de sus clientes asignados
+- **Tickets Propios**: Acceso limitado a tickets del usuario o su equipo
+- **Órdenes Asignadas**: Técnicos solo ven órdenes asignadas a ellos
+
+## Integración con Otros Módulos PATCO
+
+### Con `patco_core`:
+- **Naturalezas de Servicio**: Clasificación de servicios por equipo
+- **Líneas Analíticas**: Registro de tiempo por equipo específico
+- **Datos Maestros**: Uso de configuraciones centrales
+
+### Con `patco_hr_skills`:
+- **Asignación por Competencia**: Técnicos asignados según habilidades requeridas
+- **Especialización**: Servicios específicos por tipo de equipo
+- **Capacitación**: Identificación de necesidades de entrenamiento
+
+### Con `patco_suite`:
+- **Instalación Coordinada**: Configuración automática de dependencias
+- **Datos Iniciales**: Carga de categorías y configuraciones base
+- **Flujo Completo**: Integración con todo el ecosistema
+
+## Flujos de Trabajo
+
+### 1. Onboarding de Equipos
+1. **Registro Inicial**: Creación del equipo con datos básicos
+2. **Asignación de Código**: Generación automática de código PATCO
+3. **Generación QR**: Creación automática del código QR
+4. **Configuración**: Asignación de categoría y responsables
+5. **Validación**: Verificación de datos y activación
+
+### 2. Gestión de Incidencias
+1. **Detección**: Cliente reporta problema o detección automática
+2. **Ticket**: Creación de ticket vinculado al equipo
+3. **Clasificación**: Asignación de prioridad y naturaleza
+4. **Orden FSM**: Conversión a orden de servicio de campo
+5. **Ejecución**: Técnico realiza el servicio
+6. **Cierre**: Actualización automática de contadores y fechas
 
 ### 3. Mantenimiento Preventivo
-1. Generación automática de orden de mantenimiento
-2. Asignación basada en habilidades requeridas
-3. Ejecución según checklist del equipo
-4. Registro de estado y observaciones
-5. Programación del próximo mantenimiento
-6. Actualización de métricas de confiabilidad
+1. **Programación**: Definición de fechas de mantenimiento
+2. **Alertas**: Notificaciones automáticas de vencimientos
+3. **Planificación**: Creación de órdenes preventivas
+4. **Ejecución**: Realización del mantenimiento programado
+5. **Reprogramación**: Cálculo de próxima fecha de servicio
 
-## Métricas y KPIs Soportados
+## Reportes y Análisis
 
-### Métricas por Equipo
-- **Disponibilidad**: Tiempo operativo vs. tiempo total
-- **MTBF**: Tiempo promedio entre fallas
-- **MTTR**: Tiempo promedio de reparación
-- **Costo de Mantenimiento**: Acumulado por período
-- **Eficiencia Energética**: Consumo vs. rendimiento
+### Métricas por Equipo:
+- **Frecuencia de Servicios**: Análisis de intervenciones por período
+- **Tiempo de Respuesta**: Desde ticket hasta resolución
+- **Costos de Mantenimiento**: Seguimiento de gastos por equipo
+- **Disponibilidad**: Tiempo operativo vs. tiempo de mantenimiento
 
-### Métricas por Cliente
-- Disponibilidad promedio de la flota
-- Costo total de mantenimiento
-- Número de incidencias por período
-- Cumplimiento de SLAs
-- Satisfacción con el servicio
+### Análisis de Flota:
+- **Equipos Críticos**: Identificación de activos problemáticos
+- **Tendencias de Fallas**: Patrones de averías por tipo/marca
+- **Optimización**: Recomendaciones de reemplazo o mejora
+- **Planificación**: Programación optimizada de mantenimientos
 
-### Métricas Operacionales
-- Equipos por técnico
-- Utilización de códigos QR
-- Tiempo de respuesta promedio
-- Efectividad de mantenimientos preventivos
+## Configuración y Personalización
 
-## Reportes Disponibles
+### Configuración Inicial:
+1. **Categorías de Equipos**: Definir tipos específicos HORECA
+2. **Códigos PATCO**: Establecer nomenclatura estándar
+3. **Ubicaciones**: Configurar zonas típicas de establecimientos
+4. **Garantías**: Definir períodos estándar por tipo de equipo
 
-### Reportes de Equipos
-- Inventario completo de equipos por cliente
-- Estado operacional de la flota
-- Equipos próximos a mantenimiento
-- Historial de servicios por equipo
-
-### Reportes de Rendimiento
-- Análisis de disponibilidad
-- Costos de mantenimiento por equipo
-- Tendencias de fallas
-- Eficiencia de mantenimientos preventivos
-
-### Reportes de Ubicación
-- Equipos por ubicación
-- Optimización de rutas de servicio
-- Análisis de densidad de equipos
-- Planificación de recursos por área
+### Personalización Avanzada:
+- **Campos Adicionales**: Extensión según necesidades específicas
+- **Validaciones Personalizadas**: Reglas de negocio específicas
+- **Reportes Customizados**: Análisis según KPIs del cliente
+- **Integraciones**: Conexión con sistemas externos
 
 ## Beneficios del Módulo
 
+### Operacionales:
 1. **Trazabilidad Completa**: Historial detallado de cada equipo
-2. **Identificación Rápida**: Acceso inmediato mediante códigos QR
-3. **Optimización de Mantenimientos**: Planificación basada en datos reales
-4. **Reducción de Costos**: Mantenimiento predictivo vs. correctivo
-5. **Mejora de SLAs**: Respuesta más rápida y efectiva
-6. **Satisfacción del Cliente**: Mejor disponibilidad de equipos
-7. **Análisis Predictivo**: Identificación temprana de problemas
-8. **Optimización de Inventarios**: Control preciso de repuestos
+2. **Acceso Móvil**: Información instantánea vía código QR
+3. **Automatización**: Reducción de tareas manuales
+4. **Integración**: Flujo continuo desde incidencia hasta resolución
 
-## Integración con Tecnologías Móviles
+### Estratégicos:
+1. **Optimización de Mantenimiento**: Datos para mejores decisiones
+2. **Reducción de Costos**: Mantenimiento preventivo eficiente
+3. **Mejora de Servicio**: Respuesta más rápida y efectiva
+4. **Análisis Predictivo**: Base de datos para mantenimiento inteligente
 
-### Aplicaciones Móviles
-- Escaneo de códigos QR desde dispositivos móviles
-- Acceso offline a información básica del equipo
-- Sincronización automática al recuperar conectividad
-- Interfaz optimizada para técnicos en campo
+## Casos de Uso según Documento Funcional
 
-### IoT y Sensores
-- Integración con sensores de equipos inteligentes
-- Monitoreo en tiempo real de parámetros críticos
-- Alertas automáticas por condiciones anómalas
-- Mantenimiento predictivo basado en datos de sensores
+### Onboarding de Activos (Macro-proceso 1):
+- Registro sistemático de equipos del cliente
+- Generación automática de códigos de identificación
+- Creación de códigos QR para acceso móvil
+- Configuración de programas de mantenimiento
 
-## Versión
+### Operaciones de Servicio (Macro-proceso 2):
+- Vinculación directa de tickets con equipos específicos
+- Información contextual para técnicos
+- Historial de servicios para mejor diagnóstico
+- Optimización de asignaciones basada en especialización
 
-Compatible con Odoo 18 Community Edition.
+### Ejecución en Campo (Macro-proceso 3):
+- Acceso móvil a información del equipo vía QR
+- Datos técnicos disponibles en campo
+- Registro de servicios vinculado al activo
+- Actualización automática de estadísticas
 
-## Soporte e Implementación
+## Mantenimiento y Soporte
 
-La implementación exitosa de este módulo requiere:
+### Tareas de Mantenimiento:
+- **Limpieza de Datos**: Verificación periódica de códigos únicos
+- **Actualización de QR**: Regeneración cuando sea necesario
+- **Validación de Fechas**: Verificación de programaciones
+- **Optimización**: Análisis de rendimiento de consultas
 
-1. **Inventario Inicial**: Registro completo de todos los equipos existentes
-2. **Configuración de Ubicaciones**: Mapeo detallado de instalaciones del cliente
-3. **Generación de QRs**: Creación e instalación de códigos QR en todos los equipos
-4. **Capacitación de Usuarios**: Entrenamiento en uso de códigos QR y sistema
-5. **Integración con Procesos**: Adaptación de procedimientos existentes
-6. **Monitoreo Inicial**: Seguimiento cercano durante las primeras semanas
+### Monitoreo:
+- **Integridad de Datos**: Validación de relaciones entre modelos
+- **Rendimiento**: Seguimiento de tiempos de respuesta
+- **Uso**: Análisis de funcionalidades más utilizadas
+- **Errores**: Monitoreo de logs y excepciones
 
-Este módulo es fundamental para la digitalización completa de las operaciones de mantenimiento y la base para implementar estrategias de mantenimiento predictivo en el ecosistema PATCO.
+---
+
+**PATCO Customer Equipment** - Gestión inteligente de activos HORECA con tecnología QR
