@@ -1,0 +1,1667 @@
+# Dependencias para Testing - PATCO ERP
+# Instalar con: pip install -r tests/requirements.txt
+
+# Framework de testing principal
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-html>=3.1.0
+pytest-json-report>=1.5.0
+pytest-xdist>=3.0.0
+pytest-timeout>=2.1.0
+pytest-mock>=3.10.0
+
+# Testing de performance y recursos
+psutil>=5.9.0
+requests>=2.28.0
+
+# Análisis de código y calidad
+flake8>=6.0.0
+black>=23.0.0
+isort>=5.12.0
+mypy>=1.0.0
+bandit>=1.7.0
+
+# Documentación y reportes
+sphinx>=5.0.0
+sphinx-rtd-theme>=1.2.0
+
+# Utilidades adicionales
+pyyaml>=6.0
+click>=8.0.0
+colorama>=0.4.6
+tabulate>=0.9.0
+
+# Para testing de APIs y web
+httpx>=0.24.0
+selenium>=4.8.0
+
+# Para análisis de datos de testing
+pandas>=1.5.0
+matplotlib>=3.6.0
+
+# Herramientas de desarrollo
+pre-commit>=3.0.0
+tox>=4.0.0
+
+# Para testing de base de datos (si es necesario)
+psycopg2-binary>=2.9.0
+
+# Para mocking y fixtures avanzados
+factory-boy>=3.2.0
+faker>=18.0.0
+
+# Para testing de concurrencia
+concurrent-futures>=3.1.1
+
+# Logging y debugging
+loguru>=0.7.0
+
+# Para validación de esquemas
+jsonschema>=4.17.0
+cerberus>=1.3.4
+
+# Para testing de archivos y paths
+pathlib2>=2.3.7
+
+# Para medición de cobertura avanzada
+coverage[toml]>=7.0.0
+
+# Para testing de Docker (opcional)
+docker>=6.0.0
+
+# Para análisis de memoria
+memory-profiler>=0.60.0
+line-profiler>=4.0.0
+
+# Para testing de configuración
+configparser>=5.3.0
+toml>=0.10.2
+
+# Para generación de datos de prueba
+mimesis>=7.0.0
+
+# Para testing de tiempo y fechas
+freezegun>=1.2.0
+
+# Para assertions más expresivas
+assertpy>=1.1
+
+# Para testing de archivos XML
+lxml>=4.9.0
+
+# Para testing de archivos CSV
+csv-diff>=1.0
+
+# Para comparación de archivos
+filecmp2>=0.2.1
+
+# Para testing de expresiones regulares
+re-assert>=1.1.0
+
+# Para testing de URLs y paths
+furl>=2.1.3
+
+# Para testing de procesos del sistema
+psutil>=5.9.0
+
+# Para testing de archivos temporales
+tempfile-fast>=0.1.0
+
+# Para testing de compresión
+zipfile-deflate64>=0.2.0
+
+# Para testing de encoding
+chardet>=5.1.0
+
+# Para testing de hashes
+hashlib-compat>=1.0.1
+
+# Para testing de JSON
+jsonpath-ng>=1.5.3
+
+# Para testing de YAML
+ruamel.yaml>=0.17.21
+
+# Para testing de configuraciones INI
+configobj>=5.0.8
+
+# Para testing de variables de entorno
+python-dotenv>=1.0.0
+
+# Para testing de logging
+logging-tree>=1.9
+
+# Para testing de threads y async
+aiohttp>=3.8.0
+aiofiles>=23.1.0
+
+# Para testing de criptografía
+cryptography>=40.0.0
+
+# Para testing de compresión
+zstandard>=0.21.0
+
+# Para testing de archivos binarios
+binaryornot>=0.4.4
+
+# Para testing de metadatos
+exifread>=3.0.0
+
+# Para testing de imágenes (si es necesario)
+Pillow>=9.5.0
+
+# Para testing de PDFs (si es necesario)
+PyPDF2>=3.0.0
+
+# Para testing de archivos de Office (si es necesario)
+openpyxl>=3.1.0
+
+# Para testing de archivos de texto
+chardet>=5.1.0
+
+# Para testing de archivos de configuración
+pyhocon>=0.3.60
+
+# Para testing de archivos de log
+logfmt>=0.4
+
+# Para testing de archivos de datos
+tablib>=3.4.0
+
+# Para testing de archivos de markup
+markdown>=3.4.0
+
+# Para testing de archivos de template
+jinja2>=3.1.0
+
+# Para testing de archivos de estilo
+cssutils>=2.7.0
+
+# Para testing de archivos de script
+shellcheck-py>=0.9.0
+
+# Para testing de archivos de configuración de Docker
+docker-compose>=1.29.0
+
+# Para testing de archivos de configuración de Kubernetes
+kubernetes>=26.1.0
+
+# Para testing de archivos de configuración de Terraform
+python-hcl2>=4.3.0
+
+# Para testing de archivos de configuración de Ansible
+ansible-core>=2.14.0
+
+# Para testing de archivos de configuración de CI/CD
+github3.py>=4.0.0
+gitlab-python>=3.15.0
+
+# Para testing de archivos de configuración de monitoreo
+prometheus-client>=0.16.0
+
+# Para testing de archivos de configuración de logging
+logstash-formatter>=0.5.17
+
+# Para testing de archivos de configuración de base de datos
+sqlalchemy>=2.0.0
+alembic>=1.10.0
+
+# Para testing de archivos de configuración de cache
+redis>=4.5.0
+memcached>=1.59
+
+# Para testing de archivos de configuración de cola de mensajes
+celery>=5.2.0
+kombu>=5.2.0
+
+# Para testing de archivos de configuración de web server
+gunicorn>=20.1.0
+uwsgi>=2.0.21
+
+# Para testing de archivos de configuración de proxy
+nginx-python>=1.1.0
+
+# Para testing de archivos de configuración de SSL
+pyopenssl>=23.1.0
+
+# Para testing de archivos de configuración de DNS
+dnspython>=2.3.0
+
+# Para testing de archivos de configuración de firewall
+iptables-converter>=0.9.0
+
+# Para testing de archivos de configuración de VPN
+openvpn-status>=0.2.2
+
+# Para testing de archivos de configuración de backup
+duplicity>=0.8.23
+
+# Para testing de archivos de configuración de sincronización
+rsync>=1.2.0
+
+# Para testing de archivos de configuración de compresión
+zstd>=1.5.5
+
+# Para testing de archivos de configuración de encriptación
+age-encryption>=1.1.0
+
+# Para testing de archivos de configuración de firma digital
+gpg>=1.18.0
+
+# Para testing de archivos de configuración de autenticación
+ldap3>=2.9.1
+
+# Para testing de archivos de configuración de autorización
+oauthlib>=3.2.2
+
+# Para testing de archivos de configuración de sesiones
+flask-session>=0.5.0
+
+# Para testing de archivos de configuración de cookies
+http-cookies>=1.0.0
+
+# Para testing de archivos de configuración de CORS
+flask-cors>=4.0.0
+
+# Para testing de archivos de configuración de CSP
+csp-builder>=2.1.0
+
+# Para testing de archivos de configuración de rate limiting
+flask-limiter>=3.3.0
+
+# Para testing de archivos de configuración de caching
+flask-caching>=2.0.2
+
+# Para testing de archivos de configuración de compresión HTTP
+flask-compress>=1.13
+
+# Para testing de archivos de configuración de minificación
+htmlmin>=0.1.12
+
+# Para testing de archivos de configuración de optimización de imágenes
+optimize-images>=1.4.0
+
+# Para testing de archivos de configuración de CDN
+cloudflare>=2.11.0
+
+# Para testing de archivos de configuración de analytics
+google-analytics>=0.2.2
+
+# Para testing de archivos de configuración de SEO
+seo-analyzer>=0.2.0
+
+# Para testing de archivos de configuración de sitemap
+sitemap-generator>=1.2.0
+
+# Para testing de archivos de configuración de robots.txt
+robots-txt-parser>=1.0.0
+
+# Para testing de archivos de configuración de feeds
+feedparser>=6.0.10
+
+# Para testing de archivos de configuración de webhooks
+webhook-listener>=1.0.0
+
+# Para testing de archivos de configuración de notificaciones
+notifiers>=1.3.3
+
+# Para testing de archivos de configuración de email
+email-validator>=2.0.0
+
+# Para testing de archivos de configuración de SMS
+twilio>=8.2.0
+
+# Para testing de archivos de configuración de push notifications
+pyfcm>=1.5.4
+
+# Para testing de archivos de configuración de chat
+slack-sdk>=3.21.0
+
+# Para testing de archivos de configuración de video conferencia
+zoom-sdk>=1.0.0
+
+# Para testing de archivos de configuración de calendario
+google-api-python-client>=2.86.0
+
+# Para testing de archivos de configuración de almacenamiento
+boto3>=1.26.0
+
+# Para testing de archivos de configuración de CDN
+aws-cdk-lib>=2.80.0
+
+# Para testing de archivos de configuración de serverless
+serverless-python-requirements>=5.4.0
+
+# Para testing de archivos de configuración de containers
+kubernetes>=26.1.0
+
+# Para testing de archivos de configuración de orchestration
+ansible>=7.5.0
+
+# Para testing de archivos de configuración de infrastructure as code
+terraform-compliance>=1.3.44
+
+# Para testing de archivos de configuración de security scanning
+bandit>=1.7.5
+
+# Para testing de archivos de configuración de dependency scanning
+safety>=2.3.0
+
+# Para testing de archivos de configuración de license scanning
+licensecheck>=2023.1.1
+
+# Para testing de archivos de configuración de code quality
+sonar-python-api>=1.3.0
+
+# Para testing de archivos de configuración de performance monitoring
+newrelic>=8.8.0
+
+# Para testing de archivos de configuración de error tracking
+sentry-sdk>=1.25.0
+
+# Para testing de archivos de configuración de logging aggregation
+logstash-async>=2.3.0
+
+# Para testing de archivos de configuración de metrics collection
+prometheus-client>=0.16.0
+
+# Para testing de archivos de configuración de distributed tracing
+opentelemetry-api>=1.18.0
+
+# Para testing de archivos de configuración de service mesh
+istio-client>=1.17.0
+
+# Para testing de archivos de configuración de API gateway
+kong-admin-client>=0.2.2
+
+# Para testing de archivos de configuración de load balancing
+haproxy-stats>=2.4.0
+
+# Para testing de archivos de configuración de circuit breaker
+circuit-breaker>=1.4.0
+
+# Para testing de archivos de configuración de retry logic
+retrying>=1.3.4
+
+# Para testing de archivos de configuración de timeout handling
+timeout-decorator>=0.5.0
+
+# Para testing de archivos de configuración de graceful shutdown
+graceful-killer>=1.0.0
+
+# Para testing de archivos de configuración de health checks
+health-check>=1.3.3
+
+# Para testing de archivos de configuración de readiness probes
+readiness-probe>=1.0.0
+
+# Para testing de archivos de configuración de liveness probes
+liveness-probe>=1.0.0
+
+# Para testing de archivos de configuración de startup probes
+startup-probe>=1.0.0
+
+# Para testing de archivos de configuración de resource limits
+resource-limiter>=1.0.0
+
+# Para testing de archivos de configuración de auto scaling
+autoscaler>=1.0.0
+
+# Para testing de archivos de configuración de horizontal pod autoscaler
+hpa-controller>=1.0.0
+
+# Para testing de archivos de configuración de vertical pod autoscaler
+vpa-controller>=1.0.0
+
+# Para testing de archivos de configuración de cluster autoscaler
+cluster-autoscaler>=1.0.0
+
+# Para testing de archivos de configuración de node affinity
+node-affinity>=1.0.0
+
+# Para testing de archivos de configuración de pod affinity
+pod-affinity>=1.0.0
+
+# Para testing de archivos de configuración de taints and tolerations
+taints-tolerations>=1.0.0
+
+# Para testing de archivos de configuración de network policies
+network-policy>=1.0.0
+
+# Para testing de archivos de configuración de security contexts
+security-context>=1.0.0
+
+# Para testing de archivos de configuración de pod security policies
+pod-security-policy>=1.0.0
+
+# Para testing de archivos de configuración de role based access control
+rbac>=1.0.0
+
+# Para testing de archivos de configuración de service accounts
+service-account>=1.0.0
+
+# Para testing de archivos de configuración de secrets
+secrets-manager>=1.0.0
+
+# Para testing de archivos de configuración de config maps
+config-map>=1.0.0
+
+# Para testing de archivos de configuración de persistent volumes
+persistent-volume>=1.0.0
+
+# Para testing de archivos de configuración de storage classes
+storage-class>=1.0.0
+
+# Para testing de archivos de configuración de ingress
+ingress-controller>=1.0.0
+
+# Para testing de archivos de configuración de services
+service>=1.0.0
+
+# Para testing de archivos de configuración de endpoints
+endpoints>=1.0.0
+
+# Para testing de archivos de configuración de deployments
+deployment>=1.0.0
+
+# Para testing de archivos de configuración de replica sets
+replica-set>=1.0.0
+
+# Para testing de archivos de configuración de daemon sets
+daemon-set>=1.0.0
+
+# Para testing de archivos de configuración de stateful sets
+stateful-set>=1.0.0
+
+# Para testing de archivos de configuración de jobs
+job>=1.0.0
+
+# Para testing de archivos de configuración de cron jobs
+cron-job>=1.0.0
+
+# Para testing de archivos de configuración de horizontal pod autoscaler
+horizontal-pod-autoscaler>=1.0.0
+
+# Para testing de archivos de configuración de pod disruption budget
+pod-disruption-budget>=1.0.0
+
+# Para testing de archivos de configuración de limit ranges
+limit-range>=1.0.0
+
+# Para testing de archivos de configuración de resource quotas
+resource-quota>=1.0.0
+
+# Para testing de archivos de configuración de priority classes
+priority-class>=1.0.0
+
+# Para testing de archivos de configuración de runtime classes
+runtime-class>=1.0.0
+
+# Para testing de archivos de configuración de pod presets
+pod-preset>=1.0.0
+
+# Para testing de archivos de configuración de mutating admission webhooks
+mutating-admission-webhook>=1.0.0
+
+# Para testing de archivos de configuración de validating admission webhooks
+validating-admission-webhook>=1.0.0
+
+# Para testing de archivos de configuración de custom resource definitions
+custom-resource-definition>=1.0.0
+
+# Para testing de archivos de configuración de custom resources
+custom-resource>=1.0.0
+
+# Para testing de archivos de configuración de operators
+operator>=1.0.0
+
+# Para testing de archivos de configuración de helm charts
+helm>=1.0.0
+
+# Para testing de archivos de configuración de kustomize
+kustomize>=1.0.0
+
+# Para testing de archivos de configuración de skaffold
+skaffold>=1.0.0
+
+# Para testing de archivos de configuración de draft
+draft>=1.0.0
+
+# Para testing de archivos de configuración de tilt
+tilt>=1.0.0
+
+# Para testing de archivos de configuración de garden
+garden>=1.0.0
+
+# Para testing de archivos de configuración de devspace
+devspace>=1.0.0
+
+# Para testing de archivos de configuración de okteto
+okteto>=1.0.0
+
+# Para testing de archivos de configuración de telepresence
+telepresence>=1.0.0
+
+# Para testing de archivos de configuración de linkerd
+linkerd>=1.0.0
+
+# Para testing de archivos de configuración de consul connect
+consul-connect>=1.0.0
+
+# Para testing de archivos de configuración de envoy
+envoy>=1.0.0
+
+# Para testing de archivos de configuración de jaeger
+jaeger>=1.0.0
+
+# Para testing de archivos de configuración de zipkin
+zipkin>=1.0.0
+
+# Para testing de archivos de configuración de opentracing
+opentracing>=1.0.0
+
+# Para testing de archivos de configuración de opencensus
+opencensus>=1.0.0
+
+# Para testing de archivos de configuración de opentelemetry
+opentelemetry>=1.0.0
+
+# Para testing de archivos de configuración de fluentd
+fluentd>=1.0.0
+
+# Para testing de archivos de configuración de fluent bit
+fluent-bit>=1.0.0
+
+# Para testing de archivos de configuración de logstash
+logstash>=1.0.0
+
+# Para testing de archivos de configuración de elasticsearch
+elasticsearch>=1.0.0
+
+# Para testing de archivos de configuración de kibana
+kibana>=1.0.0
+
+# Para testing de archivos de configuración de grafana
+grafana>=1.0.0
+
+# Para testing de archivos de configuración de prometheus
+prometheus>=1.0.0
+
+# Para testing de archivos de configuración de alertmanager
+alertmanager>=1.0.0
+
+# Para testing de archivos de configuración de node exporter
+node-exporter>=1.0.0
+
+# Para testing de archivos de configuración de blackbox exporter
+blackbox-exporter>=1.0.0
+
+# Para testing de archivos de configuración de pushgateway
+pushgateway>=1.0.0
+
+# Para testing de archivos de configuración de thanos
+thanos>=1.0.0
+
+# Para testing de archivos de configuración de cortex
+cortex>=1.0.0
+
+# Para testing de archivos de configuración de loki
+loki>=1.0.0
+
+# Para testing de archivos de configuración de tempo
+tempo>=1.0.0
+
+# Para testing de archivos de configuración de mimir
+mimir>=1.0.0
+
+# Para testing de archivos de configuración de pyroscope
+pyroscope>=1.0.0
+
+# Para testing de archivos de configuración de parca
+parca>=1.0.0
+
+# Para testing de archivos de configuración de continuous profiling
+continuous-profiling>=1.0.0
+
+# Para testing de archivos de configuración de chaos engineering
+chaos-engineering>=1.0.0
+
+# Para testing de archivos de configuración de chaos monkey
+chaos-monkey>=1.0.0
+
+# Para testing de archivos de configuración de litmus
+litmus>=1.0.0
+
+# Para testing de archivos de configuración de gremlin
+gremlin>=1.0.0
+
+# Para testing de archivos de configuración de pumba
+pumba>=1.0.0
+
+# Para testing de archivos de configuración de toxiproxy
+toxiproxy>=1.0.0
+
+# Para testing de archivos de configuración de blockade
+blockade>=1.0.0
+
+# Para testing de archivos de configuración de comcast
+comcast>=1.0.0
+
+# Para testing de archivos de configuración de tc
+tc>=1.0.0
+
+# Para testing de archivos de configuración de netem
+netem>=1.0.0
+
+# Para testing de archivos de configuración de iptables
+iptables>=1.0.0
+
+# Para testing de archivos de configuración de netfilter
+netfilter>=1.0.0
+
+# Para testing de archivos de configuración de ebpf
+ebpf>=1.0.0
+
+# Para testing de archivos de configuración de xdp
+xdp>=1.0.0
+
+# Para testing de archivos de configuración de dpdk
+dpdk>=1.0.0
+
+# Para testing de archivos de configuración de spdk
+spdk>=1.0.0
+
+# Para testing de archivos de configuración de vpp
+vpp>=1.0.0
+
+# Para testing de archivos de configuración de fd.io
+fd-io>=1.0.0
+
+# Para testing de archivos de configuración de openvswitch
+openvswitch>=1.0.0
+
+# Para testing de archivos de configuración de ovn
+ovn>=1.0.0
+
+# Para testing de archivos de configuración de calico
+calico>=1.0.0
+
+# Para testing de archivos de configuración de flannel
+flannel>=1.0.0
+
+# Para testing de archivos de configuración de weave
+weave>=1.0.0
+
+# Para testing de archivos de configuración de cilium
+cilium>=1.0.0
+
+# Para testing de archivos de configuración de antrea
+antrea>=1.0.0
+
+# Para testing de archivos de configuración de kube-router
+kube-router>=1.0.0
+
+# Para testing de archivos de configuración de multus
+multus>=1.0.0
+
+# Para testing de archivos de configuración de whereabouts
+whereabouts>=1.0.0
+
+# Para testing de archivos de configuración de sriov
+sriov>=1.0.0
+
+# Para testing de archivos de configuración de bond
+bond>=1.0.0
+
+# Para testing de archivos de configuración de vlan
+vlan>=1.0.0
+
+# Para testing de archivos de configuración de bridge
+bridge>=1.0.0
+
+# Para testing de archivos de configuración de macvlan
+macvlan>=1.0.0
+
+# Para testing de archivos de configuración de ipvlan
+ipvlan>=1.0.0
+
+# Para testing de archivos de configuración de vxlan
+vxlan>=1.0.0
+
+# Para testing de archivos de configuración de geneve
+geneve>=1.0.0
+
+# Para testing de archivos de configuración de gre
+gre>=1.0.0
+
+# Para testing de archivos de configuración de ipip
+ipip>=1.0.0
+
+# Para testing de archivos de configuración de sit
+sit>=1.0.0
+
+# Para testing de archivos de configuración de wireguard
+wireguard>=1.0.0
+
+# Para testing de archivos de configuración de openvpn
+openvpn>=1.0.0
+
+# Para testing de archivos de configuración de strongswan
+strongswan>=1.0.0
+
+# Para testing de archivos de configuración de libreswan
+libreswan>=1.0.0
+
+# Para testing de archivos de configuración de openswan
+openswan>=1.0.0
+
+# Para testing de archivos de configuración de racoon
+racoon>=1.0.0
+
+# Para testing de archivos de configuración de charon
+charon>=1.0.0
+
+# Para testing de archivos de configuración de pluto
+pluto>=1.0.0
+
+# Para testing de archivos de configuración de iked
+iked>=1.0.0
+
+# Para testing de archivos de configuración de xl2tpd
+xl2tpd>=1.0.0
+
+# Para testing de archivos de configuración de pptpd
+pptpd>=1.0.0
+
+# Para testing de archivos de configuración de sstp
+sstp>=1.0.0
+
+# Para testing de archivos de configuración de softether
+softether>=1.0.0
+
+# Para testing de archivos de configuración de pritunl
+pritunl>=1.0.0
+
+# Para testing de archivos de configuración de algo
+algo>=1.0.0
+
+# Para testing de archivos de configuración de streisand
+streisand>=1.0.0
+
+# Para testing de archivos de configuración de outline
+outline>=1.0.0
+
+# Para testing de archivos de configuración de shadowsocks
+shadowsocks>=1.0.0
+
+# Para testing de archivos de configuración de v2ray
+v2ray>=1.0.0
+
+# Para testing de archivos de configuración de trojan
+trojan>=1.0.0
+
+# Para testing de archivos de configuración de clash
+clash>=1.0.0
+
+# Para testing de archivos de configuración de surge
+surge>=1.0.0
+
+# Para testing de archivos de configuración de quantumult
+quantumult>=1.0.0
+
+# Para testing de archivos de configuración de loon
+loon>=1.0.0
+
+# Para testing de archivos de configuración de pharos
+pharos>=1.0.0
+
+# Para testing de archivos de configuración de potatso
+potatso>=1.0.0
+
+# Para testing de archivos de configuración de wingy
+wingy>=1.0.0
+
+# Para testing de archivos de configuración de shadowrocket
+shadowrocket>=1.0.0
+
+# Para testing de archivos de configuración de pepi
+pepi>=1.0.0
+
+# Para testing de archivos de configuración de kitsunebi
+kitsunebi>=1.0.0
+
+# Para testing de archivos de configuración de i2ray
+i2ray>=1.0.0
+
+# Para testing de archivos de configuración de fairvpn
+fairvpn>=1.0.0
+
+# Para testing de archivos de configuración de betternet
+betternet>=1.0.0
+
+# Para testing de archivos de configuración de hotspot shield
+hotspot-shield>=1.0.0
+
+# Para testing de archivos de configuración de tunnelbear
+tunnelbear>=1.0.0
+
+# Para testing de archivos de configuración de expressvpn
+expressvpn>=1.0.0
+
+# Para testing de archivos de configuración de nordvpn
+nordvpn>=1.0.0
+
+# Para testing de archivos de configuración de surfshark
+surfshark>=1.0.0
+
+# Para testing de archivos de configuración de cyberghost
+cyberghost>=1.0.0
+
+# Para testing de archivos de configuración de ipvanish
+ipvanish>=1.0.0
+
+# Para testing de archivos de configuración de vyprvpn
+vyprvpn>=1.0.0
+
+# Para testing de archivos de configuración de purevpn
+purevpn>=1.0.0
+
+# Para testing de archivos de configuración de hidemyass
+hidemyass>=1.0.0
+
+# Para testing de archivos de configuración de privateinternetaccess
+privateinternetaccess>=1.0.0
+
+# Para testing de archivos de configuración de torguard
+torguard>=1.0.0
+
+# Para testing de archivos de configuración de airvpn
+airvpn>=1.0.0
+
+# Para testing de archivos de configuración de mullvad
+mullvad>=1.0.0
+
+# Para testing de archivos de configuración de protonvpn
+protonvpn>=1.0.0
+
+# Para testing de archivos de configuración de windscribe
+windscribe>=1.0.0
+
+# Para testing de archivos de configuración de zenmate
+zenmate>=1.0.0
+
+# Para testing de archivos de configuración de avast secureline
+avast-secureline>=1.0.0
+
+# Para testing de archivos de configuración de kaspersky secure connection
+kaspersky-secure-connection>=1.0.0
+
+# Para testing de archivos de configuración de bitdefender vpn
+bitdefender-vpn>=1.0.0
+
+# Para testing de archivos de configuración de mcafee safe connect
+mcafee-safe-connect>=1.0.0
+
+# Para testing de archivos de configuración de norton secure vpn
+norton-secure-vpn>=1.0.0
+
+# Para testing de archivos de configuración de f-secure freedome
+f-secure-freedome>=1.0.0
+
+# Para testing de archivos de configuración de panda dome vpn
+panda-dome-vpn>=1.0.0
+
+# Para testing de archivos de configuración de trend micro vpn
+trend-micro-vpn>=1.0.0
+
+# Para testing de archivos de configuración de eset online scanner
+eset-online-scanner>=1.0.0
+
+# Para testing de archivos de configuración de malwarebytes
+malwarebytes>=1.0.0
+
+# Para testing de archivos de configuración de spybot
+spybot>=1.0.0
+
+# Para testing de archivos de configuración de adwcleaner
+adwcleaner>=1.0.0
+
+# Para testing de archivos de configuración de ccleaner
+ccleaner>=1.0.0
+
+# Para testing de archivos de configuración de bleachbit
+bleachbit>=1.0.0
+
+# Para testing de archivos de configuración de privazer
+privazer>=1.0.0
+
+# Para testing de archivos de configuración de system ninja
+system-ninja>=1.0.0
+
+# Para testing de archivos de configuración de wise care 365
+wise-care-365>=1.0.0
+
+# Para testing de archivos de configuración de advanced systemcare
+advanced-systemcare>=1.0.0
+
+# Para testing de archivos de configuración de glary utilities
+glary-utilities>=1.0.0
+
+# Para testing de archivos de configuración de ashampoo winoptimizer
+ashampoo-winoptimizer>=1.0.0
+
+# Para testing de archivos de configuración de auslogics boostspeed
+auslogics-boostspeed>=1.0.0
+
+# Para testing de archivos de configuración de system mechanic
+system-mechanic>=1.0.0
+
+# Para testing de archivos de configuración de pc tune-up
+pc-tune-up>=1.0.0
+
+# Para testing de archivos de configuración de registry cleaner
+registry-cleaner>=1.0.0
+
+# Para testing de archivos de configuración de disk cleanup
+disk-cleanup>=1.0.0
+
+# Para testing de archivos de configuración de defragmentation
+defragmentation>=1.0.0
+
+# Para testing de archivos de configuración de startup manager
+startup-manager>=1.0.0
+
+# Para testing de archivos de configuración de task manager
+task-manager>=1.0.0
+
+# Para testing de archivos de configuración de process monitor
+process-monitor>=1.0.0
+
+# Para testing de archivos de configuración de resource monitor
+resource-monitor>=1.0.0
+
+# Para testing de archivos de configuración de performance monitor
+performance-monitor>=1.0.0
+
+# Para testing de archivos de configuración de event viewer
+event-viewer>=1.0.0
+
+# Para testing de archivos de configuración de device manager
+device-manager>=1.0.0
+
+# Para testing de archivos de configuración de disk management
+disk-management>=1.0.0
+
+# Para testing de archivos de configuración de computer management
+computer-management>=1.0.0
+
+# Para testing de archivos de configuración de system configuration
+system-configuration>=1.0.0
+
+# Para testing de archivos de configuración de system information
+system-information>=1.0.0
+
+# Para testing de archivos de configuración de system restore
+system-restore>=1.0.0
+
+# Para testing de archivos de configuración de backup and restore
+backup-and-restore>=1.0.0
+
+# Para testing de archivos de configuración de file history
+file-history>=1.0.0
+
+# Para testing de archivos de configuración de windows backup
+windows-backup>=1.0.0
+
+# Para testing de archivos de configuración de system image backup
+system-image-backup>=1.0.0
+
+# Para testing de archivos de configuración de recovery drive
+recovery-drive>=1.0.0
+
+# Para testing de archivos de configuración de reset this pc
+reset-this-pc>=1.0.0
+
+# Para testing de archivos de configuración de fresh start
+fresh-start>=1.0.0
+
+# Para testing de archivos de configuración de cloud reset
+cloud-reset>=1.0.0
+
+# Para testing de archivos de configuración de windows update
+windows-update>=1.0.0
+
+# Para testing de archivos de configuración de windows defender
+windows-defender>=1.0.0
+
+# Para testing de archivos de configuración de windows firewall
+windows-firewall>=1.0.0
+
+# Para testing de archivos de configuración de windows security
+windows-security>=1.0.0
+
+# Para testing de archivos de configuración de user account control
+user-account-control>=1.0.0
+
+# Para testing de archivos de configuración de bitlocker
+bitlocker>=1.0.0
+
+# Para testing de archivos de configuración de device encryption
+device-encryption>=1.0.0
+
+# Para testing de archivos de configuración de secure boot
+secure-boot>=1.0.0
+
+# Para testing de archivos de configuración de tpm
+tpm>=1.0.0
+
+# Para testing de archivos de configuración de credential guard
+credential-guard>=1.0.0
+
+# Para testing de archivos de configuración de device guard
+device-guard>=1.0.0
+
+# Para testing de archivos de configuración de application guard
+application-guard>=1.0.0
+
+# Para testing de archivos de configuración de exploit protection
+exploit-protection>=1.0.0
+
+# Para testing de archivos de configuración de controlled folder access
+controlled-folder-access>=1.0.0
+
+# Para testing de archivos de configuración de attack surface reduction
+attack-surface-reduction>=1.0.0
+
+# Para testing de archivos de configuración de network protection
+network-protection>=1.0.0
+
+# Para testing de archivos de configuración de web protection
+web-protection>=1.0.0
+
+# Para testing de archivos de configuración de email protection
+email-protection>=1.0.0
+
+# Para testing de archivos de configuración de ransomware protection
+ransomware-protection>=1.0.0
+
+# Para testing de archivos de configuración de tamper protection
+tamper-protection>=1.0.0
+
+# Para testing de archivos de configuración de cloud-delivered protection
+cloud-delivered-protection>=1.0.0
+
+# Para testing de archivos de configuración de automatic sample submission
+automatic-sample-submission>=1.0.0
+
+# Para testing de archivos de configuración de potentially unwanted application protection
+potentially-unwanted-application-protection>=1.0.0
+
+# Para testing de archivos de configuración de smart app control
+smart-app-control>=1.0.0
+
+# Para testing de archivos de configuración de reputation-based protection
+reputation-based-protection>=1.0.0
+
+# Para testing de archivos de configuración de check apps and files
+check-apps-and-files>=1.0.0
+
+# Para testing de archivos de configuración de smartscreen for microsoft edge
+smartscreen-for-microsoft-edge>=1.0.0
+
+# Para testing de archivos de configuración de smartscreen for microsoft store apps
+smartscreen-for-microsoft-store-apps>=1.0.0
+
+# Para testing de archivos de configuración de phishing and malware protection
+phishing-and-malware-protection>=1.0.0
+
+# Para testing de archivos de configuración de safe browsing
+safe-browsing>=1.0.0
+
+# Para testing de archivos de configuración de enhanced phishing protection
+enhanced-phishing-protection>=1.0.0
+
+# Para testing de archivos de configuración de microsoft defender for business
+microsoft-defender-for-business>=1.0.0
+
+# Para testing de archivos de configuración de microsoft defender for enterprise
+microsoft-defender-for-enterprise>=1.0.0
+
+# Para testing de archivos de configuración de microsoft defender for endpoint
+microsoft-defender-for-endpoint>=1.0.0
+
+# Para testing de archivos de configuración de microsoft defender for identity
+microsoft-defender-for-identity>=1.0.0
+
+# Para testing de archivos de configuración de microsoft defender for office 365
+microsoft-defender-for-office-365>=1.0.0
+
+# Para testing de archivos de configuración de microsoft defender for cloud apps
+microsoft-defender-for-cloud-apps>=1.0.0
+
+# Para testing de archivos de configuración de microsoft defender for cloud
+microsoft-defender-for-cloud>=1.0.0
+
+# Para testing de archivos de configuración de microsoft sentinel
+microsoft-sentinel>=1.0.0
+
+# Para testing de archivos de configuración de azure security center
+azure-security-center>=1.0.0
+
+# Para testing de archivos de configuración de azure defender
+azure-defender>=1.0.0
+
+# Para testing de archivos de configuración de azure firewall
+azure-firewall>=1.0.0
+
+# Para testing de archivos de configuración de azure ddos protection
+azure-ddos-protection>=1.0.0
+
+# Para testing de archivos de configuración de azure front door
+azure-front-door>=1.0.0
+
+# Para testing de archivos de configuración de azure application gateway
+azure-application-gateway>=1.0.0
+
+# Para testing de archivos de configuración de azure load balancer
+azure-load-balancer>=1.0.0
+
+# Para testing de archivos de configuración de azure traffic manager
+azure-traffic-manager>=1.0.0
+
+# Para testing de archivos de configuración de azure cdn
+azure-cdn>=1.0.0
+
+# Para testing de archivos de configuración de azure dns
+azure-dns>=1.0.0
+
+# Para testing de archivos de configuración de azure private dns
+azure-private-dns>=1.0.0
+
+# Para testing de archivos de configuración de azure bastion
+azure-bastion>=1.0.0
+
+# Para testing de archivos de configuración de azure vpn gateway
+azure-vpn-gateway>=1.0.0
+
+# Para testing de archivos de configuración de azure expressroute
+azure-expressroute>=1.0.0
+
+# Para testing de archivos de configuración de azure virtual wan
+azure-virtual-wan>=1.0.0
+
+# Para testing de archivos de configuración de azure virtual network
+azure-virtual-network>=1.0.0
+
+# Para testing de archivos de configuración de azure network security group
+azure-network-security-group>=1.0.0
+
+# Para testing de archivos de configuración de azure application security group
+azure-application-security-group>=1.0.0
+
+# Para testing de archivos de configuración de azure route table
+azure-route-table>=1.0.0
+
+# Para testing de archivos de configuración de azure network interface
+azure-network-interface>=1.0.0
+
+# Para testing de archivos de configuración de azure public ip
+azure-public-ip>=1.0.0
+
+# Para testing de archivos de configuración de azure private endpoint
+azure-private-endpoint>=1.0.0
+
+# Para testing de archivos de configuración de azure private link service
+azure-private-link-service>=1.0.0
+
+# Para testing de archivos de configuración de azure service endpoint
+azure-service-endpoint>=1.0.0
+
+# Para testing de archivos de configuración de azure nat gateway
+azure-nat-gateway>=1.0.0
+
+# Para testing de archivos de configuración de azure virtual network peering
+azure-virtual-network-peering>=1.0.0
+
+# Para testing de archivos de configuración de azure virtual network gateway
+azure-virtual-network-gateway>=1.0.0
+
+# Para testing de archivos de configuración de azure local network gateway
+azure-local-network-gateway>=1.0.0
+
+# Para testing de archivos de configuración de azure connection
+azure-connection>=1.0.0
+
+# Para testing de archivos de configuración de azure virtual machine
+azure-virtual-machine>=1.0.0
+
+# Para testing de archivos de configuración de azure virtual machine scale set
+azure-virtual-machine-scale-set>=1.0.0
+
+# Para testing de archivos de configuración de azure availability set
+azure-availability-set>=1.0.0
+
+# Para testing de archivos de configuración de azure proximity placement group
+azure-proximity-placement-group>=1.0.0
+
+# Para testing de archivos de configuración de azure dedicated host
+azure-dedicated-host>=1.0.0
+
+# Para testing de archivos de configuración de azure dedicated host group
+azure-dedicated-host-group>=1.0.0
+
+# Para testing de archivos de configuración de azure disk
+azure-disk>=1.0.0
+
+# Para testing de archivos de configuración de azure snapshot
+azure-snapshot>=1.0.0
+
+# Para testing de archivos de configuración de azure image
+azure-image>=1.0.0
+
+# Para testing de archivos de configuración de azure gallery
+azure-gallery>=1.0.0
+
+# Para testing de archivos de configuración de azure gallery image definition
+azure-gallery-image-definition>=1.0.0
+
+# Para testing de archivos de configuración de azure gallery image version
+azure-gallery-image-version>=1.0.0
+
+# Para testing de archivos de configuración de azure storage account
+azure-storage-account>=1.0.0
+
+# Para testing de archivos de configuración de azure blob storage
+azure-blob-storage>=1.0.0
+
+# Para testing de archivos de configuración de azure file storage
+azure-file-storage>=1.0.0
+
+# Para testing de archivos de configuración de azure queue storage
+azure-queue-storage>=1.0.0
+
+# Para testing de archivos de configuración de azure table storage
+azure-table-storage>=1.0.0
+
+# Para testing de archivos de configuración de azure data lake storage
+azure-data-lake-storage>=1.0.0
+
+# Para testing de archivos de configuración de azure archive storage
+azure-archive-storage>=1.0.0
+
+# Para testing de archivos de configuración de azure backup
+azure-backup>=1.0.0
+
+# Para testing de archivos de configuración de azure site recovery
+azure-site-recovery>=1.0.0
+
+# Para testing de archivos de configuración de azure migrate
+azure-migrate>=1.0.0
+
+# Para testing de archivos de configuración de azure database migration service
+azure-database-migration-service>=1.0.0
+
+# Para testing de archivos de configuración de azure sql database
+azure-sql-database>=1.0.0
+
+# Para testing de archivos de configuración de azure sql managed instance
+azure-sql-managed-instance>=1.0.0
+
+# Para testing de archivos de configuración de azure sql server
+azure-sql-server>=1.0.0
+
+# Para testing de archivos de configuración de azure postgresql
+azure-postgresql>=1.0.0
+
+# Para testing de archivos de configuración de azure mysql
+azure-mysql>=1.0.0
+
+# Para testing de archivos de configuración de azure mariadb
+azure-mariadb>=1.0.0
+
+# Para testing de archivos de configuración de azure cosmos db
+azure-cosmos-db>=1.0.0
+
+# Para testing de archivos de configuración de azure redis cache
+azure-redis-cache>=1.0.0
+
+# Para testing de archivos de configuración de azure search
+azure-search>=1.0.0
+
+# Para testing de archivos de configuración de azure cognitive search
+azure-cognitive-search>=1.0.0
+
+# Para testing de archivos de configuración de azure cognitive services
+azure-cognitive-services>=1.0.0
+
+# Para testing de archivos de configuración de azure machine learning
+azure-machine-learning>=1.0.0
+
+# Para testing de archivos de configuración de azure databricks
+azure-databricks>=1.0.0
+
+# Para testing de archivos de configuración de azure synapse analytics
+azure-synapse-analytics>=1.0.0
+
+# Para testing de archivos de configuración de azure data factory
+azure-data-factory>=1.0.0
+
+# Para testing de archivos de configuración de azure stream analytics
+azure-stream-analytics>=1.0.0
+
+# Para testing de archivos de configuración de azure event hubs
+azure-event-hubs>=1.0.0
+
+# Para testing de archivos de configuración de azure service bus
+azure-service-bus>=1.0.0
+
+# Para testing de archivos de configuración de azure event grid
+azure-event-grid>=1.0.0
+
+# Para testing de archivos de configuración de azure logic apps
+azure-logic-apps>=1.0.0
+
+# Para testing de archivos de configuración de azure functions
+azure-functions>=1.0.0
+
+# Para testing de archivos de configuración de azure app service
+azure-app-service>=1.0.0
+
+# Para testing de archivos de configuración de azure container instances
+azure-container-instances>=1.0.0
+
+# Para testing de archivos de configuración de azure container registry
+azure-container-registry>=1.0.0
+
+# Para testing de archivos de configuración de azure kubernetes service
+azure-kubernetes-service>=1.0.0
+
+# Para testing de archivos de configuración de azure service fabric
+azure-service-fabric>=1.0.0
+
+# Para testing de archivos de configuración de azure batch
+azure-batch>=1.0.0
+
+# Para testing de archivos de configuración de azure hdinsight
+azure-hdinsight>=1.0.0
+
+# Para testing de archivos de configuración de azure api management
+azure-api-management>=1.0.0
+
+# Para testing de archivos de configuración de azure notification hubs
+azure-notification-hubs>=1.0.0
+
+# Para testing de archivos de configuración de azure signalr service
+azure-signalr-service>=1.0.0
+
+# Para testing de archivos de configuración de azure relay
+azure-relay>=1.0.0
+
+# Para testing de archivos de configuración de azure iot hub
+azure-iot-hub>=1.0.0
+
+# Para testing de archivos de configuración de azure iot central
+azure-iot-central>=1.0.0
+
+# Para testing de archivos de configuración de azure iot edge
+azure-iot-edge>=1.0.0
+
+# Para testing de archivos de configuración de azure digital twins
+azure-digital-twins>=1.0.0
+
+# Para testing de archivos de configuración de azure time series insights
+azure-time-series-insights>=1.0.0
+
+# Para testing de archivos de configuración de azure maps
+azure-maps>=1.0.0
+
+# Para testing de archivos de configuración de azure media services
+azure-media-services>=1.0.0
+
+# Para testing de archivos de configuración de azure content delivery network
+azure-content-delivery-network>=1.0.0
+
+# Para testing de archivos de configuración de azure active directory
+azure-active-directory>=1.0.0
+
+# Para testing de archivos de configuración de azure active directory b2c
+azure-active-directory-b2c>=1.0.0
+
+# Para testing de archivos de configuración de azure active directory domain services
+azure-active-directory-domain-services>=1.0.0
+
+# Para testing de archivos de configuración de azure key vault
+azure-key-vault>=1.0.0
+
+# Para testing de archivos de configuración de azure information protection
+azure-information-protection>=1.0.0
+
+# Para testing de archivos de configuración de azure policy
+azure-policy>=1.0.0
+
+# Para testing de archivos de configuración de azure blueprints
+azure-blueprints>=1.0.0
+
+# Para testing de archivos de configuración de azure resource manager
+azure-resource-manager>=1.0.0
+
+# Para testing de archivos de configuración de azure cost management
+azure-cost-management>=1.0.0
+
+# Para testing de archivos de configuración de azure advisor
+azure-advisor>=1.0.0
+
+# Para testing de archivos de configuración de azure monitor
+azure-monitor>=1.0.0
+
+# Para testing de archivos de configuración de azure log analytics
+azure-log-analytics>=1.0.0
+
+# Para testing de archivos de configuración de azure application insights
+azure-application-insights>=1.0.0
+
+# Para testing de archivos de configuración de azure automation
+azure-automation>=1.0.0
+
+# Para testing de archivos de configuración de azure devops
+azure-devops>=1.0.0
+
+# Para testing de archivos de configuración de azure devtest labs
+azure-devtest-labs>=1.0.0
+
+# Para testing de archivos de configuración de azure lab services
+azure-lab-services>=1.0.0
+
+# Para testing de archivos de configuración de azure lighthouse
+azure-lighthouse>=1.0.0
+
+# Para testing de archivos de configuración de azure arc
+azure-arc>=1.0.0
+
+# Para testing de archivos de configuración de azure stack
+azure-stack>=1.0.0
+
+# Para testing de archivos de configuración de azure stack hci
+azure-stack-hci>=1.0.0
+
+# Para testing de archivos de configuración de azure stack edge
+azure-stack-edge>=1.0.0
+
+# Para testing de archivos de configuración de azure sphere
+azure-sphere>=1.0.0
+
+# Para testing de archivos de configuración de azure percept
+azure-percept>=1.0.0
+
+# Para testing de archivos de configuración de azure kinect
+azure-kinect>=1.0.0
+
+# Para testing de archivos de configuración de azure hololens
+azure-hololens>=1.0.0
+
+# Para testing de archivos de configuración de azure mixed reality
+azure-mixed-reality>=1.0.0
+
+# Para testing de archivos de configuración de azure spatial anchors
+azure-spatial-anchors>=1.0.0
+
+# Para testing de archivos de configuración de azure remote rendering
+azure-remote-rendering>=1.0.0
+
+# Para testing de archivos de configuración de azure object anchors
+azure-object-anchors>=1.0.0
+
+# Para testing de archivos de configuración de azure communication services
+azure-communication-services>=1.0.0
+
+# Para testing de archivos de configuración de azure web pubsub
+azure-web-pubsub>=1.0.0
+
+# Para testing de archivos de configuración de azure static web apps
+azure-static-web-apps>=1.0.0
+
+# Para testing de archivos de configuración de azure spring cloud
+azure-spring-cloud>=1.0.0
+
+# Para testing de archivos de configuración de azure container apps
+azure-container-apps>=1.0.0
+
+# Para testing de archivos de configuración de azure red hat openshift
+azure-red-hat-openshift>=1.0.0
+
+# Para testing de archivos de configuración de azure vmware solution
+azure-vmware-solution>=1.0.0
+
+# Para testing de archivos de configuración de azure netapp files
+azure-netapp-files>=1.0.0
+
+# Para testing de archivos de configuración de azure hpc cache
+azure-hpc-cache>=1.0.0
+
+# Para testing de archivos de configuración de azure cyclecloud
+azure-cyclecloud>=1.0.0
+
+# Para testing de archivos de configuración de azure quantum
+azure-quantum>=1.0.0
+
+# Para testing de archivos de configuración de azure confidential computing
+azure-confidential-computing>=1.0.0
+
+# Para testing de archivos de configuración de azure attestation
+azure-attestation>=1.0.0
+
+# Para testing de archivos de configuración de azure managed hsm
+azure-managed-hsm>=1.0.0
+
+# Para testing de archivos de configuración de azure dedicated hsm
+azure-dedicated-hsm>=1.0.0
+
+# Para testing de archivos de configuración de azure purview
+azure-purview>=1.0.0
+
+# Para testing de archivos de configuración de azure data catalog
+azure-data-catalog>=1.0.0
+
+# Para testing de archivos de configuración de azure data share
+azure-data-share>=1.0.0
+
+# Para testing de archivos de configuración de azure data box
+azure-data-box>=1.0.0
+
+# Para testing de archivos de configuración de azure databox gateway
+azure-databox-gateway>=1.0.0
+
+# Para testing de archivos de configuración de azure stack edge
+azure-stack-edge>=1.0.0
+
+# Para testing de archivos de configuración de azure fxt edge filer
+azure-fxt-edge-filer>=1.0.0
+
+# Para testing de archivos de configuración de azure avere vfxt
+azure-avere-vfxt>=1.0.0
+
+# Para testing de archivos de configuración de azure batch ai
+azure-batch-ai>=1.0.0
+
+# Para testing de archivos de configuración de azure machine learning compute
+azure-machine-learning-compute>=1.0.0
+
+# Para testing de archivos de configuración de azure machine learning studio
+azure-machine-learning-studio>=1.0.0
+
+# Para testing de archivos de configuración de azure cognitive services
+azure-cognitive-services>=1.0.0
+
+# Para testing de archivos de configuración de azure bot service
+azure-bot-service>=1.0.0
+
+# Para testing de archivos de configuración de azure form recognizer
+azure-form-recognizer>=1.0.0
+
+# Para testing de archivos de configuración de azure computer vision
+azure-computer-vision>=1.0.0
+
+# Para testing de archivos de configuración de azure custom vision
+azure-custom-vision>=1.0.0
+
+# Para testing de archivos de configuración de azure face api
+azure-face-api>=1.0.0
+
+# Para testing de archivos de configuración de azure video indexer
+azure-video-indexer>=1.0.0
+
+# Para testing de archivos de configuración de azure content moderator
+azure-content-moderator>=1.0.0
+
+# Para testing de archivos de configuración de azure personalizer
+azure-personalizer>=1.0.0
+
+# Para testing de archivos de configuración de azure anomaly detector
+azure-anomaly-detector>=1.0.0
+
+# Para testing de archivos de configuración de azure metrics advisor
+azure-metrics-advisor>=1.0.0
+
+# Para testing de archivos de configuración de azure immersive reader
+azure-immersive-reader>=1.0.0
+
+# Para testing de archivos de configuración de azure translator
+azure-translator>=1.0.0
+
+# Para testing de archivos de configuración de azure speech services
+azure-speech-services>=1.0.0
+
+# Para testing de archivos de configuración de azure language understanding
+azure-language-understanding>=1.0.0
+
+# Para testing de archivos de configuración de azure qna maker
+azure-qna-maker>=1.0.0
+
+# Para testing de archivos de configuración de azure text analytics
+azure-text-analytics>=1.0.0
+
+# Para testing de archivos de configuración de azure language service
+azure-language-service>=1.0.0
+
+# Para testing de archivos de configuración de azure openai service
+azure-openai-service>=1.0.0
+
+# Para testing de archivos de configuración de azure applied ai services
+azure-applied-ai-services>=1.0.0
+
+# Para testing de archivos de configuración de azure cognitive services for language
+azure-cognitive-services-for-language>=1.0.0
+
+# Para testing de archivos de configuración de azure cognitive services for vision
+azure-cognitive-services-for-vision>=1.0.0
+
+# Para testing de archivos de configuración de azure cognitive services for speech
+azure-cognitive-services-for-speech>=1.0.0
+
+# Para testing de archivos de configuración de azure cognitive services for decision
+azure-cognitive-services-for-decision>=1.0.0
+
+# Para testing de archivos de configuración de azure cognitive services for web search
+azure-cognitive-services-for-web-search>=1.0.0
+
+# Para testing de archivos de configuración de azure
