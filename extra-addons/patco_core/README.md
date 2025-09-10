@@ -172,10 +172,24 @@ patco_core/
 │   ├── patco_service_nature_views.xml   # Vistas de naturalezas de servicio
 │   └── stock_transfer_request_views.xml # Vistas de transferencias
 ├── data/
+│   ├── agreement_type_data.xml          # Tipos de acuerdos y contratos
+│   ├── fsm_worksheet_template_data.xml  # Plantillas de hojas de trabajo
+│   ├── maintenance_equipment_category_data.xml # Categorías de equipos
 │   ├── patco_actions.xml                # Acciones y menús del sistema
+│   ├── patco_core_data.xml              # Datos centrales del sistema
+│   ├── patco_menu_visibility.xml        # Configuración de visibilidad de menús
+│   ├── patco_module_restrictions.xml    # Restricciones de módulos
+│   ├── patco_security_groups.xml        # Grupos de seguridad
 │   ├── patco_service_area_data.xml      # Datos maestros de áreas
 │   ├── patco_service_complexity_data.xml # Datos maestros de complejidad
-│   └── patco_service_nature_data.xml    # Datos maestros de naturalezas
+│   ├── patco_service_nature_data.xml    # Datos maestros de naturalezas
+│   ├── product_categories_consolidated.xml # Categorías de productos consolidadas
+│   ├── product_spare_parts_data.xml     # Productos de repuestos y consumibles
+│   ├── service_catalog_data.xml         # Catálogo de servicios
+│   ├── stock_initial_data.xml           # Datos iniciales de inventario
+│   ├── stock_locations_data.xml         # Ubicaciones de almacén
+│   ├── stock_rules_data.xml             # Reglas de inventario
+│   └── stock_vehicle_data.xml           # Datos de vehículos y ubicaciones móviles
 ├── security/
 │   ├── ir.model.access.csv              # Permisos de acceso a modelos
 │   └── patco_security.xml               # Grupos de seguridad PATCO
@@ -191,9 +205,11 @@ patco_core/
 - **models/**: Modelos Python del núcleo del sistema PATCO
 - **wizards/**: Asistentes para procesos específicos (consumo de repuestos, aprobaciones)
 - **views/**: Definiciones de vistas XML para todos los modelos
-- **data/**: Datos maestros, acciones y configuraciones iniciales
+- **data/**: Datos maestros, acciones y configuraciones iniciales (incluye categorías consolidadas)
 - **security/**: Grupos de seguridad y permisos de acceso
 - **static/**: Recursos estáticos (iconos, descripciones)
+- **migrations/**: Scripts de migración para actualizaciones de versión
+- **i18n/**: Archivos de traducción (español peruano)
 
 ## Dependencias
 
@@ -254,7 +270,8 @@ patco_core/
 2. **Configurar Ubicaciones de Vehículos**: Crear ubicaciones de stock para vehículos de técnicos
 3. **Configurar Proyectos FSM**: Establecer proyectos por defecto para órdenes de servicio
 4. **Configurar Plantillas de Worksheet**: Crear plantillas de hojas de trabajo según necesidades
-5. **Configurar Productos**: Establecer productos/servicios para facturación automática
+5. **Verificar Categorías de Productos**: Las categorías consolidadas se cargan automáticamente desde `product_categories_consolidated.xml`
+6. **Configurar Productos**: Establecer productos/servicios para facturación automática usando las categorías predefinidas
 
 ## Uso del Sistema
 
@@ -301,6 +318,45 @@ analytic_line.action_timer_stop()
 
 
 
+## Estructura de Categorías de Productos
+
+### Categorías Consolidadas
+El módulo incluye un sistema consolidado de categorías de productos en `product_categories_consolidated.xml` que elimina duplicaciones y proporciona una estructura jerárquica coherente:
+
+#### Servicios de Mantenimiento
+- **Servicios de Mantenimiento** (categoría principal)
+  - Mantenimiento Preventivo
+  - Mantenimiento Correctivo
+  - Servicios de Instalación
+
+#### Repuestos y Consumibles
+- **Repuestos y Consumibles** (categoría principal)
+  - **Repuestos de Cocina**
+    - Equipos de Cocción
+    - Equipos de Preparación
+    - Equipos de Lavado de Vajilla
+    - Sistemas de Ventilación
+  - **Repuestos de Refrigeración**
+    - Refrigeración Comercial
+    - Climatización (HVAC)
+  - **Repuestos de Lavandería**
+    - Equipos de Lavado
+    - Equipos de Secado
+    - Equipos de Planchado
+  - **Repuestos de Bar y Cafetería**
+  - **Componentes Eléctricos**
+  - **Componentes de Fontanería**
+  - **Filtros**
+  - **Aceites y Lubricantes**
+  - **Consumibles Generales**
+
+### Beneficios de la Consolidación
+- Eliminación de categorías duplicadas entre archivos
+- Estructura jerárquica alineada con el documento funcional PATCO
+- Categorización específica para el sector HORECA
+- Facilita la organización y búsqueda de productos
+- Mejora la consistencia en la clasificación de repuestos
+
 ## Notas Técnicas
 
 ### Compatibilidad
@@ -314,11 +370,13 @@ analytic_line.action_timer_stop()
 - Código optimizado para rendimiento
 - Preparado para extensiones futuras
 - Cumple con estándares de seguridad de Odoo
+- Sistema consolidado de categorías de productos
 
 ### Consideraciones de Rendimiento
 - Los cálculos de clasificación son automáticos y eficientes
 - Las consultas de stock están optimizadas
 - Los timers utilizan campos computados para mejor rendimiento
+- Carga única de categorías consolidadas mejora el rendimiento
 
 ## Extensibilidad
 

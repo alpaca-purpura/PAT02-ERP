@@ -6,22 +6,19 @@ from odoo import models, fields, api
 class HrEmployee(models.Model):
     _inherit = 'hr.employee'
 
-    # Campos relacionados con habilidades técnicas
-    technical_skill_ids = fields.One2many(
-        'hr.employee.skill', 'employee_id',
-        string='Habilidades Técnicas',
-        help='Habilidades técnicas del empleado para servicios HORECA'
+    # Campo de habilidades técnicas (no existe en Odoo 18 Community)
+    employee_skill_ids = fields.One2many(
+        'hr.employee.skill',
+        'employee_id',
+        string='Habilidades',
+        help='Habilidades técnicas del empleado'
     )
     
     # Campo computado para mostrar habilidades principales
-    # main_skills = fields.Char(
-    #     string='Habilidades Principales',
-    #     compute='_compute_main_skills',
-    #     store=True,
-    #     help='Resumen de las principales habilidades técnicas'
-    # )
     main_skills = fields.Char(
         string='Habilidades Principales',
+        compute='_compute_main_skills',
+        store=True,
         help='Resumen de las principales habilidades técnicas'
     )
     
@@ -45,18 +42,16 @@ class HrEmployee(models.Model):
             # Por ahora establecemos en 0, se implementará cuando esté disponible FSM
             employee.fsm_order_count = 0
     
-    # @api.depends('technical_skill_ids', 'technical_skill_ids.skill_id', 'technical_skill_ids.skill_level_id')
-    # def _compute_main_skills(self):
-    #     """Computa las habilidades principales del empleado"""
-    #     for employee in self:
-    #         skills = []
-    #         for skill in employee.technical_skill_ids:
-    #             if skill.skill_level_id:
-    #                 # Usar el nombre del nivel en lugar de level_progress para evitar problemas de dependencia
-    #                 level_name = skill.skill_level_id.name or ''
-    #                 if 'N2' in level_name or 'N3' in level_name:  # N2 o superior
-    #                     skills.append(skill.skill_id.name)
-    #         employee.main_skills = ', '.join(skills[:3])  # Máximo 3 habilidades principales
+    @api.depends('employee_skill_ids.skill_id', 'employee_skill_ids.skill_level_id')
+    def _compute_main_skills(self):
+        """Computa las habilidades principales del empleado"""
+        for employee in self:
+            skills = []
+            for skill_line in employee.employee_skill_ids:
+                if skill_line.skill_id and skill_line.skill_level_id:
+                    skill_text = f"{skill_line.skill_id.name} ({skill_line.skill_level_id.name})"
+                    skills.append(skill_text)
+            employee.main_skills = ', '.join(skills[:3])  # Mostrar solo las 3 principales
     
     def get_skills_by_type(self, skill_type_name):
         """Obtiene las habilidades del empleado por tipo
@@ -67,7 +62,7 @@ class HrEmployee(models.Model):
         Returns:
             recordset: Habilidades del empleado del tipo especificado
         """
-        return self.technical_skill_ids.filtered(
+        return self.employee_skill_ids.filtered(
             lambda s: s.skill_id.skill_type_id.name == skill_type_name
         )
     
@@ -81,7 +76,7 @@ class HrEmployee(models.Model):
         Returns:
             bool: True si tiene la habilidad con el nivel mínimo
         """
-        skill = self.technical_skill_ids.filtered(
+        skill = self.employee_skill_ids.filtered(
             lambda s: skill_name in s.skill_id.name
         )
         if not skill:

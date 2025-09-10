@@ -27,6 +27,7 @@
         'patco_core',
         'fieldservice',
         'helpdesk_mgmt',
+        'helpdesk_mgmt_sale',
     ],
     'external_dependencies': {
         'python': ['qrcode', 'PIL'],
@@ -47,9 +48,6 @@
         
         # Reports
         'reports/equipment_label_report.xml',
-    ],
-    'demo': [
-        'demo/demo_data.xml',
     ],
     'assets': {
         'web.assets_backend': [

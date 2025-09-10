@@ -341,7 +341,12 @@ class FSMOrder(models.Model):
                 # Aquí se podría agregar lógica adicional de filtrado por ubicación
                 pass
             
-            order.x_available_technicians = available_technicians
+            # Convertir fsm.person a res.partner y usar comandos Many2many
+            if available_technicians:
+                partner_ids = available_technicians.mapped('partner_id.id')
+                order.x_available_technicians = [(6, 0, partner_ids)]
+            else:
+                order.x_available_technicians = [(5, 0, 0)]
     
     @api.depends('x_required_skill_types', 'x_available_technicians', 'person_id')
     def _compute_skill_match_warning(self):

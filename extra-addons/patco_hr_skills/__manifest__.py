@@ -19,16 +19,18 @@
     'website': 'https://www.patco.com',
     'depends': [
         'hr',
-        # 'hr_skills',  # Enterprise module, not available in Community
     ],
     'data': [
         'security/ir.model.access.csv',
-        # 'views/hr_employee_views.xml',
-        # 'views/fsm_order_views.xml',
-        # 'data/hr_skill_level_data.xml',
-        # 'data/hr_skill_type_data.xml',
-        # 'data/hr_skill_data.xml',
+        'data/hr_skill_type_data.xml',
+        'data/hr_skill_level_data.xml',
+        'data/hr_skill_data.xml',
+        'data/hr_job_data.xml',
+        'views/hr_employee_views.xml',
     ],
+    'demo': [
+    ],
+    'license': 'LGPL-3',
     'installable': True,
     'auto_install': False,
     'application': False,

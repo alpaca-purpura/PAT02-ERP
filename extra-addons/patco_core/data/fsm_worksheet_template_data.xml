@@ -5,7 +5,7 @@
         <record id="worksheet_template_preventive" model="fsm.worksheet.template">
             <field name="name">Mantenimiento Preventivo</field>
             <field name="description">Plantilla estándar para servicios de mantenimiento preventivo</field>
-            <field name="template_data">{
+            <field name="field_config">{
   "sections": [
     {
       "title": "Inspección Visual",
@@ -49,7 +49,7 @@
         <record id="worksheet_template_corrective" model="fsm.worksheet.template">
             <field name="name">Mantenimiento Correctivo</field>
             <field name="description">Plantilla para servicios de reparación y mantenimiento correctivo</field>
-            <field name="template_data">{
+            <field name="field_config">{
   "sections": [
     {
       "title": "Diagnóstico",
@@ -92,7 +92,7 @@
         <record id="worksheet_template_installation" model="fsm.worksheet.template">
             <field name="name">Instalación de Equipo</field>
             <field name="description">Plantilla para servicios de instalación de equipos nuevos</field>
-            <field name="template_data">{
+            <field name="field_config">{
   "sections": [
     {
       "title": "Preparación del Sitio",
@@ -136,7 +136,7 @@
         <record id="worksheet_template_generic" model="fsm.worksheet.template">
             <field name="name">Servicio Genérico</field>
             <field name="description">Plantilla genérica para cualquier tipo de servicio</field>
-            <field name="template_data">{
+            <field name="field_config">{
   "sections": [
     {
       "title": "Información General",

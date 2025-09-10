@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Modificación del orden de menús de ventas según requerimientos PATCO -->
+    
+    <!-- Órdenes - sequence 10 -->
+    <record id="sale.menu_sale_order" model="ir.ui.menu">
+        <field name="sequence">10</field>
+    </record>
+    
+    <!-- Por Facturar - sequence 20 -->
+    <record id="sale.menu_sale_invoicing" model="ir.ui.menu">
+        <field name="sequence">20</field>
+    </record>
+    
+    <!-- Acuerdos - sequence 30 (del módulo agreement_sale) -->
+    <record id="agreement.agreement_menu" model="ir.ui.menu">
+        <field name="sequence">30</field>
+        <field name="parent_id" ref="sale.sale_menu_root"/>
+    </record>
+    
+    <!-- Productos - sequence 40 -->
+    <record id="sale.product_menu_catalog" model="ir.ui.menu">
+        <field name="sequence">40</field>
+    </record>
+    
+    <!-- Reportes - sequence 50 -->
+    <record id="sale.menu_sale_report" model="ir.ui.menu">
+        <field name="sequence">50</field>
+    </record>
+    
+    <!-- Configuración - sequence 60 -->
+    <record id="sale.menu_sale_config" model="ir.ui.menu">
+        <field name="sequence">60</field>
+    </record>
+    
+</odoo>

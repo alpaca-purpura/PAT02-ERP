@@ -38,13 +38,11 @@ Use siempre este módulo orquestador.
         'sale_management',
         'account',
         'hr',
+        'hr_skills',
         'maintenance',
         'contacts',
         
-        # Módulos OCA - HR primero (orden crítico)
-        'hr_skills',
-        
-        # Módulos PATCO - HR Skills debe instalarse antes que fieldservice_skill
+        # Módulos PATCO - HR Skills (después de hr_skills)
         'patco_hr_skills',
         
         # Módulos OCA - Field Service (después de patco_hr_skills)
@@ -63,6 +61,7 @@ Use siempre este módulo orquestador.
         # Módulos PATCO restantes
         'patco_core',
         'patco_customer_equipment',
+        'patco_hr_fsm_integration',
     ],
     'data': [
         'data/suite_configuration.xml',

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2024 PATCO -->
+<!-- License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl). -->
+<odoo>
+    <data>
+        <!-- Herencia de la vista de formulario para corregir dominios -->
+        <record id="fsm_person_skill_form_view_inherit" model="ir.ui.view">
+            <field name="name">fsm.person.skill.form.inherit</field>
+            <field name="model">fsm.person.skill</field>
+            <field name="inherit_id" ref="fieldservice_skill.fsm_person_skill_form"/>
+            <field name="arch" type="xml">
+                <!-- Corregir dominio del campo skill_id para usar solo active -->
+                <xpath expr="//field[@name='skill_id']" position="attributes">
+                    <attribute name="domain">[('active', '=', True)]</attribute>
+                </xpath>
+                <!-- Corregir dominio del campo skill_level_id para usar solo active -->
+                <xpath expr="//field[@name='skill_level_id']" position="attributes">
+                    <attribute name="domain">[('active', '=', True)]</attribute>
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

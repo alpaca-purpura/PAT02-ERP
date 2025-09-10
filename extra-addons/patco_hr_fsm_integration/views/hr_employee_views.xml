@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista de formulario extendida para empleados con botones FSM -->
+        <record id="view_employee_form_fsm_integration" model="ir.ui.view">
+            <field name="name">hr.employee.form.fsm.integration</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="before">
+                    <!-- Botones de sincronización FSM -->
+                    <header>
+                        <button name="action_sync_to_fsm_person" 
+                                type="object" 
+                                string="Sincronizar con FSM" 
+                                class="btn-primary"
+                                invisible="not is_field_technician"
+                                help="Crear o actualizar la persona FSM asociada"/>
+                        
+                        <button name="action_sync_skills_to_fsm" 
+                                type="object" 
+                                string="Sincronizar Habilidades" 
+                                class="btn-secondary"
+                                invisible="not is_field_technician or not fsm_person_id"
+                                help="Sincronizar habilidades del empleado con FSM"/>
+                    </header>
+                </xpath>
+                
+                <!-- Agregar campos FSM en la pestaña de información personal -->
+                <xpath expr="//page[@name='personal_information']" position="inside">
+                    <group string="Integración FSM" invisible="not is_field_technician">
+                        <field name="fsm_person_id" readonly="1"/>
+                        <field name="fsm_sync_date" readonly="1"/>
+                        <field name="fsm_sync_status" readonly="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de lista extendida para mostrar estado FSM -->
+        <record id="view_employee_tree_fsm_integration" model="ir.ui.view">
+            <field name="name">hr.employee.tree.fsm.integration</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='work_phone']" position="after">
+                    <field name="fsm_sync_status" optional="hide"/>
+                    <field name="fsm_person_id" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Acción de servidor para sincronización masiva -->
+        <record id="action_sync_all_field_technicians_server" model="ir.actions.server">
+            <field name="name">Sincronizar Todos los Técnicos FSM</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="binding_model_id" ref="hr.model_hr_employee"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+if records:
+    # Filtrar solo técnicos de campo
+    field_technicians = records.filtered('is_field_technician')
+    if field_technicians:
+        result = env['hr.employee'].action_sync_all_field_technicians()
+        # La notificación se maneja en el método
+    else:
+        raise UserError("Seleccione al menos un técnico de campo para sincronizar")
+else:
+    # Sincronizar todos los técnicos si no hay selección
+    result = env['hr.employee'].action_sync_all_field_technicians()
+            </field>
+        </record>
+        
+        <!-- Acción de servidor para sincronización individual -->
+        <record id="action_sync_selected_employees_server" model="ir.actions.server">
+            <field name="name">Sincronizar Empleados Seleccionados</field>
+            <field name="model_id" ref="hr.model_hr_employee"/>
+            <field name="binding_model_id" ref="hr.model_hr_employee"/>
+            <field name="binding_view_types">list</field>
+            <field name="state">code</field>
+            <field name="code">
+if records:
+    # Filtrar solo técnicos de campo
+    field_technicians = records.filtered('is_field_technician')
+    if field_technicians:
+        for employee in field_technicians:
+            try:
+                if not employee.fsm_person_id:
+                    employee._create_fsm_person()
+                else:
+                    employee._sync_to_fsm_person()
+            except Exception as e:
+                raise UserError(f"Error sincronizando {employee.name}: {str(e)}")
+        
+        # Mostrar notificación de éxito
+        env.user.notify_success(
+            message=f"Se sincronizaron {len(field_technicians)} técnicos correctamente",
+            title="Sincronización Completada"
+        )
+    else:
+        raise UserError("Seleccione al menos un técnico de campo para sincronizar")
+else:
+    raise UserError("Debe seleccionar empleados para sincronizar")
+            </field>
+        </record>
+        
+        <!-- Vista de búsqueda extendida -->
+        <record id="view_employee_filter_fsm_integration" model="ir.ui.view">
+            <field name="name">hr.employee.search.fsm.integration</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="//filter[@name='inactive']" position="after">
+                    <separator/>
+                    <filter name="field_technicians" string="Técnicos de Campo" 
+                            domain="[('is_field_technician', '=', True)]"/>
+                    <filter name="fsm_synced" string="Sincronizados FSM" 
+                            domain="[('fsm_sync_status', '=', 'synced')]"/>
+                    <filter name="fsm_pending" string="Pendientes FSM" 
+                            domain="[('fsm_sync_status', '=', 'pending')]"/>
+                    <filter name="fsm_error" string="Errores FSM" 
+                            domain="[('fsm_sync_status', '=', 'error')]"/>
+                </xpath>
+                
+                <xpath expr="//group" position="inside">
+                    <filter string="Estado FSM" name="group_fsm_status" 
+                            context="{'group_by': 'fsm_sync_status'}"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Menú para gestión FSM (opcional) -->
+        <record id="action_hr_employee_fsm_management" model="ir.actions.act_window">
+            <field name="name">Gestión FSM - Empleados</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_field_technician', '=', True)]</field>
+            <field name="context">{
+                'default_is_field_technician': True,
+                'search_default_field_technicians': 1
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Gestiona la integración FSM de tus técnicos de campo!
+                </p>
+                <p>
+                    Desde aquí puedes sincronizar empleados con el sistema FSM,
+                    gestionar sus habilidades y monitorear el estado de sincronización.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

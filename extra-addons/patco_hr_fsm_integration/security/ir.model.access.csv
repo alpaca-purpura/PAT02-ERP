@@ -1,0 +1,7 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hr_employee_fsm_integration_user,hr.employee.fsm.integration.user,hr.model_hr_employee,base.group_user,1,0,0,0
+access_hr_employee_fsm_integration_hr_user,hr.employee.fsm.integration.hr.user,hr.model_hr_employee,hr.group_hr_user,1,1,1,0
+access_hr_employee_fsm_integration_hr_manager,hr.employee.fsm.integration.hr.manager,hr.model_hr_employee,hr.group_hr_manager,1,1,1,1
+access_fsm_person_fsm_integration_user,fsm.person.fsm.integration.user,fieldservice.model_fsm_person,base.group_user,1,0,0,0
+access_fsm_person_fsm_integration_fsm_user,fsm.person.fsm.integration.fsm.user,fieldservice.model_fsm_person,fieldservice.group_fsm_user,1,1,1,0
+access_fsm_person_fsm_integration_fsm_manager,fsm.person.fsm.integration.fsm.manager,fieldservice.model_fsm_person,fieldservice.group_fsm_manager,1,1,1,1

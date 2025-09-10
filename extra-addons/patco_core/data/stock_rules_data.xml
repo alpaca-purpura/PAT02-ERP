@@ -89,7 +89,7 @@
             <field name="name">Carga de Vehículos</field>
             <field name="code">internal</field>
             <field name="warehouse_id" ref="stock.warehouse0"/>
-            <field name="sequence_id" ref="stock.seq_picking_type_internal"/>
+            <field name="sequence_code">VEH</field>
             <field name="default_location_src_id" ref="stock.stock_location_stock"/>
             <field name="default_location_dest_id" ref="stock_location_vehicles"/>
             <field name="active">True</field>
@@ -100,7 +100,7 @@
             <field name="name">Consumo en Campo</field>
             <field name="code">outgoing</field>
             <field name="warehouse_id" ref="stock.warehouse0"/>
-            <field name="sequence_id" ref="stock.seq_picking_type_out"/>
+            <field name="sequence_code">FIELD</field>
             <field name="default_location_src_id" ref="stock_location_vehicles"/>
             <field name="default_location_dest_id" ref="stock_location_field_consumption"/>
             <field name="active">True</field>

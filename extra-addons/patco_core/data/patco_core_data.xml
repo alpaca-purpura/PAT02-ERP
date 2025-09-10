@@ -4,42 +4,33 @@
         <record id="base.main_company" model="res.company">
             <field name="logo" type="base64" file="patco_core/static/src/img/PATCO-Logo.png"/>
         </record>
-        <record id="categ_maintenance_services" model="product.category">
-            <field name="name">Servicios de Mantenimiento</field>
-            <field name="parent_id" ref="product.product_category_all"/>
-        </record>
-        
-        <record id="categ_preventive_maintenance" model="product.category">
-            <field name="name">Mantenimiento Preventivo</field>
-            <field name="parent_id" ref="categ_maintenance_services"/>
-        </record>
-        
-        <record id="categ_corrective_maintenance" model="product.category">
-            <field name="name">Mantenimiento Correctivo</field>
-            <field name="parent_id" ref="categ_maintenance_services"/>
-        </record>
+        <!-- Las categorías de productos ahora están en product_categories_consolidated.xml -->
         
         <record id="product_preventive_maintenance" model="product.product">
             <field name="name">Servicio de Mantenimiento Preventivo</field>
             <field name="type">service</field>
-            <field name="categ_id" ref="categ_preventive_maintenance"/>
+            <field name="categ_id" ref="product_category_preventive_maintenance"/>
             <field name="list_price">500.00</field>
             <field name="standard_price">300.00</field>
             <field name="uom_id" ref="uom.product_uom_hour"/>
             <field name="uom_po_id" ref="uom.product_uom_hour"/>
             <field name="invoice_policy">delivery</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
             <field name="description_sale">Servicio de mantenimiento preventivo para equipos industriales</field>
         </record>
         
         <record id="product_corrective_maintenance" model="product.product">
             <field name="name">Servicio de Mantenimiento Correctivo</field>
             <field name="type">service</field>
-            <field name="categ_id" ref="categ_corrective_maintenance"/>
+            <field name="categ_id" ref="product_category_corrective_maintenance"/>
             <field name="list_price">800.00</field>
             <field name="standard_price">500.00</field>
             <field name="uom_id" ref="uom.product_uom_hour"/>
             <field name="uom_po_id" ref="uom.product_uom_hour"/>
             <field name="invoice_policy">delivery</field>
+            <field name="sale_ok">True</field>
+            <field name="purchase_ok">False</field>
             <field name="description_sale">Servicio de mantenimiento correctivo para equipos industriales</field>
         </record>
         

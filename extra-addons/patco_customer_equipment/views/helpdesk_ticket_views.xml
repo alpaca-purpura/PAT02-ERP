@@ -7,11 +7,34 @@
             <field name="model">helpdesk.ticket</field>
             <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
             <field name="arch" type="xml">
+                <!-- Agregar botón Crear Orden de Servicio en el header -->
+                <xpath expr="//header" position="inside">
+                    <button name="action_create_fsm_order" 
+                            string="Crear Orden de Servicio" 
+                            type="object" 
+                            class="btn-primary"
+                            invisible="x_fsm_order_id or closed"/>
+                </xpath>
+                
+                <!-- Modificar el campo partner_id para cambiar etiqueta y dominio -->
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="string">Cliente</attribute>
+                    <attribute name="domain">[('is_company', '=', True), '|', ('customer_rank', '>', 0), ('supplier_rank', '>', 0)]</attribute>
+                </xpath>
+                
+                <!-- Agregar campo de equipo después del partner_id -->
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="x_equipment_id" 
                            domain="[('x_customer_id', '=', partner_id)]"
                            options="{'no_create': True, 'no_edit': True}"
                            readonly="closed"/>
+                </xpath>
+                
+                <!-- Agregar campo de orden FSM después del equipo -->
+                <xpath expr="//field[@name='x_equipment_id']" position="after">
+                    <field name="x_fsm_order_id" 
+                           readonly="1"
+                           invisible="not x_fsm_order_id"/>
                 </xpath>
             </field>
         </record>
@@ -24,6 +47,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
                     <field name="x_equipment_id" optional="hide"/>
+                    <field name="x_fsm_order_id" optional="hide"/>
                 </xpath>
             </field>
         </record>
@@ -35,7 +59,7 @@
             <field name="inherit_id" ref="helpdesk_mgmt.helpdesk_ticket_view_search"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='partner_id']" position="after">
-                    <field name="x_equipment_id" string="Equipo"/>
+                    <field name="x_equipment_id" string="Activo del Cliente"/>
                 </xpath>
                 <xpath expr="//group[@expand='0']" position="inside">
                     <filter name="group_equipment" string="Equipo" context="{'group_by': 'x_equipment_id'}"/>

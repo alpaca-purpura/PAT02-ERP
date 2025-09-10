@@ -2,71 +2,896 @@
 <odoo>
     <data noupdate="1">
         
-        <!-- Habilidades Específicas PATCO -->
+        <!-- CERTIFICACIONES Y CUMPLIMIENTO NORMATIVO -->
         
-        <!-- COC - Cocina -->
-        <record id="skill_coc_cal" model="hr.skill">
-            <field name="name">COC-CAL - Calentadores</field>
-            <field name="skill_type_id" ref="skill_type_coc"/>
+        <!-- Certificaciones Ambientales y de Refrigeración -->
+        <record id="skill_cert_epa_608" model="hr.skill">
+            <field name="name">Certificación EPA Section 608 Universal</field>
+            <field name="code">CERT-EPA-608</field>
+            <field name="description">Certificación EPA Section 608 Universal - Manejo seguro de refrigerantes y cumplimiento de normativas ambientales</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
         </record>
         
-        <record id="skill_coc_pre" model="hr.skill">
-            <field name="name">COC-PRE - Presión</field>
-            <field name="skill_type_id" ref="skill_type_coc"/>
+        <record id="skill_cert_ref_nat" model="hr.skill">
+            <field name="name">Certificación en Refrigerantes Naturales</field>
+            <field name="code">CERT-REF-NAT</field>
+            <field name="description">Certificación en Refrigerantes Naturales - Conocimiento de refrigerantes ecológicos (CO2, amoníaco, hidrocarburos)</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
         </record>
         
-        <record id="skill_coc_lav" model="hr.skill">
-            <field name="name">COC-LAV - Lavado</field>
-            <field name="skill_type_id" ref="skill_type_coc"/>
+        <record id="skill_cert_sust_pel" model="hr.skill">
+            <field name="name">Certificación de Manejo de Sustancias Peligrosas</field>
+            <field name="code">CERT-SUST-PEL</field>
+            <field name="description">Certificación de Manejo de Sustancias Peligrosas - Protocolo para químicos de limpieza y desinfección</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
         </record>
         
-        <!-- REF - Refrigeración -->
-        <record id="skill_ref_com" model="hr.skill">
-            <field name="name">REF-COM - Comercial</field>
+        <record id="skill_cert_res_tec" model="hr.skill">
+            <field name="name">Certificación en Gestión de Residuos Técnicos</field>
+            <field name="code">CERT-RES-TEC</field>
+            <field name="description">Certificación en Gestión de Residuos Técnicos - Disposición adecuada de componentes electrónicos y aceites</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Certificaciones de Seguridad Ocupacional -->
+        <record id="skill_cert_seg_elec" model="hr.skill">
+            <field name="name">Certificación en Seguridad Eléctrica Comercial</field>
+            <field name="code">CERT-SEG-ELEC</field>
+            <field name="description">Certificación en Seguridad Eléctrica Comercial - Trabajo seguro con sistemas eléctricos de alta potencia</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_cert_gas_com" model="hr.skill">
+            <field name="name">Certificación en Instalaciones de Gas Natural y GLP</field>
+            <field name="code">CERT-GAS-COM</field>
+            <field name="description">Certificación en Instalaciones de Gas Natural y GLP - Manejo seguro de sistemas de gas comerciales</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_cert_esp_conf" model="hr.skill">
+            <field name="name">Certificación en Espacios Confinados</field>
+            <field name="code">CERT-ESP-CONF</field>
+            <field name="description">Certificación en Espacios Confinados - Trabajo en cámaras frigoríficas y ductos de ventilación</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_cert_alt" model="hr.skill">
+            <field name="name">Certificación en Trabajo en Alturas</field>
+            <field name="code">CERT-ALT</field>
+            <field name="description">Certificación en Trabajo en Alturas - Mantenimiento de equipos en techos y estructuras elevadas</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Certificaciones de Calidad y Normativas -->
+        <record id="skill_cert_haccp" model="hr.skill">
+            <field name="name">Certificación HACCP para Técnicos</field>
+            <field name="code">CERT-HACCP</field>
+            <field name="description">Certificación HACCP para Técnicos - Comprensión de puntos críticos de control en equipos alimentarios</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_cert_digesa" model="hr.skill">
+            <field name="name">Certificación en Normas Sanitarias Peruanas</field>
+            <field name="code">CERT-DIGESA</field>
+            <field name="description">Certificación en Normas Sanitarias Peruanas - Cumplimiento de DIGESA y normativas locales</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_cert_iso22000" model="hr.skill">
+            <field name="name">Certificación ISO 22000 Básica</field>
+            <field name="code">CERT-ISO22000</field>
+            <field name="description">Certificación ISO 22000 Básica - Sistemas de gestión de inocuidad alimentaria</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_cert_bpm" model="hr.skill">
+            <field name="name">Certificación en Buenas Prácticas de Manufactura</field>
+            <field name="code">CERT-BPM</field>
+            <field name="description">Certificación en Buenas Prácticas de Manufactura - Mantenimiento que preserve la calidad alimentaria</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Certificaciones Técnicas Especializadas -->
+        <record id="skill_cert_cfesa" model="hr.skill">
+            <field name="name">Certificación CFESA en Equipos de Servicio de Alimentos</field>
+            <field name="code">CERT-CFESA</field>
+            <field name="description">Certificación CFESA en Equipos de Servicio de Alimentos - Estándar internacional para técnicos especializados</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_cert_nate" model="hr.skill">
+            <field name="name">Certificación NATE en Climatización</field>
+            <field name="code">CERT-NATE</field>
+            <field name="description">Certificación NATE en Climatización - Técnico certificado en sistemas HVAC comerciales</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_cert_reta" model="hr.skill">
+            <field name="name">Certificación RETA en Refrigeración Industrial</field>
+            <field name="code">CERT-RETA</field>
+            <field name="description">Certificación RETA en Refrigeración Industrial - Especialización en sistemas de gran escala</field>
+            <field name="skill_type_id" ref="skill_type_cert"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- COMPETENCIAS TÉCNICAS FUNDAMENTALES -->
+        
+        <!-- Diagnóstico y Troubleshooting Avanzado -->
+        <record id="skill_diag_inst" model="hr.skill">
+            <field name="name">Diagnóstico Avanzado con Instrumentos de Medición</field>
+            <field name="code">DIAG-INST</field>
+            <field name="description">Diagnóstico Avanzado con Instrumentos de Medición - Uso de multímetros, manómetros, termómetros infrarrojos</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_diag_vibr" model="hr.skill">
+            <field name="name">Análisis de Vibraciones en Equipos Rotativos</field>
+            <field name="code">DIAG-VIBR</field>
+            <field name="description">Análisis de Vibraciones en Equipos Rotativos - Detección temprana de fallas en motores y compresores</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_diag_ctrl" model="hr.skill">
+            <field name="name">Diagnóstico de Sistemas de Control Electrónico</field>
+            <field name="code">DIAG-CTRL</field>
+            <field name="description">Diagnóstico de Sistemas de Control Electrónico - Interpretación de códigos de error y parámetros</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_diag_energ" model="hr.skill">
+            <field name="name">Análisis de Consumo Energético</field>
+            <field name="code">DIAG-ENERG</field>
+            <field name="description">Análisis de Consumo Energético - Medición y optimización de eficiencia eléctrica</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_diag_fugas" model="hr.skill">
+            <field name="name">Diagnóstico de Fugas en Sistemas Cerrados</field>
+            <field name="code">DIAG-FUGAS</field>
+            <field name="description">Diagnóstico de Fugas en Sistemas Cerrados - Detección de fugas de refrigerante, agua y gas</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Soldadura y Reparaciones Especializadas -->
+        <record id="skill_diag_sold_cobre" model="hr.skill">
+            <field name="name">Soldadura de Tuberías de Cobre y Aleaciones</field>
+            <field name="code">DIAG-SOLD-COBRE</field>
+            <field name="description">Soldadura de Tuberías de Cobre y Aleaciones - Técnicas de soldadura fuerte para refrigeración</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_diag_sold_acero" model="hr.skill">
+            <field name="name">Soldadura de Acero Inoxidable para Equipos Alimentarios</field>
+            <field name="code">DIAG-SOLD-ACERO</field>
+            <field name="description">Soldadura de Acero Inoxidable para Equipos Alimentarios - Soldadura TIG para aplicaciones sanitarias</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_diag_prog_basic" model="hr.skill">
+            <field name="name">Programación Básica de Controladores</field>
+            <field name="code">DIAG-PROG-BASIC</field>
+            <field name="description">Programación Básica de Controladores - Configuración de parámetros en equipos digitales</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_diag_mec_prec" model="hr.skill">
+            <field name="name">Mecánica de Precisión para Equipos Comerciales</field>
+            <field name="code">DIAG-MEC-PREC</field>
+            <field name="description">Mecánica de Precisión para Equipos Comerciales - Ajustes y calibraciones mecánicas finas</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_diag_hidra" model="hr.skill">
+            <field name="name">Sistemas Hidráulicos y Neumáticos Comerciales</field>
+            <field name="code">DIAG-HIDRA</field>
+            <field name="description">Sistemas Hidráulicos y Neumáticos Comerciales - Mantenimiento de actuadores y válvulas</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Sistemas de Refrigeración Comercial -->
+        <record id="skill_ref_com_bas" model="hr.skill">
+            <field name="name">Sistemas de Refrigeración Comercial Básica</field>
+            <field name="code">REF-COM-BAS</field>
+            <field name="description">Sistemas de Refrigeración Comercial Básica - Ciclo de refrigeración, componentes principales</field>
             <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
         </record>
         
-        <record id="skill_ref_ac" model="hr.skill">
-            <field name="name">AC - Aire Acondicionado</field>
+        <record id="skill_ref_ind_av" model="hr.skill">
+            <field name="name">Sistemas de Refrigeración Industrial Avanzada</field>
+            <field name="code">REF-IND-AV</field>
+            <field name="description">Sistemas de Refrigeración Industrial Avanzada - Sistemas centralizados y de gran capacidad</field>
             <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
         </record>
         
-        <!-- LAV - Lavandería -->
-        <record id="skill_lav_lav" model="hr.skill">
-            <field name="name">LAV-LAV - Lavadoras</field>
+        <record id="skill_ref_comp" model="hr.skill">
+            <field name="name">Mantenimiento de Compresores Herméticos y Semiherméticos</field>
+            <field name="code">REF-COMP</field>
+            <field name="description">Mantenimiento de Compresores Herméticos y Semiherméticos - Reparación y reemplazo especializado</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_ref_exp" model="hr.skill">
+            <field name="name">Sistemas de Expansión Directa e Indirecta</field>
+            <field name="code">REF-EXP</field>
+            <field name="description">Sistemas de Expansión Directa e Indirecta - Configuraciones para diferentes aplicaciones</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_ref_temp_hum" model="hr.skill">
+            <field name="name">Control de Temperatura y Humedad Precisos</field>
+            <field name="code">REF-TEMP-HUM</field>
+            <field name="description">Control de Temperatura y Humedad Precisos - Sistemas para conservación de alimentos sensibles</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Climatización y Ventilación HVAC -->
+        <record id="skill_hvac_com" model="hr.skill">
+            <field name="name">Sistemas HVAC Comerciales</field>
+            <field name="code">HVAC-COM</field>
+            <field name="description">Sistemas HVAC Comerciales - Aire acondicionado para espacios comerciales grandes</field>
+            <field name="skill_type_id" ref="skill_type_hvac"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_hvac_vent" model="hr.skill">
+            <field name="name">Ventilación Mecánica Controlada</field>
+            <field name="code">HVAC-VENT</field>
+            <field name="description">Ventilación Mecánica Controlada - Sistemas de extracción y renovación de aire</field>
+            <field name="skill_type_id" ref="skill_type_hvac"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_hvac_coc" model="hr.skill">
+            <field name="name">Climatización de Cocinas Comerciales</field>
+            <field name="code">HVAC-COC</field>
+            <field name="description">Climatización de Cocinas Comerciales - Manejo de calor y vapores en cocinas industriales</field>
+            <field name="skill_type_id" ref="skill_type_hvac"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_hvac_recup" model="hr.skill">
+            <field name="name">Sistemas de Recuperación de Calor</field>
+            <field name="code">HVAC-RECUP</field>
+            <field name="description">Sistemas de Recuperación de Calor - Aprovechamiento energético en ventilación</field>
+            <field name="skill_type_id" ref="skill_type_hvac"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_hvac_aire" model="hr.skill">
+            <field name="name">Control de Calidad del Aire Interior</field>
+            <field name="code">HVAC-AIRE</field>
+            <field name="description">Control de Calidad del Aire Interior - Filtración y purificación especializada</field>
+            <field name="skill_type_id" ref="skill_type_hvac"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Controles Digitales y Automatización -->
+        <record id="skill_auto_plc" model="hr.skill">
+            <field name="name">Programación de Controladores PLC Básicos</field>
+            <field name="code">AUTO-PLC</field>
+            <field name="description">Programación de Controladores PLC Básicos - Automatización de procesos de refrigeración</field>
+            <field name="skill_type_id" ref="skill_type_auto"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_auto_remoto" model="hr.skill">
+            <field name="name">Sistemas de Monitoreo Remoto</field>
+            <field name="code">AUTO-REMOTO</field>
+            <field name="description">Sistemas de Monitoreo Remoto - Telemetría y control a distancia de equipos</field>
+            <field name="skill_type_id" ref="skill_type_auto"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_auto_hmi" model="hr.skill">
+            <field name="name">Interfaces Hombre-Máquina (HMI)</field>
+            <field name="code">AUTO-HMI</field>
+            <field name="description">Interfaces Hombre-Máquina (HMI) - Configuración de pantallas táctiles y displays</field>
+            <field name="skill_type_id" ref="skill_type_auto"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_auto_alarm" model="hr.skill">
+            <field name="name">Sistemas de Alarmas y Notificaciones</field>
+            <field name="code">AUTO-ALARM</field>
+            <field name="description">Sistemas de Alarmas y Notificaciones - Configuración de alertas preventivas</field>
+            <field name="skill_type_id" ref="skill_type_auto"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_auto_iot" model="hr.skill">
+            <field name="name">Integración de Sistemas IoT</field>
+            <field name="code">AUTO-IOT</field>
+            <field name="description">Integración de Sistemas IoT - Conectividad y monitoreo inteligente</field>
+            <field name="skill_type_id" ref="skill_type_auto"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Mantenimiento Preventivo Especializado -->
+        <record id="skill_prev_pred" model="hr.skill">
+            <field name="name">Planificación de Mantenimiento Predictivo</field>
+            <field name="code">PREV-PRED</field>
+            <field name="description">Planificación de Mantenimiento Predictivo - Cronogramas basados en condición del equipo</field>
+            <field name="skill_type_id" ref="skill_type_prev"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_prev_lubr" model="hr.skill">
+            <field name="name">Lubricación Especializada de Equipos Comerciales</field>
+            <field name="code">PREV-LUBR</field>
+            <field name="description">Lubricación Especializada de Equipos Comerciales - Selección y aplicación de lubricantes</field>
+            <field name="skill_type_id" ref="skill_type_prev"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_prev_limp" model="hr.skill">
+            <field name="name">Limpieza Técnica de Componentes Críticos</field>
+            <field name="code">PREV-LIMP</field>
+            <field name="description">Limpieza Técnica de Componentes Críticos - Serpentines, filtros y intercambiadores</field>
+            <field name="skill_type_id" ref="skill_type_prev"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_prev_calib" model="hr.skill">
+            <field name="name">Calibración de Instrumentos de Medición</field>
+            <field name="code">PREV-CALIB</field>
+            <field name="description">Calibración de Instrumentos de Medición - Mantenimiento de precisión en sensores</field>
+            <field name="skill_type_id" ref="skill_type_prev"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_prev_doc" model="hr.skill">
+            <field name="name">Documentación Técnica de Mantenimiento</field>
+            <field name="code">PREV-DOC</field>
+            <field name="description">Documentación Técnica de Mantenimiento - Registros y trazabilidad de intervenciones</field>
+            <field name="skill_type_id" ref="skill_type_prev"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- ESPECIALIZACIÓN POR TIPOS DE EQUIPOS -->
+        
+        <!-- Equipos de Cocina Industrial -->
+        <record id="skill_coc_horno_conv" model="hr.skill">
+            <field name="name">Mantenimiento de Hornos de Convección Comerciales</field>
+            <field name="code">COC-HORNO-CONV</field>
+            <field name="description">Mantenimiento de Hornos de Convección Comerciales - Reparación de ventiladores, resistencias y controles</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_coc_plancha" model="hr.skill">
+            <field name="name">Reparación de Planchas y Parrillas Industriales</field>
+            <field name="code">COC-PLANCHA</field>
+            <field name="description">Reparación de Planchas y Parrillas Industriales - Sistemas de gas y eléctricos de alta potencia</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_coc_freid" model="hr.skill">
+            <field name="name">Mantenimiento de Freidoras Comerciales</field>
+            <field name="code">COC-FREID</field>
+            <field name="description">Mantenimiento de Freidoras Comerciales - Sistemas de filtrado de aceite y control de temperatura</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_coc_vapor" model="hr.skill">
+            <field name="name">Reparación de Equipos de Cocción al Vapor</field>
+            <field name="code">COC-VAPOR</field>
+            <field name="description">Reparación de Equipos de Cocción al Vapor - Generadores de vapor y sistemas de distribución</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_coc_combi" model="hr.skill">
+            <field name="name">Mantenimiento de Equipos Combinados (Combi)</field>
+            <field name="code">COC-COMBI</field>
+            <field name="description">Mantenimiento de Equipos Combinados (Combi) - Hornos que combinan vapor y convección</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Equipos de Refrigeración Especializada -->
+        <record id="skill_ref_cam_walk" model="hr.skill">
+            <field name="name">Mantenimiento de Cámaras Frigoríficas Walk-in</field>
+            <field name="code">REF-CAM-WALK</field>
+            <field name="description">Mantenimiento de Cámaras Frigoríficas Walk-in - Sistemas de gran volumen y múltiples zonas</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_ref_vitrina" model="hr.skill">
+            <field name="name">Reparación de Vitrinas Refrigeradas</field>
+            <field name="code">REF-VITRINA</field>
+            <field name="description">Reparación de Vitrinas Refrigeradas - Equipos de exhibición con iluminación LED</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_ref_cong" model="hr.skill">
+            <field name="name">Mantenimiento de Congeladores Comerciales</field>
+            <field name="code">REF-CONG</field>
+            <field name="description">Mantenimiento de Congeladores Comerciales - Sistemas de ultra-baja temperatura</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_ref_movil" model="hr.skill">
+            <field name="name">Reparación de Equipos de Refrigeración Móvil</field>
+            <field name="code">REF-MOVIL</field>
+            <field name="description">Reparación de Equipos de Refrigeración Móvil - Unidades transportables y portátiles</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_ref_central" model="hr.skill">
+            <field name="name">Mantenimiento de Sistemas de Refrigeración Centralizada</field>
+            <field name="code">REF-CENTRAL</field>
+            <field name="description">Mantenimiento de Sistemas de Refrigeración Centralizada - Múltiples puntos de servicio</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Máquinas de Hielo Comerciales -->
+        <record id="skill_hielo_cubos" model="hr.skill">
+            <field name="name">Mantenimiento de Máquinas de Hielo en Cubos</field>
+            <field name="code">HIELO-CUBOS</field>
+            <field name="description">Mantenimiento de Máquinas de Hielo en Cubos - Sistemas de moldeo y cosecha</field>
+            <field name="skill_type_id" ref="skill_type_hielo"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_hielo_escamas" model="hr.skill">
+            <field name="name">Reparación de Máquinas de Hielo en Escamas</field>
+            <field name="code">HIELO-ESCAMAS</field>
+            <field name="description">Reparación de Máquinas de Hielo en Escamas - Equipos para pescaderías y carnicerías</field>
+            <field name="skill_type_id" ref="skill_type_hielo"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_hielo_disp" model="hr.skill">
+            <field name="name">Mantenimiento de Dispensadores de Hielo</field>
+            <field name="code">HIELO-DISP</field>
+            <field name="description">Mantenimiento de Dispensadores de Hielo - Sistemas automáticos de servicio</field>
+            <field name="skill_type_id" ref="skill_type_hielo"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_hielo_agua" model="hr.skill">
+            <field name="name">Reparación de Sistemas de Agua Filtrada</field>
+            <field name="code">HIELO-AGUA</field>
+            <field name="description">Reparación de Sistemas de Agua Filtrada - Tratamiento de agua para calidad del hielo</field>
+            <field name="skill_type_id" ref="skill_type_hielo"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_hielo_almac" model="hr.skill">
+            <field name="name">Mantenimiento de Almacenadores de Hielo</field>
+            <field name="code">HIELO-ALMAC</field>
+            <field name="description">Mantenimiento de Almacenadores de Hielo - Sistemas de conservación y distribución</field>
+            <field name="skill_type_id" ref="skill_type_hielo"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Equipos de Lavado Comercial -->
+        <record id="skill_lavado_capota" model="hr.skill">
+            <field name="name">Mantenimiento de Lavavajillas Comerciales de Capota</field>
+            <field name="code">LAVADO-CAPOTA</field>
+            <field name="description">Mantenimiento de Lavavajillas Comerciales de Capota - Sistemas de alta capacidad</field>
+            <field name="skill_type_id" ref="skill_type_lavado"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_lavado_tunel" model="hr.skill">
+            <field name="name">Reparación de Lavavajillas de Túnel Continuo</field>
+            <field name="code">LAVADO-TUNEL</field>
+            <field name="description">Reparación de Lavavajillas de Túnel Continuo - Equipos para grandes volúmenes</field>
+            <field name="skill_type_id" ref="skill_type_lavado"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_lavado_ultra" model="hr.skill">
+            <field name="name">Mantenimiento de Sistemas de Lavado por Ultrasonido</field>
+            <field name="code">LAVADO-ULTRA</field>
+            <field name="description">Mantenimiento de Sistemas de Lavado por Ultrasonido - Limpieza especializada de utensilios</field>
+            <field name="skill_type_id" ref="skill_type_lavado"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_lavado_desinf" model="hr.skill">
+            <field name="name">Reparación de Sistemas de Desinfección Térmica</field>
+            <field name="code">LAVADO-DESINF</field>
+            <field name="description">Reparación de Sistemas de Desinfección Térmica - Equipos de sanitización por calor</field>
+            <field name="skill_type_id" ref="skill_type_lavado"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_lavado_quim" model="hr.skill">
+            <field name="name">Mantenimiento de Dosificadores de Químicos</field>
+            <field name="code">LAVADO-QUIM</field>
+            <field name="description">Mantenimiento de Dosificadores de Químicos - Sistemas automáticos de detergente y abrillantador</field>
+            <field name="skill_type_id" ref="skill_type_lavado"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Equipos de Lavandería Industrial -->
+        <record id="skill_lav_ind" model="hr.skill">
+            <field name="name">Mantenimiento de Lavadoras Industriales</field>
+            <field name="code">LAV-IND</field>
+            <field name="description">Mantenimiento de Lavadoras Industriales - Equipos de gran capacidad para hoteles</field>
             <field name="skill_type_id" ref="skill_type_lav"/>
+            <field name="active">True</field>
         </record>
         
-        <record id="skill_lav_sec" model="hr.skill">
-            <field name="name">LAV-SEC - Secadoras</field>
+        <record id="skill_lav_sec_gas" model="hr.skill">
+            <field name="name">Reparación de Secadoras a Gas Comerciales</field>
+            <field name="code">LAV-SEC-GAS</field>
+            <field name="description">Reparación de Secadoras a Gas Comerciales - Sistemas de combustión y control de temperatura</field>
             <field name="skill_type_id" ref="skill_type_lav"/>
+            <field name="active">True</field>
         </record>
         
-        <record id="skill_lav_pla" model="hr.skill">
-            <field name="name">LAV-PLA - Planchadoras</field>
+        <record id="skill_lav_sec_elec" model="hr.skill">
+            <field name="name">Mantenimiento de Secadoras Eléctricas Industriales</field>
+            <field name="code">LAV-SEC-ELEC</field>
+            <field name="description">Mantenimiento de Secadoras Eléctricas Industriales - Resistencias y sistemas de ventilación</field>
             <field name="skill_type_id" ref="skill_type_lav"/>
+            <field name="active">True</field>
         </record>
         
-        <!-- ELEC - Eléctrico -->
-        <record id="skill_elec_bt" model="hr.skill">
-            <field name="name">ELEC-BT - Baja Tensión</field>
+        <record id="skill_lav_planch_cal" model="hr.skill">
+            <field name="name">Mantenimiento de Planchadoras y Calandras</field>
+            <field name="code">LAV-PLANCH-CAL</field>
+            <field name="description">Mantenimiento de Planchadoras y Calandras - Equipos de planchado automático</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_lav_manejo" model="hr.skill">
+            <field name="name">Reparación de Sistemas de Manejo de Ropa</field>
+            <field name="code">LAV-MANEJO</field>
+            <field name="description">Reparación de Sistemas de Manejo de Ropa - Transportadores y clasificadores</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_lav_doblado" model="hr.skill">
+            <field name="name">Mantenimiento de Equipos de Doblado Automático</field>
+            <field name="code">LAV-DOBLADO</field>
+            <field name="description">Mantenimiento de Equipos de Doblado Automático - Sistemas mecánicos de plegado</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- COMPETENCIAS ELÉCTRICAS ESPECIALIZADAS -->
+        
+        <!-- Sistemas Eléctricos Comerciales -->
+        <record id="skill_elec_trif" model="hr.skill">
+            <field name="name">Instalaciones Eléctricas Trifásicas Comerciales</field>
+            <field name="code">ELEC-TRIF</field>
+            <field name="description">Instalaciones Eléctricas Trifásicas Comerciales - Sistemas de alta potencia para equipos industriales</field>
             <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
         </record>
         
-        <record id="skill_elec_gen" model="hr.skill">
-            <field name="name">ELEC-GEN - Generadores</field>
+        <record id="skill_elec_tabl" model="hr.skill">
+            <field name="name">Mantenimiento de Tableros de Control Eléctrico</field>
+            <field name="code">ELEC-TABL</field>
+            <field name="description">Mantenimiento de Tableros de Control Eléctrico - Contactores, relés y protecciones</field>
             <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
         </record>
         
-        <!-- FONT - Fontanería -->
-        <record id="skill_font_agua" model="hr.skill">
-            <field name="name">FONT-AGUA - Agua</field>
-            <field name="skill_type_id" ref="skill_type_font"/>
+        <record id="skill_elec_mot" model="hr.skill">
+            <field name="name">Reparación de Motores Eléctricos Comerciales</field>
+            <field name="code">ELEC-MOT</field>
+            <field name="description">Reparación de Motores Eléctricos Comerciales - Monofásicos y trifásicos de alta eficiencia</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
         </record>
         
-        <record id="skill_font_gas" model="hr.skill">
-            <field name="name">FONT-GAS - Gas</field>
+        <record id="skill_elec_ilum" model="hr.skill">
+            <field name="name">Sistemas de Iluminación LED Comercial</field>
+            <field name="code">ELEC-ILUM</field>
+            <field name="description">Sistemas de Iluminación LED Comercial - Iluminación eficiente para cocinas y áreas de trabajo</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_elec_resp" model="hr.skill">
+            <field name="name">Instalación de Sistemas de Respaldo Eléctrico</field>
+            <field name="code">ELEC-RESP</field>
+            <field name="description">Instalación de Sistemas de Respaldo Eléctrico - UPS y generadores para equipos críticos</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Controles y Automatización -->
+        <record id="skill_elec_temp_rele" model="hr.skill">
+            <field name="name">Programación de Temporizadores y Relés</field>
+            <field name="code">ELEC-TEMP-RELE</field>
+            <field name="description">Programación de Temporizadores y Relés - Control de secuencias operativas</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_elec_sens_act" model="hr.skill">
+            <field name="name">Mantenimiento de Sensores y Actuadores</field>
+            <field name="code">ELEC-SENS-ACT</field>
+            <field name="description">Mantenimiento de Sensores y Actuadores - Temperatura, presión, nivel y flujo</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_elec_vel" model="hr.skill">
+            <field name="name">Reparación de Sistemas de Control de Velocidad</field>
+            <field name="code">ELEC-VEL</field>
+            <field name="description">Reparación de Sistemas de Control de Velocidad - Variadores para ventiladores y bombas</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_elec_monit" model="hr.skill">
+            <field name="name">Instalación de Sistemas de Monitoreo Eléctrico</field>
+            <field name="code">ELEC-MONIT</field>
+            <field name="description">Instalación de Sistemas de Monitoreo Eléctrico - Medidores de consumo y calidad de energía</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_elec_prot" model="hr.skill">
+            <field name="name">Sistemas de Protección Eléctrica Avanzada</field>
+            <field name="code">ELEC-PROT</field>
+            <field name="description">Sistemas de Protección Eléctrica Avanzada - Relés de protección y sistemas de tierra</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- COMPETENCIAS DE FONTANERÍA ESPECIALIZADA -->
+        
+        <!-- Sistemas de Agua y Vapor -->
+        <record id="skill_font_agua_fria" model="hr.skill">
+            <field name="name">Instalación de Sistemas de Agua Fría Comercial</field>
+            <field name="code">FONT-AGUA-FRIA</field>
+            <field name="description">Instalación de Sistemas de Agua Fría Comercial - Redes de distribución para equipos HORECA</field>
             <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_font_agua_cal" model="hr.skill">
+            <field name="name">Mantenimiento de Sistemas de Agua Caliente</field>
+            <field name="code">FONT-AGUA-CAL</field>
+            <field name="description">Mantenimiento de Sistemas de Agua Caliente - Calentadores y distribución para cocinas</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_font_vapor" model="hr.skill">
+            <field name="name">Reparación de Sistemas de Vapor Comercial</field>
+            <field name="code">FONT-VAPOR</field>
+            <field name="description">Reparación de Sistemas de Vapor Comercial - Generadores y distribución para equipos de cocción</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_font_dren" model="hr.skill">
+            <field name="name">Mantenimiento de Sistemas de Drenaje Especializado</field>
+            <field name="code">FONT-DREN</field>
+            <field name="description">Mantenimiento de Sistemas de Drenaje Especializado - Trampas de grasa y sistemas de evacuación</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_font_pres" model="hr.skill">
+            <field name="name">Instalación de Sistemas de Presión Constante</field>
+            <field name="code">FONT-PRES</field>
+            <field name="description">Instalación de Sistemas de Presión Constante - Bombas y tanques hidroneumáticos</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Sistemas de Gas -->
+        <record id="skill_font_gas_nat" model="hr.skill">
+            <field name="name">Instalación de Sistemas de Gas Natural</field>
+            <field name="code">FONT-GAS-NAT</field>
+            <field name="description">Instalación de Sistemas de Gas Natural - Redes de distribución para equipos de cocina</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_font_glp" model="hr.skill">
+            <field name="name">Mantenimiento de Sistemas de GLP Comercial</field>
+            <field name="code">FONT-GLP</field>
+            <field name="description">Mantenimiento de Sistemas de GLP Comercial - Tanques estacionarios y redes de distribución</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_font_reg_gas" model="hr.skill">
+            <field name="name">Reparación de Reguladores y Válvulas de Gas</field>
+            <field name="code">FONT-REG-GAS</field>
+            <field name="description">Reparación de Reguladores y Válvulas de Gas - Sistemas de control de presión y seguridad</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_font_det_gas" model="hr.skill">
+            <field name="name">Instalación de Detectores de Gas</field>
+            <field name="code">FONT-DET-GAS</field>
+            <field name="description">Instalación de Detectores de Gas - Sistemas de seguridad y alarma para cocinas comerciales</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_font_filt_agua" model="hr.skill">
+            <field name="name">Mantenimiento de Sistemas de Filtración de Agua</field>
+            <field name="code">FONT-FILT-AGUA</field>
+            <field name="description">Mantenimiento de Sistemas de Filtración de Agua - Filtros para equipos de hielo y bebidas</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- GESTIÓN Y ADMINISTRACIÓN -->
+        
+        <!-- Gestión de Inventarios y Repuestos -->
+        <record id="skill_gest_inv" model="hr.skill">
+            <field name="name">Gestión de Inventarios de Repuestos</field>
+            <field name="code">GEST-INV</field>
+            <field name="description">Gestión de Inventarios de Repuestos - Control de stock y rotación de componentes críticos</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_gest_prov" model="hr.skill">
+            <field name="name">Gestión de Proveedores Especializados</field>
+            <field name="code">GEST-PROV</field>
+            <field name="description">Gestión de Proveedores Especializados - Relaciones con distribuidores de equipos HORECA</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_gest_cost" model="hr.skill">
+            <field name="name">Análisis de Costos de Mantenimiento</field>
+            <field name="code">GEST-COST</field>
+            <field name="description">Análisis de Costos de Mantenimiento - Evaluación de rentabilidad de reparaciones vs reemplazo</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_gest_plan" model="hr.skill">
+            <field name="name">Planificación de Mantenimiento Preventivo</field>
+            <field name="code">GEST-PLAN</field>
+            <field name="description">Planificación de Mantenimiento Preventivo - Cronogramas y rutinas de mantenimiento</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_gest_emerg" model="hr.skill">
+            <field name="name">Gestión de Servicios de Emergencia</field>
+            <field name="code">GEST-EMERG</field>
+            <field name="description">Gestión de Servicios de Emergencia - Protocolos de respuesta rápida 24/7</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- Servicio al Cliente y Comunicación -->
+        <record id="skill_gest_client" model="hr.skill">
+            <field name="name">Atención al Cliente Especializada</field>
+            <field name="code">GEST-CLIENT</field>
+            <field name="description">Atención al Cliente Especializada - Comunicación técnica con gerentes de restaurantes y hoteles</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_gest_cotiz" model="hr.skill">
+            <field name="name">Elaboración de Cotizaciones Técnicas</field>
+            <field name="code">GEST-COTIZ</field>
+            <field name="description">Elaboración de Cotizaciones Técnicas - Presupuestos detallados para reparaciones y mantenimiento</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_gest_cap" model="hr.skill">
+            <field name="name">Capacitación de Personal Operativo</field>
+            <field name="code">GEST-CAP</field>
+            <field name="description">Capacitación de Personal Operativo - Entrenamiento en uso correcto de equipos</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_gest_cal" model="hr.skill">
+            <field name="name">Control de Calidad de Servicios</field>
+            <field name="code">GEST-CAL</field>
+            <field name="description">Control de Calidad de Servicios - Verificación de estándares de reparación y mantenimiento</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_gest_garant" model="hr.skill">
+            <field name="name">Gestión de Garantías y Seguimiento</field>
+            <field name="code">GEST-GARANT</field>
+            <field name="description">Gestión de Garantías y Seguimiento - Control de garantías de equipos y servicios prestados</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+            <field name="active">True</field>
+        </record>
+        
+        <!-- HABILIDADES COMPLEMENTARIAS -->
+        
+        <!-- Comunicación y Trabajo en Equipo -->
+        <record id="skill_comp_com" model="hr.skill">
+            <field name="name">Comunicación Técnica Efectiva</field>
+            <field name="code">COMP-COM</field>
+            <field name="description">Comunicación Técnica Efectiva - Explicación clara de problemas técnicos a clientes no técnicos</field>
+            <field name="skill_type_id" ref="skill_type_comp"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_comp_seg" model="hr.skill">
+            <field name="name">Cultura de Seguridad Ocupacional</field>
+            <field name="code">COMP-SEG</field>
+            <field name="description">Cultura de Seguridad Ocupacional - Prácticas seguras en entornos comerciales</field>
+            <field name="skill_type_id" ref="skill_type_comp"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_comp_fact" model="hr.skill">
+            <field name="name">Manejo de Herramientas de Facturación</field>
+            <field name="code">COMP-FACT</field>
+            <field name="description">Manejo de Herramientas de Facturación - Sistemas básicos de cobranza</field>
+            <field name="skill_type_id" ref="skill_type_comp"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_comp_crm" model="hr.skill">
+            <field name="name">Gestión de Relaciones con Clientes (CRM)</field>
+            <field name="code">COMP-CRM</field>
+            <field name="description">Gestión de Relaciones con Clientes (CRM) - Seguimiento de clientes y servicios</field>
+            <field name="skill_type_id" ref="skill_type_comp"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_comp_cap_trab" model="hr.skill">
+            <field name="name">Planificación de Capacidad de Trabajo</field>
+            <field name="code">COMP-CAP-TRAB</field>
+            <field name="description">Planificación de Capacidad de Trabajo - Organización eficiente de rutas y tiempos de servicio</field>
+            <field name="skill_type_id" ref="skill_type_comp"/>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="skill_comp_ergon" model="hr.skill">
+            <field name="name">Ergonomía y Prevención de Lesiones</field>
+            <field name="code">COMP-ERGON</field>
+            <field name="description">Ergonomía y Prevención de Lesiones - Técnicas de trabajo que previenen lesiones laborales</field>
+            <field name="skill_type_id" ref="skill_type_comp"/>
+            <field name="active">True</field>
         </record>
         
     </data>

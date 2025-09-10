@@ -20,9 +20,9 @@ Notas: La gestión de contratos recurrentes ("Pólizas") se realiza a través de
 - Notas: El flujo operativo principal es Mesa de Ayuda -> Servicios de Campo. La gestión de inventario se extiende para incluir ubicaciones específicas para cada furgoneta de técnico.
 ---
 ### MACRO-PROCESO 3: Ejecución en Campo
-Módulo(s) Central(es) de Odoo: Servicios de Campo (Field Service), Studio (para Hojas de Trabajo).
+Módulo(s) Central(es) de Odoo: Servicios de Campo (Field Service), módulos personalizados desarrollados para hojas de trabajo digitales.
 Área Funcional Clave: Actualización de estado móvil, consumo de repuestos, registro de tiempo, cumplimentación de hojas de trabajo digitales y captura de firma del cliente.
-Notas: La interfaz principal del técnico en campo es la interfaz web responsiva de Odoo en un dispositivo móvil (tablet o smartphone). Se elimina la dependencia de integraciones externas, centralizando toda la operación en Odoo. 
+Notas: La interfaz principal del técnico en campo es la interfaz web responsiva de Odoo Community en un dispositivo móvil (tablet o smartphone). Se elimina la dependencia de integraciones externas, centralizando toda la operación en Odoo Community con módulos OCA y desarrollos personalizados cuando sea necesario. 
 ---
 ### MACRO-PROCESO 4: Cierre, Facturación y Cobranza
 - Módulo(s) Central(es) de Odoo: Servicios de Campo (Field Service), Contabilidad, Automatización.

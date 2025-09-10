@@ -36,16 +36,14 @@
             <field name="active">True</field>
         </record>
         
-        <!-- Ubicación para repuestos consumidos en campo - Comentado temporalmente por error de parsing -->
-        <!--
+        <!-- Ubicación para repuestos consumidos en campo -->
         <record id="stock_location_field_consumption" model="stock.location">
             <field name="name">Consumo en Campo</field>
-            <field name="usage">consumption</field>
+            <field name="usage">inventory</field>
             <field name="location_id" ref="stock.stock_location_locations"/>
             <field name="company_id" ref="base.main_company"/>
             <field name="active">True</field>
         </record>
-        -->
         
     </data>
 </odoo>

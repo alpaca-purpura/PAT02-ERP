@@ -39,11 +39,11 @@
                     </group>
                     <separator string="Técnicos Sugeridos"/>
                     <field name="suggested_technician_ids">
-                        <tree>
+                        <list>
                             <field name="name"/>
                             <field name="main_skills"/>
                             <field name="fsm_order_count"/>
-                        </tree>
+                        </list>
                     </field>
                     <footer>
                         <button string="Asignar Técnico" name="assign_technician" type="object" class="btn-primary"/>
@@ -51,3 +51,6 @@
                     </footer>
                 </form>
             </field>
+        </record>
+    </data>
+</odoo>

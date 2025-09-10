@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vista de formulario extendida para helpdesk.ticket -->
+    <data>
+        <!-- Vista de formulario extendida para helpdesk.ticket -->
     <record id="helpdesk_ticket_form_view_patco" model="ir.ui.view">
         <field name="name">helpdesk.ticket.form.patco</field>
         <field name="model">helpdesk.ticket</field>
@@ -30,4 +31,5 @@
             </xpath>
         </field>
     </record>
+    </data>
 </odoo>
