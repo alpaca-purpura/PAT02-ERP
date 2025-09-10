@@ -3,3 +3,6 @@
 2025-09-10 01:23:56,472 1 INFO odoo_patco werkzeug: 127.0.0.1 - - [10/Sep/2025 01:23:56] "GET /web/static/src/css/bootstrap.css HTTP/1.1" 404 - 9 0.008 0.065
 2025-09-10 01:24:14,901 1 DEBUG ? odoo.service.server: cron0 polling for jobs 
 2025-09-10 01:24:44,450 1 DEBUG ? odoo.service.server: cron1 polling for jobs 
+2025-09-10 01:24:56,987 1 DEBUG odoo_patco odoo.addons.http_routing.models.ir_http: '/web/static/src/css/bootstrap.css' (lang: 'es') no lang in url and default website, continue 
+2025-09-10 01:24:57,005 1 INFO odoo_patco werkzeug: 127.0.0.1 - - [10/Sep/2025 01:24:57] "GET /web/static/src/css/bootstrap.css HTTP/1.1" 404 - 9 0.006 0.190
+2025-09-10 01:25:15,165 1 DEBUG ? odoo.service.server: cron0 polling for jobs 
