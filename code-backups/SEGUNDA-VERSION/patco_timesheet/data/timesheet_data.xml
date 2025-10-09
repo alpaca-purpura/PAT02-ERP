@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Proyecto por defecto para FSM -->
+        <record id="project_fsm_default" model="project.project">
+            <field name="name">Servicios de Campo</field>
+            <field name="allow_timesheets" eval="True"/>
+            <field name="privacy_visibility">employees</field>
+            <field name="description">Proyecto por defecto para el registro de tiempo en órdenes de servicio de campo</field>
+        </record>
+        
+        <!-- Configuración de secuencias para timesheet -->
+        <record id="seq_timesheet_fsm" model="ir.sequence">
+            <field name="name">Timesheet FSM</field>
+            <field name="code">timesheet.fsm</field>
+            <field name="prefix">TS-FSM-</field>
+            <field name="padding">4</field>
+            <field name="company_id" eval="False"/>
+        </record>
+        
+    </data>
+</odoo>

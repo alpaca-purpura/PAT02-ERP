@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================ -->
+        <!-- MENÚS ESPECÍFICOS DE PATCO SKILLS MGMT -->
+        <!-- ============================================ -->
+        
+        <!-- Empleados - Matriz de Habilidades -->
+        <menuitem id="menu_patco_employee_skills_matrix"
+                  name="Matriz de Habilidades"
+                  parent="patco_base.menu_patco_administration_employees"
+                  action="action_hr_employee_skill_employee"
+                  sequence="40"/>
+        
+        <!-- Empleados - Tipos de Habilidades -->
+        <menuitem id="menu_patco_skill_types"
+                  name="Tipos de Habilidades"
+                  parent="patco_base.menu_patco_administration_employees"
+                  action="action_hr_skill_type"
+                  sequence="50"/>
+        
+        <!-- Empleados - Niveles de Habilidades -->
+        <menuitem id="menu_patco_skill_levels"
+                  name="Niveles de Habilidades"
+                  parent="patco_base.menu_patco_administration_employees"
+                  action="action_hr_skill_level"
+                  sequence="60"/>
+        
+        <!-- Gerencia - Reporte de Habilidades -->
+        <menuitem id="menu_patco_skills_report"
+                  name="Reporte de Habilidades"
+                  parent="patco_base.menu_patco_management_reports"
+                  action="hr_skills.hr_employee_skill_report_action"
+                  sequence="10"/>
+        
+    </data>
+</odoo>

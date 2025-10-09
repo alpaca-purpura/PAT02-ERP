@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Submenu de Gestion de Activos bajo el menu principal de patco_base -->
+        <menuitem id="menu_patco_asset_management" 
+                  name="Gestion de Activos" 
+                  parent="patco_base.menu_patco_main" 
+                  sequence="20"/>
+
+        <!-- Menú de Equipos de Cliente -->
+        <menuitem id="menu_patco_customer_equipment" 
+                  name="Equipos de Cliente" 
+                  parent="menu_patco_asset_management" 
+                  action="action_patco_customer_equipment" 
+                  sequence="10"/>
+    </data>
+</odoo>

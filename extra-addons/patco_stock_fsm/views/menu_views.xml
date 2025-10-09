@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Menú principal de PATCO Stock FSM -->
+    <menuitem id="menu_patco_stock_fsm_root" 
+              name="PATCO Stock FSM" 
+              web_icon="patco_stock_fsm,static/src/img/PATCO-Logo.png"
+              sequence="50"/>
+    
+    <!-- Submenú de Gestión de Stock -->
+    <menuitem id="menu_patco_stock_management" 
+              name="Gestión de Stock" 
+              parent="menu_patco_stock_fsm_root" 
+              sequence="10"/>
+    
+    <!-- Menú de Ubicaciones de Vehículos -->
+    <menuitem id="menu_stock_location_vehicles" 
+              name="Ubicaciones de Vehículos" 
+              parent="menu_patco_stock_management" 
+              action="action_stock_location_vehicle" 
+              sequence="10"/>
+    
+    <!-- Menú de Vista Kanban de Vehículos -->
+    <menuitem id="menu_stock_location_vehicles_kanban" 
+              name="Vehículos - Vista Kanban" 
+              parent="menu_patco_stock_management" 
+              action="action_stock_location_vehicle_kanban" 
+              sequence="15"/>
+    
+    <!-- Submenú de Transferencias -->
+    <menuitem id="menu_patco_stock_transfers" 
+              name="Transferencias" 
+              parent="menu_patco_stock_fsm_root" 
+              sequence="20"/>
+    
+    <!-- Menú de Solicitudes de Transferencia -->
+    <menuitem id="menu_stock_transfer_requests" 
+              name="Solicitudes de Transferencia" 
+              parent="menu_patco_stock_transfers" 
+              action="action_stock_transfer_request" 
+              sequence="10"/>
+    
+    <!-- Integración con menú de Inventario existente -->
+    <!-- Agregar acceso rápido desde el menú principal de Inventario -->
+    <menuitem id="menu_inventory_vehicle_locations" 
+              name="Ubicaciones de Vehículos" 
+              parent="stock.menu_stock_warehouse_mgmt" 
+              action="action_stock_location_vehicle" 
+              sequence="25"/>
+    
+    <menuitem id="menu_inventory_transfer_requests" 
+              name="Solicitudes de Transferencia" 
+              parent="stock.menu_stock_warehouse_mgmt" 
+              action="action_stock_transfer_request" 
+              sequence="26"/>
+    
+    <!-- Integración con menú de Field Service si está disponible -->
+    <!-- Nota: Estos menús solo aparecerán si el módulo fieldservice está instalado -->
+    <menuitem id="menu_fsm_vehicle_stock" 
+              name="Stock de Vehículos" 
+              parent="fieldservice.root" 
+              action="action_stock_location_vehicle_kanban" 
+              sequence="30"
+              groups="fieldservice.group_fsm_user"/>
+    
+    <menuitem id="menu_fsm_transfer_requests" 
+              name="Solicitudes de Stock" 
+              parent="fieldservice.root" 
+              action="action_stock_transfer_request" 
+              sequence="31"
+              groups="fieldservice.group_fsm_user"/>
+
+</odoo>

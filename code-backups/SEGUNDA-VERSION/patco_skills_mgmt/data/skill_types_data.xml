@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Tipos de Habilidades del Sector HORECA -->
+        <record id="skill_type_cocina" model="hr.skill.type">
+            <field name="name">COC - Cocina</field>
+            <field name="code">COC</field>
+            <field name="description">Habilidades relacionadas con equipos de cocina y preparación de alimentos</field>
+        </record>
+        
+        <record id="skill_type_refrigeracion" model="hr.skill.type">
+            <field name="name">REF - Refrigeración</field>
+            <field name="code">REF</field>
+            <field name="description">Habilidades en sistemas de refrigeración y climatización</field>
+        </record>
+        
+        <record id="skill_type_lavado" model="hr.skill.type">
+            <field name="name">LAV - Lavado</field>
+            <field name="code">LAV</field>
+            <field name="description">Habilidades en equipos de lavado y limpieza</field>
+        </record>
+        
+        <record id="skill_type_panaderia" model="hr.skill.type">
+            <field name="name">PAN - Panadería</field>
+            <field name="code">PAN</field>
+            <field name="description">Habilidades en equipos de panadería y repostería</field>
+        </record>
+        
+        <record id="skill_type_bar" model="hr.skill.type">
+            <field name="name">BAR - Bar y Bebidas</field>
+            <field name="code">BAR</field>
+            <field name="description">Habilidades en equipos de bar y preparación de bebidas</field>
+        </record>
+        
+        <record id="skill_type_general" model="hr.skill.type">
+            <field name="name">GEN - General</field>
+            <field name="code">GEN</field>
+            <field name="description">Habilidades técnicas generales aplicables a múltiples áreas</field>
+        </record>
+        
+        <!-- Niveles de Habilidad -->
+        <record id="skill_level_n1" model="hr.skill.level">
+            <field name="name">N1 - Básico</field>
+            <field name="level_progress">1</field>
+            <field name="description">Conocimiento básico, requiere supervisión</field>
+        </record>
+        
+        <record id="skill_level_n2" model="hr.skill.level">
+            <field name="name">N2 - Intermedio</field>
+            <field name="level_progress">2</field>
+            <field name="description">Conocimiento intermedio, trabajo independiente</field>
+        </record>
+        
+        <record id="skill_level_n3" model="hr.skill.level">
+            <field name="name">N3 - Avanzado</field>
+            <field name="level_progress">3</field>
+            <field name="description">Conocimiento avanzado, puede entrenar a otros</field>
+        </record>
+        
+        <!-- Habilidades de Cocina -->
+        <record id="skill_cocina_calentadores" model="hr.skill">
+            <field name="name">Calentadores</field>
+            <field name="code">COC-CAL</field>
+            <field name="skill_type_id" ref="skill_type_cocina"/>
+            <field name="description">Mantenimiento y reparación de calentadores industriales</field>
+        </record>
+        
+        <record id="skill_cocina_freidoras" model="hr.skill">
+            <field name="name">Freidoras</field>
+            <field name="code">COC-FRE</field>
+            <field name="skill_type_id" ref="skill_type_cocina"/>
+            <field name="description">Mantenimiento y reparación de freidoras industriales</field>
+        </record>
+        
+        <record id="skill_cocina_hornos" model="hr.skill">
+            <field name="name">Hornos</field>
+            <field name="code">COC-HOR</field>
+            <field name="skill_type_id" ref="skill_type_cocina"/>
+            <field name="description">Mantenimiento y reparación de hornos industriales</field>
+        </record>
+        
+        <record id="skill_cocina_planchas" model="hr.skill">
+            <field name="name">Planchas</field>
+            <field name="code">COC-PLA</field>
+            <field name="skill_type_id" ref="skill_type_cocina"/>
+            <field name="description">Mantenimiento y reparación de planchas industriales</field>
+        </record>
+        
+        <!-- Habilidades de Refrigeración -->
+        <record id="skill_ref_presion" model="hr.skill">
+            <field name="name">Presión</field>
+            <field name="code">REF-PRE</field>
+            <field name="skill_type_id" ref="skill_type_refrigeracion"/>
+            <field name="description">Sistemas de presión en equipos de refrigeración</field>
+        </record>
+        
+        <record id="skill_ref_temperatura" model="hr.skill">
+            <field name="name">Temperatura</field>
+            <field name="code">REF-TEM</field>
+            <field name="skill_type_id" ref="skill_type_refrigeracion"/>
+            <field name="description">Control y calibración de sistemas de temperatura</field>
+        </record>
+        
+        <record id="skill_ref_compresores" model="hr.skill">
+            <field name="name">Compresores</field>
+            <field name="code">REF-COM</field>
+            <field name="skill_type_id" ref="skill_type_refrigeracion"/>
+            <field name="description">Mantenimiento y reparación de compresores</field>
+        </record>
+        
+        <!-- Habilidades de Lavado -->
+        <record id="skill_lav_lavado" model="hr.skill">
+            <field name="name">Lavado</field>
+            <field name="code">LAV-LAV</field>
+            <field name="skill_type_id" ref="skill_type_lavado"/>
+            <field name="description">Sistemas de lavado industrial</field>
+        </record>
+        
+        <record id="skill_lav_secado" model="hr.skill">
+            <field name="name">Secado</field>
+            <field name="code">LAV-SEC</field>
+            <field name="skill_type_id" ref="skill_type_lavado"/>
+            <field name="description">Sistemas de secado industrial</field>
+        </record>
+        
+        <!-- Habilidades de Panadería -->
+        <record id="skill_pan_amasadoras" model="hr.skill">
+            <field name="name">Amasadoras</field>
+            <field name="code">PAN-AMA</field>
+            <field name="skill_type_id" ref="skill_type_panaderia"/>
+            <field name="description">Mantenimiento y reparación de amasadoras industriales</field>
+        </record>
+        
+        <record id="skill_pan_hornos" model="hr.skill">
+            <field name="name">Hornos de Panadería</field>
+            <field name="code">PAN-HOR</field>
+            <field name="skill_type_id" ref="skill_type_panaderia"/>
+            <field name="description">Hornos especializados para panadería</field>
+        </record>
+        
+        <!-- Habilidades de Bar -->
+        <record id="skill_bar_maquinas_cafe" model="hr.skill">
+            <field name="name">Máquinas de Café</field>
+            <field name="code">BAR-CAF</field>
+            <field name="skill_type_id" ref="skill_type_bar"/>
+            <field name="description">Mantenimiento de máquinas de café profesionales</field>
+        </record>
+        
+        <record id="skill_bar_dispensadores" model="hr.skill">
+            <field name="name">Dispensadores</field>
+            <field name="code">BAR-DIS</field>
+            <field name="skill_type_id" ref="skill_type_bar"/>
+            <field name="description">Dispensadores de bebidas y sistemas de bar</field>
+        </record>
+        
+        <!-- Habilidades Generales -->
+        <record id="skill_gen_electricidad" model="hr.skill">
+            <field name="name">Electricidad</field>
+            <field name="code">GEN-ELE</field>
+            <field name="skill_type_id" ref="skill_type_general"/>
+            <field name="description">Conocimientos básicos de electricidad industrial</field>
+        </record>
+        
+        <record id="skill_gen_plomeria" model="hr.skill">
+            <field name="name">Plomería</field>
+            <field name="code">GEN-PLO</field>
+            <field name="skill_type_id" ref="skill_type_general"/>
+            <field name="description">Conocimientos básicos de plomería industrial</field>
+        </record>
+        
+        <record id="skill_gen_soldadura" model="hr.skill">
+            <field name="name">Soldadura</field>
+            <field name="code">GEN-SOL</field>
+            <field name="skill_type_id" ref="skill_type_general"/>
+            <field name="description">Técnicas básicas de soldadura</field>
+        </record>
+        
+    </data>
+</odoo>

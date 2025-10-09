@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista de formulario extendida para res.partner - Pestaña Ubicaciones FSM -->
+        <record id="view_partner_form_fsm_locations" model="ir.ui.view">
+            <field name="name">res.partner.form.fsm.locations</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                
+                <!-- Agregar pestaña de Ubicaciones FSM después de las pestañas existentes -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Ubicaciones FSM" name="fsm_locations" 
+                          invisible="not owned_location_ids and not context.get('show_fsm_locations', False)">
+                        
+                        <group>
+                            <group>
+                                <field name="fsm_location" string="Es Ubicación FSM" 
+                                       help="Marcar si este contacto también es una ubicación de servicio"/>
+                            </group>
+                            <group>
+                                <field name="service_location_id" string="Ubicación de Servicio Principal"
+                                       help="Ubicación principal donde se realizan los servicios para este cliente"/>
+                            </group>
+                        </group>
+                        
+                        <separator string="Ubicaciones de Servicio Asociadas"/>
+                        
+                        <field name="owned_location_ids" nolabel="1">
+                            <list string="Ubicaciones FSM" create="true" edit="true" delete="true">
+                                <field name="name" string="Nombre de la Ubicación"/>
+                                <field name="street" string="Dirección" optional="show"/>
+                                <field name="city" string="Ciudad" optional="show"/>
+                                <field name="phone" string="Teléfono" optional="hide"/>
+                                <field name="email" string="Email" optional="hide"/>
+                                <field name="contact_id" string="Contacto" optional="show"/>
+                                <field name="fsm_location" string="Activa" widget="boolean_toggle" optional="show"/>
+                            </list>
+                        </field>
+                        
+                        <div class="oe_chatter">
+                            <p class="text-muted">
+                                <strong>Información:</strong> Las ubicaciones FSM permiten gestionar múltiples sitios 
+                                donde se realizan servicios técnicos para este cliente. Cada ubicación puede tener 
+                                su propia información de contacto y ser utilizada en órdenes de servicio de campo.
+                            </p>
+                        </div>
+                        
+                    </page>
+                </xpath>
+                
+            </field>
+        </record>
+        
+    </data>
+</odoo>

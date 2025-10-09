@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- ========================================== -->
+        <!-- CATEGORÍAS DE SERVICIOS DE MANTENIMIENTO -->
+        <!-- ========================================== -->
+        
+        <!-- Categoría principal de servicios -->
+        <record id="product_category_maintenance_services" model="product.category">
+            <field name="name">Servicios de Mantenimiento</field>
+            <field name="parent_id" ref="product.product_category_all"/>
+        </record>
+        
+        <!-- Subcategorías de servicios -->
+        <record id="product_category_preventive_maintenance" model="product.category">
+            <field name="name">Mantenimiento Preventivo</field>
+            <field name="parent_id" ref="product_category_maintenance_services"/>
+        </record>
+        
+        <record id="product_category_corrective_maintenance" model="product.category">
+            <field name="name">Mantenimiento Correctivo</field>
+            <field name="parent_id" ref="product_category_maintenance_services"/>
+        </record>
+        
+        <record id="product_category_installation_services" model="product.category">
+            <field name="name">Servicios de Instalación</field>
+            <field name="parent_id" ref="product_category_maintenance_services"/>
+        </record>
+        
+        <!-- ========================================== -->
+        <!-- CATEGORÍAS DE REPUESTOS Y CONSUMIBLES    -->
+        <!-- ========================================== -->
+        
+        <!-- Categoría principal de repuestos -->
+        <record id="product_category_spare_parts" model="product.category">
+            <field name="name">Repuestos y Consumibles</field>
+            <field name="parent_id" ref="product.product_category_all"/>
+        </record>
+        
+        <!-- Subcategorías por tipo de equipo según documento funcional -->
+        
+        <!-- Cocina y Procesamiento de Alimentos -->
+        <record id="product_category_kitchen_parts" model="product.category">
+            <field name="name">Repuestos de Cocina</field>
+            <field name="parent_id" ref="product_category_spare_parts"/>
+        </record>
+        
+        <record id="product_category_cooking_equipment_parts" model="product.category">
+            <field name="name">Equipos de Cocción</field>
+            <field name="parent_id" ref="product_category_kitchen_parts"/>
+        </record>
+        
+        <record id="product_category_preparation_equipment_parts" model="product.category">
+            <field name="name">Equipos de Preparación</field>
+            <field name="parent_id" ref="product_category_kitchen_parts"/>
+        </record>
+        
+        <record id="product_category_dishwashing_parts" model="product.category">
+            <field name="name">Equipos de Lavado de Vajilla</field>
+            <field name="parent_id" ref="product_category_kitchen_parts"/>
+        </record>
+        
+        <record id="product_category_ventilation_parts" model="product.category">
+            <field name="name">Sistemas de Ventilación</field>
+            <field name="parent_id" ref="product_category_kitchen_parts"/>
+        </record>
+        
+        <!-- Refrigeración y Climatización -->
+        <record id="product_category_refrigeration_parts" model="product.category">
+            <field name="name">Repuestos de Refrigeración</field>
+            <field name="parent_id" ref="product_category_spare_parts"/>
+        </record>
+        
+        <record id="product_category_commercial_refrigeration_parts" model="product.category">
+            <field name="name">Refrigeración Comercial</field>
+            <field name="parent_id" ref="product_category_refrigeration_parts"/>
+        </record>
+        
+        <record id="product_category_hvac_parts" model="product.category">
+            <field name="name">Climatización (HVAC)</field>
+            <field name="parent_id" ref="product_category_refrigeration_parts"/>
+        </record>
+        
+        <!-- Lavandería Industrial -->
+        <record id="product_category_laundry_parts" model="product.category">
+            <field name="name">Repuestos de Lavandería</field>
+            <field name="parent_id" ref="product_category_spare_parts"/>
+        </record>
+        
+        <record id="product_category_washing_equipment_parts" model="product.category">
+            <field name="name">Equipos de Lavado</field>
+            <field name="parent_id" ref="product_category_laundry_parts"/>
+        </record>
+        
+        <record id="product_category_drying_equipment_parts" model="product.category">
+            <field name="name">Equipos de Secado</field>
+            <field name="parent_id" ref="product_category_laundry_parts"/>
+        </record>
+        
+        <record id="product_category_ironing_equipment_parts" model="product.category">
+            <field name="name">Equipos de Planchado</field>
+            <field name="parent_id" ref="product_category_laundry_parts"/>
+        </record>
+        
+        <!-- Bar y Cafetería -->
+        <record id="product_category_bar_parts" model="product.category">
+            <field name="name">Repuestos de Bar y Cafetería</field>
+            <field name="parent_id" ref="product_category_spare_parts"/>
+        </record>
+        
+        <!-- Sistemas Eléctricos y Fontanería -->
+        <record id="product_category_electrical_parts" model="product.category">
+            <field name="name">Componentes Eléctricos</field>
+            <field name="parent_id" ref="product_category_spare_parts"/>
+        </record>
+        
+        <record id="product_category_plumbing_parts" model="product.category">
+            <field name="name">Componentes de Fontanería</field>
+            <field name="parent_id" ref="product_category_spare_parts"/>
+        </record>
+        
+        <!-- Las categorías de consumibles están definidas en product_categories_consolidated.xml -->
+        
+    </data>
+</odoo>

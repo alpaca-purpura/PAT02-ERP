@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de Lista para Asignaciones Activo-Técnico -->
+        <record id="view_fsm_order_asset_technician_list" model="ir.ui.view">
+        <field name="name">fsm.order.asset.technician.list</field>
+            <field name="model">fsm.order.asset.technician</field>
+            <field name="type">list</field>
+            <field name="arch" type="xml">
+                <list string="Asignaciones Activo-Técnico" editable="bottom" create="true" delete="true">
+                    <!-- Campos principales -->
+                    <field name="order_id" string="Orden FSM" required="1"/>
+                    <field name="asset_id" string="Activo" required="1"/>
+                    <field name="technician_id" string="Técnico" required="1"/>
+                    
+                    <!-- Estado y rol -->
+                    <field name="is_lead" string="Líder" widget="boolean_toggle"/>
+                    <field name="status" string="Estado" widget="badge" 
+                           decoration-success="status == 'completed'"
+                           decoration-info="status == 'in_progress'"
+                           decoration-warning="status == 'pending'"
+                           decoration-danger="status == 'cancelled'"/>
+                    
+                    <!-- Tiempos y costos -->
+                    <field name="estimated_hours" string="Horas Est." sum="Total Estimado"/>
+                    <field name="actual_hours" string="Horas Real" sum="Total Real"/>
+                    <field name="estimated_cost" string="Costo Est." widget="monetary"/>
+                    <field name="actual_cost" string="Costo Real" widget="monetary" sum="Total Costo"/>
+                    
+                    <!-- Fechas -->
+                    <field name="date_start" string="Inicio"/>
+                    <field name="date_end" string="Fin"/>
+                    
+                    <!-- Notas -->
+                    <field name="notes" string="Notas" optional="hide"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista de Formulario para Asignaciones Activo-Técnico -->
+        <record id="view_fsm_order_asset_technician_form" model="ir.ui.view">
+            <field name="name">fsm.order.asset.technician.form</field>
+            <field name="model">fsm.order.asset.technician</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Asignación Activo-Técnico">
+                    <header>
+                        <!-- Botones de estado -->
+                        <button name="action_start_work" type="object" string="▶️ Iniciar" 
+                                class="btn-success" invisible="status != 'pending'"
+                                help="Iniciar el trabajo en este activo"/>
+                        <button name="action_complete_work" type="object" string="✔️ Completar" 
+                                class="btn-info" invisible="status != 'in_progress'"
+                                help="Marcar el trabajo como completado"/>
+                        <button name="action_block_work" type="object" string="🚫 Bloquear" 
+                                class="btn-warning" invisible="status != 'in_progress'"
+                                help="Bloquear el trabajo en este activo"/>
+                        <button name="action_reset_to_pending" type="object" string="🔄 Reiniciar" 
+                                class="btn-secondary" invisible="status not in ['blocked', 'cancelled']"
+                                help="Reiniciar a estado pendiente"/>
+                        <button name="action_cancel_work" type="object" string="❌ Cancelar" 
+                                 class="btn-secondary" invisible="status not in ['pending', 'in_progress']"
+                                 help="Cancelar la asignación"/>
+                        
+                        <!-- Campo de estado -->
+                        <field name="status" widget="statusbar" 
+                               statusbar_visible="pending,in_progress,completed,blocked,cancelled"/>
+                    </header>
+                    
+                    <sheet>
+                        <!-- Información principal -->
+                        <group>
+                            <group string="🔧 Asignación Principal">
+                                <field name="order_id" string="Orden FSM" required="1"/>
+                                <field name="asset_id" string="Activo" required="1"/>
+                                <field name="technician_id" string="Técnico" required="1"/>
+                                <field name="is_lead" string="Es Técnico Líder" widget="boolean_toggle"/>
+                            </group>
+                            
+                            <group string="📅 Fechas y Tiempos">
+                                <field name="date_start" string="Fecha de Inicio"/>
+                <field name="date_end" string="Fecha de Finalización"/>
+                                <field name="estimated_hours" string="Horas Estimadas"/>
+                                <field name="actual_hours" string="Horas Reales"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Información de costos -->
+                        <group string="💰 Información de Costos">
+                            <group>
+                                <field name="estimated_cost" string="Costo Estimado" widget="monetary"/>
+                                <field name="actual_cost" string="Costo Real" widget="monetary"/>
+                                <field name="parts_cost" string="Costo de Partes" widget="monetary"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Notas y observaciones -->
+                        <group string="📝 Notas y Observaciones">
+                            <field name="notes" string="Notas" placeholder="Ingrese observaciones sobre esta asignación..."/>
+                        </group>
+                    </sheet>
+                    
+                    <!-- Chatter para seguimiento -->
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Vista de Búsqueda para Asignaciones Activo-Técnico -->
+        <record id="view_fsm_order_asset_technician_search" model="ir.ui.view">
+            <field name="name">fsm.order.asset.technician.search</field>
+            <field name="model">fsm.order.asset.technician</field>
+            <field name="type">search</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Asignaciones">
+                    <!-- Campos de búsqueda -->
+                    <field name="order_id" string="Orden FSM"/>
+                    <field name="asset_id" string="Activo"/>
+                    <field name="technician_id" string="Técnico"/>
+                    <field name="status" string="Estado"/>
+                    
+                    <!-- Filtros predefinidos -->
+                    <filter name="filter_lead" string="Técnicos Líderes" domain="[('is_lead', '=', True)]"/>
+                    <filter name="filter_pending" string="Pendientes" domain="[('status', '=', 'pending')]"/>
+                    <filter name="filter_in_progress" string="En Progreso" domain="[('status', '=', 'in_progress')]"/>
+                    <filter name="filter_completed" string="Completados" domain="[('status', '=', 'completed')]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Filtros por fecha -->
+                    <filter name="filter_today" string="Hoy" domain="[('date_start', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="filter_week" string="Esta Semana" 
+                        domain="[('date_start', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d')),
+                                 ('date_start', '&lt;=', (context_today() + datetime.timedelta(days=6-context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                    
+                    <separator/>
+                    
+                    <!-- Agrupaciones -->
+                    <group expand="0" string="Agrupar Por">
+                        <filter name="group_order" string="Orden FSM" context="{'group_by': 'order_id'}"/>
+                        <filter name="group_asset" string="Activo" context="{'group_by': 'asset_id'}"/>
+                        <filter name="group_technician" string="Técnico" context="{'group_by': 'technician_id'}"/>
+                        <filter name="group_status" string="Estado" context="{'group_by': 'status'}"/>
+                        <filter name="group_date" string="Fecha Inicio" context="{'group_by': 'date_start'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Vista Kanban para Asignaciones Activo-Técnico -->
+        <record id="view_fsm_order_asset_technician_kanban" model="ir.ui.view">
+            <field name="name">fsm.order.asset.technician.kanban</field>
+            <field name="model">fsm.order.asset.technician</field>
+            <field name="type">kanban</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="status" class="o_kanban_small_column">
+                    <field name="order_id"/>
+                    <field name="asset_id"/>
+                    <field name="technician_id"/>
+                    <field name="is_lead"/>
+                    <field name="status"/>
+                    <field name="estimated_hours"/>
+                    <field name="actual_hours"/>
+                    <field name="actual_cost"/>
+                    <field name="date_start"/>
+                    
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="asset_id"/>
+                                        </strong>
+                                        <br/>
+                                        <small class="text-muted">
+                                            <field name="order_id"/>
+                                        </small>
+                                    </div>
+                                    <div class="o_kanban_record_top_right">
+                                        <t t-if="record.is_lead.raw_value">
+                                            <span class="badge badge-primary">👑 Líder</span>
+                                        </t>
+                                    </div>
+                                </div>
+                                
+                                <div class="o_kanban_record_body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <strong>👨‍🔧 Técnico:</strong><br/>
+                                            <field name="technician_id"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong>⏱️ Horas:</strong><br/>
+                                            <t t-esc="record.estimated_hours.value"/>h est. / 
+                                            <t t-esc="record.actual_hours.value"/>h real
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <strong>💰 Costo:</strong><br/>
+                                            <field name="actual_cost" widget="monetary"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong>📅 Asignado:</strong><br/>
+                                            <field name="date_start"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Acción de ventana para Asignaciones Activo-Técnico -->
+        <record id="action_fsm_order_asset_technician" model="ir.actions.act_window">
+            <field name="name">Asignaciones Activo-Técnico</field>
+            <field name="res_model">fsm.order.asset.technician</field>
+            <field name="view_mode">list,kanban,form</field>
+            <field name="search_view_id" ref="view_fsm_order_asset_technician_search"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Crea tu primera asignación activo-técnico!
+                </p>
+                <p>
+                    Las asignaciones activo-técnico permiten gestionar qué técnicos trabajan en qué activos
+                    dentro de una orden de servicio, facilitando la coordinación y el seguimiento de costos.
+                </p>
+            </field>
+        </record>
+
+        <!-- Menú para Asignaciones Activo-Técnico -->
+        <menuitem id="menu_fsm_order_asset_technician"
+                  name="Asignaciones Activo-Técnico"
+                  parent="fieldservice.root"
+                  action="action_fsm_order_asset_technician"
+                  sequence="15"/>
+
+    </data>
+</odoo>

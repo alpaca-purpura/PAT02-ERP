@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Configuración del servidor LangGraph -->
+        <record id="config_langgraph_server_url" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.langgraph_server_url</field>
+            <field name="value">http://langgraph-server:8001</field>
+        </record>
+        
+        <!-- Configuración del servidor MCP -->
+        <record id="config_mcp_server_url" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.mcp_server_url</field>
+            <field name="value">http://mcp-server:8080</field>
+        </record>
+        
+        <!-- Configuración de IA habilitada por defecto -->
+        <record id="config_ai_enabled_default" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.ai_enabled_default</field>
+            <field name="value">True</field>
+        </record>
+        
+        <!-- Configuración de inicio automático de IA -->
+        <record id="config_ai_auto_start_default" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.ai_auto_start_default</field>
+            <field name="value">True</field>
+        </record>
+        
+        <!-- Configuración de timeout para llamadas IA -->
+        <record id="config_ai_request_timeout" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.ai_request_timeout</field>
+            <field name="value">30</field>
+        </record>
+        
+        <!-- Configuración de procesamiento de mensajes -->
+        <record id="config_process_messages_enabled" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.process_messages_enabled</field>
+            <field name="value">True</field>
+        </record>
+        
+        <!-- Configuración de logging de IA -->
+        <record id="config_ai_logging_enabled" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.ai_logging_enabled</field>
+            <field name="value">True</field>
+        </record>
+        
+        <!-- Configuración de canales IA -->
+        <record id="config_ai_channel_prefix" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.ai_channel_prefix</field>
+            <field name="value">🤖 IA -</field>
+        </record>
+        
+        <!-- Email del usuario bot IA -->
+        <record id="config_ai_bot_email" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.ai_bot_email</field>
+            <field name="value">ai-bot@patco.com.pe</field>
+        </record>
+        
+        <!-- Configuración de retry para llamadas fallidas -->
+        <record id="config_ai_retry_attempts" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.ai_retry_attempts</field>
+            <field name="value">3</field>
+        </record>
+        
+        <!-- Configuración de delay entre retries -->
+        <record id="config_ai_retry_delay" model="ir.config_parameter">
+            <field name="key">patco_ai_agent.ai_retry_delay</field>
+            <field name="value">5</field>
+        </record>
+        
+    </data>
+</odoo>

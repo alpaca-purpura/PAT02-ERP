@@ -1,0 +1,484 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista extendida de formulario para fsm.order - Estructura Optimizada PATCO <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+       -->
+    <record id="fsm_order_form_view_patco" model="ir.ui.view">
+        <field name="name">fsm.order.form.patco</field>
+        <field name="model">fsm.order</field>
+        <field name="mode">primary</field>
+        <field name="priority">999</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="stage_id" widget="statusbar" 
+                           domain="[('stage_type', '=', 'order'), '|', ('team_ids', 'in', team_id), ('team_ids', '=', False)]"
+                           options="{'clickable': '1', 'fold_field': 'fold'}"/>
+                </header>
+                <sheet>
+                    <!-- BUTTON BOX - Contadores Estadísticos -->
+                    <div name="button_box" class="oe_button_box">
+                        <button name="action_view_consumed_parts" type="object" class="oe_stat_button" icon="fa-cogs"
+                                help="Muestra la cantidad total de repuestos y materiales que se han consumido durante la ejecución de esta orden de servicio. Haga clic para ver el detalle de cada repuesto utilizado.">
+                            <field name="consumed_parts_count" widget="statinfo" string="Repuestos Utilizados"/>
+                        </button>
+                        <button name="action_view_worksheets" type="object" class="oe_stat_button" icon="fa-clipboard"
+                                help="Indica cuántas hojas de trabajo (formularios de inspección, checklists, reportes) están asociadas a esta orden de servicio. Haga clic para acceder a todas las hojas de trabajo.">
+                            <field name="worksheet_count" widget="statinfo" string="Hojas de Trabajo"/>
+                        </button>
+                        <button name="action_view_timesheet" type="object" class="oe_stat_button" icon="fa-clock-o"
+                                help="Muestra cuántos registros de tiempo (entradas de horas trabajadas) se han creado para esta orden de servicio. Útil para control de horas y facturación. Haga clic para ver el detalle de tiempo registrado.">
+                            <field name="timesheet_count" widget="statinfo" string="Registros de Tiempo"/>
+                        </button>
+                        <button name="action_suggest_technicians" type="object" class="oe_stat_button" icon="fa-users"
+                                invisible="not x_required_skill_types"
+                                help="Abre el asistente para sugerir técnicos basado en las habilidades requeridas y disponibilidad.">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Sugerir</span>
+                                <span class="o_stat_text">Técnicos</span>
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- SECCIÓN 1: INFORMACIÓN BÁSICA (2 Columnas) -->
+                    <group string="Información Básica" col="4">
+                        <group string="Información del Cliente" colspan="2">
+                            <field name="location_id" string="Cliente" context="{'show_address': 1}" options="{'always_reload': True}" help="Cliente asociado a esta orden de servicio" required="1"/> 
+                            <!-- <field name="x_client_contact" 
+                               help="Información de contacto principal en el sitio del cliente para coordinaciones."/> -->
+                            <!-- <field name="x_detailed_location" widget="text" 
+                               help="Descripción detallada de la ubicación, incluyendo indicaciones de acceso, referencias y contactos en sitio."/> -->      
+                        <!-- <group string="Clasificación PATCO" col="1">
+                            <field name="x_classification_code" readonly="1" 
+                                   help="Código único generado automáticamente que combina la naturaleza, área y complejidad del trabajo. Útil para identificación rápida y reportes estadísticos."/>
+                            <field name="x_nature_id" options="{'no_create': True, 'no_edit': True}"
+                                   help="Seleccione el tipo de trabajo a realizar: Preventivo (mantenimiento programado), Correctivo (reparación de fallas), Predictivo (basado en análisis), etc. Esta clasificación es importante para reportes y planificación."/>
+                            <field name="x_area_id" options="{'no_create': True, 'no_edit': True}"
+                                   help="Seleccione el área geográfica o departamental donde se ejecutará el servicio (ej: Zona Norte, Planta Industrial, Oficinas Administrativas). Ayuda a organizar rutas y asignar técnicos por zona."/>
+                            <field name="x_complexity_id" options="{'no_create': True, 'no_edit': True}"
+                                   help="Indique la complejidad técnica del trabajo: Básica (tareas simples), Intermedia (requiere experiencia), Avanzada (especialista requerido). Ayuda a asignar el técnico adecuado y estimar tiempos."/>
+                        </group>-->
+                        </group>
+                        <group string="Sobre la Visita" colspan="2">
+                            <field name="scheduled_date_start" 
+                                   help="Fecha y hora programada para iniciar el servicio." widget="datetime"/>
+                        <!-- Campos propuestos para implementación futura -->
+                        <!-- <field name="x_estimated_duration" widget="float_time" 
+                               help="Tiempo estimado para completar el trabajo."/> -->
+                        <!-- <field name="x_transport_method" 
+                               help="Método de transporte para llegar al sitio (vehículo propio, empresa, etc.)."/> -->
+                        <!-- <field name="x_viaticos_amount" widget="monetary" 
+                               help="Monto autorizado para viáticos y gastos de viaje."/> -->
+                        </group>
+                    </group>
+                    
+                    <!-- SECCIÓN 3: MÚLTIPLES ACTIVOS Y ASIGNACIÓN DE TÉCNICOS -->
+                    <group string="Planificación" col="2">
+                        <!-- 
+                        <group string="Información del Activo" col="1">
+                            <field name="equipment_id" 
+                                   help="Equipo principal asociado a esta orden de servicio." options="{'no_create': True}"/>
+                            <field name="x_equipment_category_name" readonly="1" string="Categoría"
+                                   invisible="equipment_id == False"
+                                   help="Muestra la categoría del equipo o activo asociado a esta orden (ej: Bomba, Motor, Compresor). Información automática que ayuda a identificar el tipo de equipo a intervenir."/>
+                            <field name="x_equipment_brand_model" readonly="1" string="Marca/Modelo"
+                                   invisible="equipment_id == False"
+                                   help="Información específica de la marca y modelo del equipo a intervenir. Útil para identificar repuestos compatibles y procedimientos específicos del fabricante."/>
+                            <field name="x_equipment_location_name" readonly="1" string="Ubicación del Equipo"
+                                   invisible="equipment_id == False"
+                                   help="Ubicación física específica donde se encuentra el equipo (ej: Planta Baja - Sala de Máquinas, Piso 3 - Oficina 301). Ayuda al técnico a localizar rápidamente el activo."/> 
+                             <field name="x_asset_ids" 
+                               help="Lista de activos específicos del cliente que se deben revisar, mantener o reparar en esta visita."/>
+                        </group>
+                        --> 
+                        <!-- Subsección: Múltiples Activos -->
+                        <group string="Activos a Atender" col="1">
+                            <field name="x_multiple_assets_ids" widget="many2many_tags" 
+                                   help="Seleccione todos los activos que requieren atención en esta orden de servicio."/>
+                            <field name="x_total_assigned_assets" readonly="1" 
+                                   help="Número total de activos asignados a esta orden de servicio."/>
+                        </group>
+                        <!-- Subsección: Habilidades Requeridas -->
+                            <!--<group string="Habilidades y Competencias Necesearias" col="1">
+                                <field name="x_required_skill_types" widget="many2many_tags" 
+                                    help="Seleccione las competencias técnicas necesarias para realizar este trabajo (ej: Electricidad, Mecánica, Soldadura). El sistema ayudará a asignar técnicos calificados."/>
+                                <field name="x_min_skill_level" 
+                                    help="Establezca el nivel mínimo de experiencia requerido para las habilidades técnicas (ej: Básico, Intermedio, Avanzado, Experto). Ayuda a filtrar técnicos apropiados."/>
+                                <button name="action_suggest_technicians" type="object" 
+                                        string="🎯 Sugerir Técnicos" class="btn-success"
+                                        invisible="not x_required_skill_types"
+                                        help="Abre el asistente para sugerir técnicos basado en las habilidades requeridas y disponibilidad."/>
+                            </group>-->
+                        <!-- Advertencias de Habilidades 
+                        <div class="alert alert-warning" role="alert" 
+                             invisible="not x_skill_match_warning or not x_required_skill_types">
+                            <i class="fa fa-warning"/> 
+                            <field name="x_skill_match_warning" readonly="1" nolabel="1"
+                                   help="Muestra advertencias automáticas cuando los técnicos asignados no poseen las habilidades o nivel de experiencia requeridos para este trabajo. Ayuda a prevenir asignaciones inadecuadas."/>
+                        </div>-->
+                        
+                        <!-- Subsección: Equipo de Técnicos -->
+                        <group string="Asignación de Técnicos" col="1">
+                            <button name="action_assign_technicians_to_assets" type="object" 
+                                    string="🔧 Técnicos" class="btn-primary"
+                                    help="Abre el asistente para asignar técnicos específicos a cada activo."/>
+                            <!--<button name="action_view_asset_technician_assignments" type="object" 
+                                    string="👥 Ver Asignaciones" class="btn-info"
+                                    help="Ver todas las asignaciones de técnicos a activos para esta orden."/>-->
+                            <field name="x_lead_technician_id" 
+                                   domain="[('id', 'in', x_available_technicians)]"
+                                   context="{'search_default_available': 1, 'required_skill_types': x_required_skill_types, 'min_skill_level': x_min_skill_level}"
+                                   help="Técnico líder responsable de coordinar el equipo y supervisar la ejecución de la orden de servicio."/>
+                            <field name="x_team_technician_ids" widget="many2many_tags" 
+                                   domain="[('id', 'in', x_available_technicians)]"
+                                   help="Equipo de técnicos adicionales que participarán en la ejecución de esta orden de servicio."/>
+                            <field name="x_total_assigned_technicians" readonly="1" 
+                                   help="Número total de técnicos asignados (incluyendo líder y equipo)."/>
+                        </group>
+                        
+                        <!-- Subsección: Herramientas y Recursos (Campos Propuestos) -->
+                        <!-- <group col="4">
+                            <field name="x_required_tools_ids" widget="many2many_tags" 
+                                help="Lista de herramientas que los técnicos deben llevar para completar el trabajo."/>
+                            <field name="x_special_equipment_ids" widget="many2many_tags" 
+                                help="Equipos o herramientas especiales necesarias para la visita."/>
+                        </group> -->
+                    </group>
+                    
+                    <!-- SECCIÓN 4: CONTROL DE EJECUCIÓN -->
+                    <group string="Control de Ejecución" col="2">
+                        <group string="Estado del Trabajo" col="1">
+                            <field name="has_signed_worksheet" readonly="1"
+                                   help="Indica si las hojas de trabajo han sido firmadas por el cliente o responsable en sitio. Importante para validar la conformidad del servicio realizado."/>
+                            <field name="worksheet_completion_rate" readonly="1" widget="percentage"
+                                   help="Porcentaje de completitud de todas las hojas de trabajo asociadas a esta orden. Ayuda a monitorear el progreso de las actividades planificadas."/>
+                                   <!--<field name="stage_id" 
+                               help="Estado actual de la orden de servicio en el flujo de trabajo." widget="statusbar" options="{'clickable': '1', 'fold_field': 'fold'}"/>-->
+                        </group>
+                        <group string="Control de Tiempo" col="1">
+                            <field name="total_timesheet_time" readonly="1" widget="float_time"
+                                   help="Tiempo total registrado por todos los técnicos en esta orden de servicio. Se actualiza automáticamente con cada entrada de tiempo."/>
+                            <field name="is_timer_running" readonly="1"
+                                   help="Indica si hay un cronómetro activo registrando tiempo en tiempo real para esta orden. Útil para control de productividad."/>
+                            <field name="current_timesheet_id" readonly="1"
+                                   help="Referencia al registro de tiempo actualmente en curso, si existe alguno."/>
+                        </group>
+                    </group>
+
+                    <!-- PESTAÑAS OPERATIVAS -->
+                    <notebook>
+                        <!-- PESTAÑA 0: Asignaciones Activo-Técnico -->
+                        <page string="👥 Asignaciones Activo-Técnico" name="asset_technician_assignments_page"
+                              help="Gestión detallada de asignaciones entre técnicos y activos específicos">
+                            <div class="oe_button_box" name="button_box">
+                                <button name="action_assign_technicians_to_assets" type="object" class="oe_stat_button" icon="fa-plus">
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_text">Nueva</span>
+                                        <span class="o_stat_text">Asignación</span>
+                                    </div>
+                                </button>
+                            </div>
+                            <field name="x_asset_technician_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="asset_id" string="Activo/Equipo" domain="[('id', 'in', parent.x_multiple_assets_ids)]"/>
+                                    <field name="technician_id" string="Técnico Asignado" domain="[('id', 'in', parent.x_available_technicians)]"/>
+                                    <field name="is_lead" string="Es Líder" widget="boolean"/>
+                                    <field name="estimated_hours" string="Horas Estimadas" widget="float_time"/>
+                                    <field name="actual_hours" string="Horas Reales" widget="float_time" readonly="1"/>
+                                    <field name="estimated_cost" string="Costo Estimado" widget="monetary" readonly="1"/>
+                                    <field name="actual_cost" string="Costo Real" widget="monetary" readonly="1"/>
+                                    <field name="status" string="Estado" widget="badge"/>
+                                    <field name="notes" string="Notas"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="x_total_assigned_technicians" readonly="1" string="Total Técnicos Asignados"/>
+                                <field name="x_total_assigned_assets" readonly="1" string="Total Activos Asignados"/>
+                            </group>
+                        </page>
+                        
+                        <!-- PESTAÑA 1: Checklist de Entrada -->
+                        <page string="📋 Procedimiento de Inicio de Visita" name="entry_checklist_page"
+                              help="Lista de verificación que debe completarse antes de iniciar el trabajo en sitio">
+                            <group>
+                                <div class="alert alert-info" role="alert">
+                                    <i class="fa fa-info-circle"/> 
+                                    <strong>Instrucciones:</strong> Complete este checklist antes de iniciar cualquier trabajo en sitio. 
+                                    Esto asegura que se cumplan todos los protocolos de seguridad y se tengan los recursos necesarios.
+                                </div>
+                                <field name="x_entry_checklist" widget="html" 
+                                       placeholder="Ingrese los elementos del checklist de entrada..."/>
+                            </group>
+                        </page>
+                        
+                        <!-- PESTAÑA 2: Hojas de Trabajo -->
+                        <page string="📝 Hojas de Trabajo" name="worksheets_page"
+                              help="Formularios y documentos técnicos que deben completarse durante el servicio">
+                            <div class="oe_button_box" name="button_box">
+                                <button name="action_create_worksheet" type="object" class="oe_stat_button" icon="fa-plus">
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_text">Nueva</span>
+                                        <span class="o_stat_text">Hoja</span>
+                                    </div>
+                                </button>
+                            </div>
+                            <field name="worksheet_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="name" string="Nombre del Documento"/>
+                                    <field name="template_id" string="Plantilla"/>
+                                    <field name="state" string="Estado" widget="badge"/>
+                                    <field name="completion_percentage" widget="percentage" string="% Completado"/>
+                                    <field name="technician_id" string="Asignado a"/>
+                                    <field name="create_date" string="Fecha Creación"/>
+                                </list>
+                            </field>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="worksheet_completion_rate" readonly="1" widget="percentage" 
+                                       string="Progreso Total de Hojas de Trabajo"/>
+                            </group>
+                        </page>
+                        
+                        <!-- PESTAÑA 3: Repuestos y Materiales -->
+                        <page string="🔧 Repuestos y Materiales" name="parts_materials_page"
+                              help="Control de repuestos, materiales y consumibles utilizados en el servicio">
+                            <div class="oe_button_box" name="button_box">
+                                <button name="action_consume_parts" type="object" class="oe_stat_button" icon="fa-plus">
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_text">Consumir</span>
+                                        <span class="o_stat_text">Repuestos</span>
+                                    </div>
+                                </button>
+                                <!-- Botón comentado temporalmente - acción no implementada
+                        <button name="action_request_parts" type="object" class="oe_stat_button" icon="fa-shopping-cart">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Solicitar</span>
+                                <span class="o_stat_text">Materiales</span>
+                            </div>
+                        </button>
+                        -->
+                            </div>
+                            <group>
+                                <group string="Repuestos Consumidos">
+                                    <field name="x_consumed_parts_ids" nolabel="1">
+                                        <list editable="bottom">
+                                            <field name="product_id" string="Producto/Repuesto"/>
+                                            <field name="quantity" string="Cantidad"/>
+                                            <field name="product_uom_id" string="Unidad"/>
+                                            <field name="unit_cost" readonly="1" string="Costo Unit."/>
+                                            <field name="total_cost" readonly="1" string="Costo Total"/>
+                                            <field name="state" string="Estado" widget="badge"/>
+                                            <field name="create_date" string="Fecha Consumo"/>
+                                        </list>
+                                    </field>
+                                </group>
+                            </group>
+                            <group class="oe_subtotal_footer oe_right">
+                                <field name="x_total_parts_cost" readonly="1" string="Total Costo Repuestos" widget="monetary"/>
+                            </group>
+                        </page>
+                        
+                        <!-- PESTAÑA 4: Checklist de Salida -->
+                        <page string="✅ Procedimiento de Salida" name="exit_checklist_page"
+                              help="Verificaciones finales antes de completar el servicio y retirarse del sitio">
+                            <group>
+                                <div class="alert alert-success" role="alert">
+                                    <i class="fa fa-check-circle"/> 
+                                    <strong>Finalización:</strong> Complete este checklist antes de dar por terminado el servicio. 
+                                    Asegúrese de que el cliente esté conforme y se hayan cumplido todos los objetivos.
+                                </div>
+                                <field name="x_exit_checklist" widget="html" 
+                                       placeholder="Ingrese los elementos del checklist de salida..."/>
+                                        <!-- Campos propuestos para implementación futura -->
+                        <!-- <field name="x_client_signature" widget="signature" string="Firma del Cliente"/> -->
+                        <!-- <field name="x_technician_signature" widget="signature" string="Firma del Técnico"/> -->
+                        <!-- <field name="x_service_rating" widget="priority" string="Calificación del Servicio"/> -->
+                            </group>
+                        </page>
+                        
+                        <!-- PESTAÑA 5: Facturación -->
+                        <page string="💰 Facturación" name="billing_page"
+                              help="Configuración y control de facturación para esta orden de servicio">
+                            <div class="oe_button_box" name="button_box">
+                                <button name="action_create_invoice" type="object" class="oe_stat_button" icon="fa-file-text-o">
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_text">Crear</span>
+                                        <span class="o_stat_text">Factura</span>
+                                    </div>
+                                </button>
+                                <button name="action_view_invoices" type="object" class="oe_stat_button" icon="fa-money">
+                                    <div class="o_field_widget o_stat_info">
+                                        <span class="o_stat_text">Ver</span>
+                                        <span class="o_stat_text">Facturas</span>
+                                    </div>
+                                </button>
+                            </div>
+                            <group col="4">
+                                <group string="Configuración de Facturación">
+                                    <field name="invoice_policy" 
+                                           help="Política de facturación: por horas trabajadas, precio fijo, o materiales consumidos."/>
+                                    <field name="service_product_id" 
+                                           help="Producto o servicio principal que se facturará al cliente."/>
+                                    <field name="auto_invoice_time" 
+                                           help="Activar para incluir automáticamente las horas trabajadas en la factura."/>
+                                    <field name="auto_invoice_materials" 
+                                           help="Activar para incluir automáticamente los materiales consumidos en la factura."/>
+                                </group>
+                                <group string="Resumen Financiero">
+                                    <!-- <field name="x_service_amount" widget="monetary" readonly="1" 
+                                   help="Monto total por servicios prestados."/> -->
+                                    <field name="x_total_parts_cost" widget="monetary" readonly="1" 
+                                           help="Costo total de repuestos y materiales utilizados."/>
+                                             <!-- <field name="x_labor_cost" widget="monetary" readonly="1" 
+                                   help="Costo total de mano de obra basado en horas trabajadas."/> -->
+                            <!-- <field name="x_total_billable_amount" widget="monetary" readonly="1" 
+                                   help="Monto total facturable incluyendo servicios, materiales y mano de obra."/> -->
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- PESTAÑA 6: Control de Tiempo -->
+                        <page string="⏱️ Control de Tiempo" name="time_control_page"
+                              help="Registro y control de tiempo trabajado en esta orden de servicio">
+                            <group col="4">
+                                <group string="Control de Timer">
+                                    <field name="is_timer_running" readonly="1" 
+                                           help="Indica si hay un cronómetro activo registrando tiempo en tiempo real."/>
+                                    <field name="total_timesheet_time" readonly="1" widget="float_time" 
+                                           help="Tiempo total acumulado de todos los registros de tiempo."/>
+                                    <field name="current_timesheet_id" readonly="1" 
+                                           help="Referencia al registro de tiempo actualmente activo."/>
+                                    <div class="oe_button_box">
+                                        <button name="action_start_timer" type="object" 
+                                                string="▶️ Iniciar Timer" class="btn-success"
+                                                invisible="is_timer_running"
+                                                help="Inicia el cronómetro para registrar tiempo en tiempo real."/>
+                                        <button name="action_stop_timer" type="object" 
+                                                string="⏹️ Detener Timer" class="btn-warning"
+                                                invisible="not is_timer_running"
+                                                help="Detiene el cronómetro y guarda el tiempo registrado."/>
+                                                  <!-- Botón comentado temporalmente - acción no implementada
+                                <button name="action_pause_timer" type="object" 
+                                        string="⏸️ Pausar Timer" class="btn-info"
+                                        invisible="not is_timer_running"
+                                        help="Pausa temporalmente el cronómetro sin guardar el registro."/>
+                                -->
+                                    </div>
+                                </group>
+                                <group string="Estadísticas de Tiempo"/>
+                                 <!-- <field name="x_estimated_duration" widget="float_time" readonly="1" 
+                                   help="Tiempo estimado inicialmente para completar este trabajo."/> -->
+                            <!-- <field name="x_time_variance" widget="float_time" readonly="1" 
+                                   help="Diferencia entre tiempo estimado y tiempo real trabajado."/> -->
+                            <!-- <field name="x_efficiency_percentage" widget="percentage" readonly="1" 
+                                   help="Porcentaje de eficiencia basado en tiempo estimado vs. tiempo real."/> -->
+                            </group>
+                            <field name="timesheet_ids" nolabel="1">
+                                <list editable="bottom">
+                                    <field name="date" string="Fecha"/>
+                                    <field name="user_id" string="Técnico"/>
+                                    <field name="name" string="Descripción"/>
+                                    <field name="unit_amount" widget="float_time" string="Horas"/>
+                                    <field name="amount" string="Costo" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Extensión del campo person_id para filtro automático por habilidades -->
+    <record id="view_fsm_order_form_person_filter" model="ir.ui.view">
+        <field name="name">fsm.order.form.person.filter</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='person_id']" position="attributes">
+                <attribute name="domain">[('id', 'in', x_available_technicians)]</attribute>
+                <attribute name="context">{
+                    'search_default_available': 1,
+                    'required_skill_types': x_required_skill_types,
+                    'min_skill_level': x_min_skill_level
+                }</attribute>
+            </xpath>
+            <xpath expr="//field[@name='person_id']" position="after">
+                <div class="alert alert-warning" role="alert" 
+                     invisible="not x_skill_match_warning or not x_required_skill_types">
+                    <i class="fa fa-warning"/> <field name="x_skill_match_warning" readonly="1"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista extendida de lista para fsm.order -->
+    <record id="fsm_order_list_view_patco" model="ir.ui.view">
+        <field name="name">fsm.order.list.patco</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_list_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="x_nature_id"/>
+                <field name="x_area_id"/>
+                <field name="x_complexity_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vista kanban extendida para fsm.order -->
+    <record id="fsm_order_kanban_view_patco" model="ir.ui.view">
+        <field name="name">fsm.order.kanban.patco</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_content')]" position="inside">
+                <div class="o_kanban_tags_section">
+                    <field name="x_nature_id" widget="many2one_tags" options="{'color_field': 'color'}"/>
+                    <field name="x_area_id" widget="many2one_tags" options="{'color_field': 'color'}"/>
+                    <field name="x_complexity_id" widget="many2one_tags" options="{'color_field': 'color'}"/>
+                </div>
+                <div class="o_kanban_record_bottom">
+                    <div class="oe_kanban_bottom_left">
+                        <field name="x_classification_code" class="o_field_char"/>
+                        <span class="o_kanban_record_subtitle" invisible="not total_timesheet_time">
+                            <i class="fa fa-clock-o"/> <field name="total_timesheet_time" widget="float_time"/>
+                        </span>
+                    </div>
+                    <div class="oe_kanban_bottom_right">
+                        <field name="is_timer_running" widget="boolean" invisible="not is_timer_running"/>
+                        <span class="badge badge-pill badge-info" invisible="not worksheet_count">
+                            <i class="fa fa-clipboard"/> <field name="worksheet_count"/>
+                        </span>
+                        <span class="badge badge-pill badge-warning" invisible="not consumed_parts_count">
+                            <i class="fa fa-cogs"/> <field name="consumed_parts_count"/>
+                        </span>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Acción para Órdenes FSM (sin gantt) -->
+    <record id="action_fsm_order_patco" model="ir.actions.act_window">
+        <field name="name">Órdenes de Servicio</field>
+        <field name="res_model">fsm.order</field>
+        <!--<field name="view_mode">kanban,list,form,calendar</field>-->
+        <field name="view_mode">list,form</field>
+        <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('fsm_order_list_view_patco')}),
+                                          (0, 0, {'view_mode': 'form', 'view_id': ref('fsm_order_form_view_patco')})]"/>
+        <!--<field name="search_view_id" ref="view_maintenance_equipment_search_patco"/>-->
+        <field name="context">{
+            'search_default_my_orders': 1,
+            'search_default_open': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primera orden de servicio!
+            </p>
+            <p>
+                Las órdenes de servicio te permiten gestionar trabajos en campo,
+                asignar técnicos y hacer seguimiento del progreso.
+            </p>
+        </field>
+    </record>
+</odoo>

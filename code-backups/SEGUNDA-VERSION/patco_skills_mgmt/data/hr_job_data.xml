@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Departamentos para PATCO -->
+        <record id="dep_direccion" model="hr.department">
+            <field name="name">Dirección</field>
+            <field name="color" eval="1"/>
+        </record>
+        
+        <record id="dep_administracion" model="hr.department">
+            <field name="name">Administración</field>
+            <field name="parent_id" ref="dep_direccion"/>
+            <field name="color" eval="2"/>
+        </record>
+        
+        <record id="dep_operaciones" model="hr.department">
+            <field name="name">Operaciones</field>
+            <field name="parent_id" ref="dep_direccion"/>
+            <field name="color" eval="3"/>
+        </record>
+        
+        <record id="dep_servicio_tecnico" model="hr.department">
+            <field name="name">Servicio Técnico</field>
+            <field name="parent_id" ref="dep_operaciones"/>
+            <field name="color" eval="4"/>
+        </record>
+        
+        <record id="dep_ventas" model="hr.department">
+            <field name="name">Ventas</field>
+            <field name="parent_id" ref="dep_operaciones"/>
+            <field name="color" eval="5"/>
+        </record>
+        
+        <!-- Puestos de Trabajo para PATCO -->
+        
+        <!-- 1. Gerente General -->
+        <record id="job_gerente_general" model="hr.job">
+            <field name="name">Gerente General</field>
+            <field name="department_id" ref="dep_direccion"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Responsable de la dirección estratégica y operativa de PATCO. Supervisa todas las áreas de la empresa, toma decisiones estratégicas, representa a la empresa ante clientes importantes y autoridades, y es responsable del crecimiento y rentabilidad del negocio.</field>
+            <field name="requirements">• Experiencia mínima de 5 años en gestión empresarial
+• Conocimiento del sector HORECA y equipos industriales
+• Habilidades de liderazgo y toma de decisiones
+• Capacidad de negociación y relaciones comerciales
+• Conocimientos financieros y de gestión</field>
+        </record>
+        
+        <!-- 2. Jefe de Operaciones -->
+        <record id="job_jefe_operaciones" model="hr.job">
+            <field name="name">Jefe de Operaciones</field>
+            <field name="department_id" ref="dep_operaciones"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Coordina y supervisa las operaciones diarias de servicio técnico y ventas. Gestiona la programación de técnicos, supervisa la calidad del servicio, coordina con proveedores y asegura el cumplimiento de los estándares operativos.</field>
+            <field name="requirements">• Experiencia de 3-5 años en operaciones o gestión de servicios
+• Conocimiento técnico de equipos HORECA
+• Habilidades de coordinación y supervisión
+• Capacidad de resolución de problemas
+• Conocimientos de gestión de inventarios</field>
+        </record>
+        
+        <!-- 3. Líder Técnico -->
+        <record id="job_lider_tecnico" model="hr.job">
+            <field name="name">Líder Técnico</field>
+            <field name="department_id" ref="dep_servicio_tecnico"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Líder del equipo técnico con experiencia integral en equipos HORECA. Coordina y supervisa las operaciones técnicas, asigna trabajos según especialidades, capacita al equipo, atiende clientes estratégicos y resuelve casos complejos. Responsable de la calidad del servicio técnico y el desarrollo del equipo.</field>
+            <field name="requirements">• Mínimo 5 años de experiencia en reparación de equipos HORECA
+• Certificaciones técnicas en al menos 2 especialidades (refrigeración, cocina, lavandería)
+• Habilidades de liderazgo y gestión de equipos pequeños
+• Capacidad de diagnóstico avanzado y resolución de problemas complejos
+• Conocimientos en planificación y asignación de recursos
+• Habilidades de comunicación con clientes y proveedores</field>
+        </record>
+        
+        <!-- 4. Técnico Especialista -->
+        <record id="job_tecnico_especialista" model="hr.job">
+            <field name="name">Técnico Especialista</field>
+            <field name="department_id" ref="dep_servicio_tecnico"/>
+            <field name="no_of_recruitment">2</field>
+            <field name="description">Técnico polivalente especializado en múltiples áreas de equipos HORECA (refrigeración, cocina, lavandería). Realiza instalaciones, mantenimientos y reparaciones complejas, adapta su especialización según las necesidades del servicio. Capaz de trabajar de forma autónoma y apoyar en la capacitación de auxiliares técnicos.</field>
+            <field name="requirements">• Experiencia mínima de 3 años en equipos HORECA
+• Certificación en manejo de gases refrigerantes
+• Conocimiento en sistemas de gas y eléctricos
+• Habilidades en soldadura y sistemas de ventilación
+• Capacidad de adaptación a diferentes especialidades técnicas
+• Conocimiento de normativas de seguridad y ambientales
+• Disposición para capacitación continua en nuevas tecnologías</field>
+        </record>
+        
+        <!-- 5. Auxiliar Técnico -->
+        <record id="job_auxiliar_tecnico" model="hr.job">
+            <field name="name">Auxiliar Técnico</field>
+            <field name="department_id" ref="dep_servicio_tecnico"/>
+            <field name="no_of_recruitment">2</field>
+            <field name="description">Técnico de apoyo que asiste en reparaciones básicas, mantenimientos preventivos y tareas de soporte. Acompaña a técnicos especialistas en servicios complejos, maneja herramientas y repuestos, y está en proceso de desarrollo de especialización técnica. Fundamental para la eficiencia operativa del equipo.</field>
+            <field name="requirements">• Formación técnica en electromecánica, refrigeración o afines
+• Experiencia de 6 meses a 2 años en reparaciones
+• Disposición para aprender y capacitarse continuamente
+• Habilidades básicas en electricidad y mecánica
+• Actitud proactiva y excelente trabajo en equipo
+• Capacidad física para manejo de equipos y herramientas
+• Responsabilidad en el manejo de materiales y herramientas</field>
+        </record>
+        
+        <!-- 6. Ejecutivo de Ventas -->
+        <record id="job_ejecutivo_ventas" model="hr.job">
+            <field name="name">Ejecutivo de Ventas</field>
+            <field name="department_id" ref="dep_ventas"/>
+            <field name="no_of_recruitment">2</field>
+            <field name="description">Responsable de la prospección, desarrollo y mantenimiento de clientes. Realiza visitas comerciales, elabora cotizaciones, negocia contratos de servicio y mantiene relaciones comerciales con clientes del sector HORECA. Identifica oportunidades de negocio y desarrolla estrategias de venta.</field>
+            <field name="requirements">• Experiencia mínima de 2 años en ventas B2B
+• Conocimiento del sector HORECA (deseable)
+• Habilidades de negociación y comunicación
+• Capacidad de prospección y desarrollo de clientes
+• Orientación a resultados y metas de ventas</field>
+        </record>
+        
+        <!-- 7. Asistente Administrativo y Logística -->
+        <record id="job_asistente_administrativo" model="hr.job">
+            <field name="name">Asistente Administrativo y Logística</field>
+            <field name="department_id" ref="dep_administracion"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Combina soporte administrativo con gestión logística. Brinda soporte administrativo general, gestiona documentación, atiende llamadas telefónicas, programa citas y mantiene archivos actualizados. Adicionalmente, gestiona el almacén de repuestos y herramientas, controla inventarios, coordina con proveedores y apoya la logística de distribución. Punto de contacto clave entre administración y operaciones.</field>
+            <field name="requirements">• Estudios técnicos o universitarios en administración, logística o afines
+• Experiencia de 1-2 años en funciones administrativas y/o logística
+• Manejo avanzado de herramientas ofimáticas (Excel, Word, sistemas de inventario)
+• Habilidades de comunicación y atención al cliente
+• Organización excepcional y capacidad multitarea
+• Conocimiento básico de inventarios y control de stock
+• Capacidad física para manejo de materiales ligeros
+• Proactividad en la coordinación entre áreas</field>
+        </record>
+        
+        <!-- 8. Contador/Asistente Contable -->
+        <record id="job_contador" model="hr.job">
+            <field name="name">Contador/Asistente Contable</field>
+            <field name="department_id" ref="dep_administracion"/>
+            <field name="no_of_recruitment">1</field>
+            <field name="description">Responsable integral de la gestión contable y financiera de la microempresa. Lleva registros contables, prepara estados financieros, gestiona obligaciones tributarias, controla cuentas por cobrar y pagar, y brinda información financiera estratégica para la toma de decisiones gerenciales. En una microempresa, también apoya en análisis de costos operativos y rentabilidad por servicio.</field>
+            <field name="requirements">• Título profesional en Contabilidad o Administración
+• Experiencia mínima de 2 años en contabilidad de microempresas o PYMES
+• Conocimiento profundo de normativas tributarias peruanas
+• Manejo de software contable (CONTPAQi, SISCONT, etc.)
+• Conocimientos de costos, análisis financiero y flujo de caja
+• Experiencia en manejo de planillas y beneficios sociales
+• Capacidad de análisis y reporte gerencial
+• Conocimiento básico del sector servicios técnicos</field>
+        </record>
+        
+    </data>
+</odoo>

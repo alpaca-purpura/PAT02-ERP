@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista de lista extendida para reporte de análisis -->
+        <record id="view_timesheets_analysis_report_list_fsm" model="ir.ui.view">
+            <field name="name">timesheets.analysis.report.tree.fsm</field>
+            <field name="model">timesheets.analysis.report</field>
+            <field name="inherit_id" ref="hr_timesheet.view_timesheets_analysis_report_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="fsm_order_id" optional="show"/>
+                    <field name="fsm_location" optional="show"/>
+                    <field name="fsm_customer" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de búsqueda extendida para reporte de análisis -->
+        <record id="view_timesheets_analysis_report_search_fsm" model="ir.ui.view">
+            <field name="name">timesheets.analysis.report.search.fsm</field>
+            <field name="model">timesheets.analysis.report</field>
+            <field name="inherit_id" ref="hr_timesheet.view_timesheets_analysis_report_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="fsm_order_id"/>
+                    <field name="fsm_location"/>
+                    <field name="fsm_customer"/>
+                </xpath>
+                <xpath expr="//filter[@name='group_project']" position="after">
+                    <filter name="group_fsm_order" string="Orden FSM" 
+                            context="{'group_by': 'fsm_order_id'}"/>
+                    <filter name="group_fsm_customer" string="Cliente FSM" 
+                            context="{'group_by': 'fsm_customer'}"/>
+                    <filter name="group_fsm_location" string="Ubicación FSM" 
+                            context="{'group_by': 'fsm_location'}"/>
+                </xpath>
+                <xpath expr="//filter[@name='my_timesheet']" position="after">
+                    <separator/>
+                    <filter name="fsm_only" string="Solo FSM" 
+                            domain="[('fsm_order_id', '!=', False)]"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de gráfico para análisis FSM -->
+        <record id="view_timesheets_analysis_report_graph_fsm" model="ir.ui.view">
+            <field name="name">timesheets.analysis.report.graph.fsm</field>
+            <field name="model">timesheets.analysis.report</field>
+            <field name="inherit_id" ref="hr_timesheet.view_timesheets_analysis_report_graph"/>
+            <field name="arch" type="xml">
+                <xpath expr="//graph" position="attributes">
+                    <attribute name="sample">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de pivot para análisis FSM -->
+        <record id="view_timesheets_analysis_report_pivot_fsm" model="ir.ui.view">
+            <field name="name">timesheets.analysis.report.pivot.fsm</field>
+            <field name="model">timesheets.analysis.report</field>
+            <field name="inherit_id" ref="hr_timesheet.view_timesheets_analysis_report_pivot"/>
+            <field name="arch" type="xml">
+                <xpath expr="//pivot" position="attributes">
+                    <attribute name="sample">1</attribute>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Acción para análisis de timesheet FSM -->
+        <record id="action_timesheets_analysis_report_fsm" model="ir.actions.act_window">
+            <field name="name">Análisis de Tiempo FSM</field>
+            <field name="res_model">timesheets.analysis.report</field>
+            <field name="view_mode">graph,pivot,list</field>
+            <field name="context">{
+                'search_default_fsm_only': 1,
+                'search_default_group_fsm_customer': 1,
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Analiza el tiempo dedicado a servicios de campo!
+                </p>
+                <p>
+                    Obtén insights sobre la productividad y distribución del tiempo
+                    en las órdenes de servicio FSM.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

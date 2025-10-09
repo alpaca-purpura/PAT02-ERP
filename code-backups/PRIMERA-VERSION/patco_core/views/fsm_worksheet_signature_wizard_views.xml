@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vista de formulario para Wizard de Firma -->
+    <record id="view_fsm_worksheet_signature_wizard_form" model="ir.ui.view">
+        <field name="name">fsm.worksheet.signature.wizard.form</field>
+        <field name="model">fsm.worksheet.signature.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Captura de Firma Digital">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <span invisible="signature_type != 'technician'">Firma del Técnico</span>
+                            <span invisible="signature_type != 'customer'">Firma del Cliente</span>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <field name="worksheet_id" readonly="1"/>
+                        <field name="signature_type" readonly="1"/>
+                    </group>
+                    
+                    <!-- Campos específicos para firma del cliente -->
+                    <group invisible="signature_type != 'customer'" string="Información del Cliente">
+                        <group>
+                            <field name="customer_name" required="1" invisible="signature_type != 'customer'"/>
+                            <field name="customer_position" invisible="signature_type != 'customer'"/>
+                        </group>
+                        <group>
+                            <field name="customer_id_number" required="1" invisible="signature_type != 'customer'"/>
+                        </group>
+                    </group>
+                    
+                    <!-- Área de captura de firma -->
+                    <group string="Captura de Firma">
+                        <div class="alert alert-info" role="alert">
+                            <strong>Instrucciones:</strong>
+                            <ul>
+                                <li>Use el área de abajo para capturar la firma digital</li>
+                                <li>Puede usar mouse, touchpad o pantalla táctil</li>
+                                <li>La firma será guardada automáticamente al hacer clic en "Guardar Firma"</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Widget de firma digital -->
+                        <field name="signature" widget="signature" string="Área de Firma" 
+                               options="{'width': 400, 'height': 200, 'background_color': '#ffffff', 'pen_color': '#000000'}"/>
+                    </group>
+                    
+                    <!-- Observaciones adicionales -->
+                    <group string="Observaciones" invisible="signature_type != 'customer'">
+                        <field name="observations" nolabel="1" placeholder="Comentarios adicionales sobre el servicio realizado..."/>
+                    </group>
+                </sheet>
+                
+                <footer>
+                    <button name="action_save_signature" type="object" string="Guardar Firma" class="btn-primary"/>
+                    <button name="action_cancel" type="object" string="Cancelar" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Vista de formulario para Wizard de Datos -->
+    <record id="view_fsm_worksheet_data_wizard_form" model="ir.ui.view">
+        <field name="name">fsm.worksheet.data.wizard.form</field>
+        <field name="model">fsm.worksheet.data.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Captura de Datos de Hoja de Trabajo">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Datos de la Hoja de Trabajo</h1>
+                    </div>
+                    
+                    <group>
+                        <field name="worksheet_id" readonly="1"/>
+                        <field name="template_id" readonly="1"/>
+                    </group>
+                    
+                    <group string="Datos del Formulario">
+                        <div class="alert alert-info" role="alert">
+                            <strong>Información:</strong>
+                            Los datos se capturan en formato JSON basado en la plantilla seleccionada.
+                            Puede editar directamente el JSON o usar formularios personalizados.
+                        </div>
+                        
+                        <field name="dynamic_data" widget="ace" options="{'mode': 'json'}" nolabel="1"/>
+                    </group>
+                </sheet>
+                
+                <footer>
+                    <button name="action_save_data" type="object" string="Guardar Datos" class="btn-primary"/>
+                    <button name="action_cancel" type="object" string="Cancelar" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Acción para Wizard de Firma del Técnico -->
+    <record id="action_fsm_worksheet_technician_signature" model="ir.actions.act_window">
+        <field name="name">Firma del Técnico</field>
+        <field name="res_model">fsm.worksheet.signature.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'signature_type': 'technician'}</field>
+    </record>
+    
+    <!-- Acción para Wizard de Firma del Cliente -->
+    <record id="action_fsm_worksheet_customer_signature" model="ir.actions.act_window">
+        <field name="name">Firma del Cliente</field>
+        <field name="res_model">fsm.worksheet.signature.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="context">{'signature_type': 'customer'}</field>
+    </record>
+    
+    <!-- Acción para Wizard de Datos -->
+    <record id="action_fsm_worksheet_data_wizard" model="ir.actions.act_window">
+        <field name="name">Capturar Datos</field>
+        <field name="res_model">fsm.worksheet.data.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

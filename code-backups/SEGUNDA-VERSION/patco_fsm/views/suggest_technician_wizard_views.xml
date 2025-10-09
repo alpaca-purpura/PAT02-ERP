@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Acción para ver habilidades de empleados -->
+        <record id="action_view_employee_skills" model="ir.actions.act_window">
+            <field name="name">Habilidades del Empleado</field>
+            <field name="res_model">hr.employee.skill</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('employee_id', '=', active_id)]</field>
+            <field name="context">{'default_employee_id': active_id}</field>
+        </record>
+        
+        <!-- Vista del Wizard de Sugerencia de Técnicos -->
+        <record id="view_suggest_technician_wizard_form" model="ir.ui.view">
+            <field name="name">suggest.technician.wizard.form</field>
+            <field name="model">suggest.technician.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Sugerir Técnico">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="fsm_order_id" readonly="1" options="{'no_open': True}"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Información de la Orden">
+                                <field name="equipment_category" readonly="1"/>
+                                <field name="required_skills" widget="many2many_tags" readonly="1"/>
+                                <field name="min_skill_level" readonly="1"/>
+                            </group>
+                            
+                            <group string="Criterios de Sugerencia">
+                                <field name="suggestion_criteria" nolabel="1" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Técnicos Sugeridos">
+                                <group>
+                                    <field name="suggested_technician_ids" widget="many2many"/>
+                                </group>
+                                
+                                <separator string="Selección de Técnico"/>
+                                <group>
+                                    <field name="selected_technician_id" 
+                                           domain="[('id', 'in', suggested_technician_ids)]"
+                                           options="{'no_create': True, 'no_create_edit': True}"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Detalles de Habilidades" invisible="selected_technician_id == False">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Información:</strong> Aquí se mostrarán las habilidades detalladas del técnico seleccionado.
+                                </div>
+                                
+                                <button name="action_view_technician_skills" 
+                                        type="object" 
+                                        string="Ver Habilidades Detalladas" 
+                                        class="btn-primary"
+                                        invisible="selected_technician_id == False"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    
+                    <footer>
+                        <button name="action_assign_technician" 
+                                type="object" 
+                                string="Asignar Técnico" 
+                                class="btn-primary"
+                                invisible="selected_technician_id == False"/>
+                        
+                        <button name="action_refresh_suggestions" 
+                                type="object" 
+                                string="Actualizar Sugerencias" 
+                                class="btn-secondary"/>
+                        
+                        <button string="Cancelar" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Acción para el Wizard -->
+        <record id="action_suggest_technician_wizard" model="ir.actions.act_window">
+            <field name="name">Sugerir Técnico</field>
+            <field name="res_model">suggest.technician.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="view_id" ref="view_suggest_technician_wizard_form"/>
+        </record>
+        
+    </data>
+</odoo>

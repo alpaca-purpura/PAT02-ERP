@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Menú principal del Asistente IA -->
+    <menuitem id="menu_ai_agent_main" 
+              name="Asistente IA" 
+              sequence="50"
+              web_icon="patco_ai_agent,static/src/img/PATCO-Logo.png"/>
+    
+    <!-- Submenú: Conversaciones -->
+    <menuitem id="menu_ai_conversations" 
+              name="Conversaciones" 
+              parent="menu_ai_agent_main" 
+              sequence="10"/>
+    
+    <menuitem id="menu_ai_conversation_all" 
+              name="Todas las Conversaciones" 
+              parent="menu_ai_conversations" 
+              action="action_ai_conversation" 
+              sequence="10"/>
+    
+    <!-- Submenú: Base de Conocimiento -->
+    <menuitem id="menu_knowledge_base" 
+              name="Base de Conocimiento" 
+              parent="menu_ai_agent_main" 
+              sequence="20"/>
+    
+    <menuitem id="menu_knowledge_base_rag" 
+              name="Documentos RAG" 
+              parent="menu_knowledge_base" 
+              action="action_knowledge_base_rag" 
+              sequence="10"/>
+    
+    <menuitem id="menu_pending_indexing" 
+              name="Pendientes de Indexación" 
+              parent="menu_knowledge_base" 
+              action="action_pending_indexing" 
+              sequence="20"/>
+    
+    <!-- Submenú: Órdenes FSM con IA -->
+    <menuitem id="menu_fsm_ai" 
+              name="Órdenes FSM" 
+              parent="menu_ai_agent_main" 
+              sequence="30"/>
+    
+    <menuitem id="menu_fsm_orders_ai_active" 
+              name="Con IA Activa" 
+              parent="menu_fsm_ai" 
+              action="action_fsm_orders_with_ai" 
+              sequence="10"/>
+    
+    <!-- Submenú: Configuración y Estadísticas -->
+    <menuitem id="menu_ai_config" 
+              name="Configuración" 
+              parent="menu_ai_agent_main" 
+              sequence="90"/>
+    
+    <menuitem id="menu_ai_statistics" 
+              name="Estadísticas IA" 
+              parent="menu_ai_config" 
+              action="action_view_ai_statistics" 
+              sequence="10"/>
+    
+    <menuitem id="menu_rag_statistics" 
+              name="Estadísticas RAG" 
+              parent="menu_ai_config" 
+              action="action_view_rag_statistics" 
+              sequence="20"/>
+    
+    <!-- Agregar accesos directos en menús existentes -->
+    
+    <!-- En el menú FSM, agregar acceso a conversaciones IA -->
+    <menuitem id="menu_fsm_ai_conversations" 
+              name="Conversaciones IA" 
+              parent="menu_ai_config" 
+              action="action_ai_conversation" 
+              sequence="50"/>
+
+</odoo>

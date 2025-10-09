@@ -1,0 +1,26 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+# Field Service Orders - Acceso por roles PATCO
+access_fsm_order_technician,fsm.order.technician,model_fsm_order,patco_base.group_patco_technician,1,1,0,0
+access_fsm_order_ops_manager,fsm.order.ops.manager,model_fsm_order,patco_base.group_patco_operations_manager,1,1,1,1
+access_fsm_order_administrative,fsm.order.administrative,model_fsm_order,patco_base.group_patco_administrative,1,1,1,1
+# Consumed Parts - Técnicos pueden consumir, managers gestionan
+access_fsm_order_consumed_part_technician,fsm.order.consumed.part.technician,model_fsm_order_consumed_part,patco_base.group_patco_technician,1,1,1,0
+access_fsm_order_consumed_part_ops_manager,fsm.order.consumed.part.ops.manager,model_fsm_order_consumed_part,patco_base.group_patco_operations_manager,1,1,1,1
+access_fsm_order_consumed_part_administrative,fsm.order.consumed.part.administrative,model_fsm_order_consumed_part,patco_base.group_patco_administrative,1,1,1,1
+# Worksheets - Técnicos crean y editan, no eliminan
+access_fsm_worksheet_technician,fsm.worksheet.technician,model_fsm_worksheet,patco_base.group_patco_technician,1,1,1,0
+access_fsm_worksheet_ops_manager,fsm.worksheet.ops.manager,model_fsm_worksheet,patco_base.group_patco_operations_manager,1,1,1,1
+access_fsm_worksheet_administrative,fsm.worksheet.administrative,model_fsm_worksheet,patco_base.group_patco_administrative,1,1,1,1
+# Worksheet Templates - Solo lectura para técnicos
+access_fsm_worksheet_template_technician,fsm.worksheet.template.technician,model_fsm_worksheet_template,patco_base.group_patco_technician,1,0,0,0
+access_fsm_worksheet_template_ops_manager,fsm.worksheet.template.ops.manager,model_fsm_worksheet_template,patco_base.group_patco_operations_manager,1,1,1,1
+access_fsm_worksheet_template_administrative,fsm.worksheet.template.administrative,model_fsm_worksheet_template,patco_base.group_patco_administrative,1,1,1,1
+# Wizards - Acceso completo para todos los usuarios autenticados
+access_suggest_technician_wizard,suggest.technician.wizard,model_suggest_technician_wizard,base.group_user,1,1,1,1
+access_fsm_consume_parts_wizard,fsm.consume.parts.wizard,model_fsm_consume_parts_wizard,base.group_user,1,1,1,1
+access_fsm_consume_parts_wizard_line,fsm.consume.parts.wizard.line,model_fsm_consume_parts_wizard_line,base.group_user,1,1,1,1
+access_fsm_worksheet_customer_approval_wizard,fsm.worksheet.customer.approval.wizard,model_fsm_worksheet_customer_approval_wizard,base.group_user,1,1,1,1
+access_fsm_worksheet_signature_wizard,fsm.worksheet.signature.wizard,model_fsm_worksheet_signature_wizard,base.group_user,1,1,1,1
+access_fsm_worksheet_data_wizard,fsm.worksheet.data.wizard,model_fsm_worksheet_data_wizard,,1,1,1,1
+access_fsm_order_asset_technician_technician,fsm.order.asset.technician technician,model_fsm_order_asset_technician,patco_fsm.group_fsm_technician,1,1,1,1
+access_fsm_order_asset_technician_manager,fsm.order.asset.technician manager,model_fsm_order_asset_technician,patco_fsm.group_fsm_manager,1,1,1,1

@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <!-- Vista de lista extendida para equipos PATCO (Odoo 18) -->
+        <record id="view_maintenance_equipment_list_patco" model="ir.ui.view">
+            <field name="name">maintenance.equipment.list.patco</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="arch" type="xml">
+                <list string="Equipos PATCO" create="true" edit="true" delete="true" multi_edit="1">
+                    <!-- Campos principales visibles en lista -->
+                    <field name="name" string="Nombre del Activo"/>
+                    <field name="x_patco_code" string="Código PATCO" optional="show"/>
+                    <field name="category_id" string="Categoría" optional="show"/>
+                    <field name="x_customer_id" string="Cliente" optional="show"/>
+                    <field name="x_service_location_id" string="Ubicación" optional="hide"/>
+                    <field name="x_maintenance_state" string="Estado" 
+                           widget="badge"
+                           decoration-success="x_maintenance_state == 'normal'"
+                           decoration-warning="x_maintenance_state == 'to_maintenance'"
+                           decoration-danger="x_maintenance_state == 'maintenance'"/>
+                    <field name="x_last_service_date" string="Último Servicio" optional="hide"/>
+                    
+                    <!-- Campos computados para métricas -->
+                    <field name="x_service_count" string="Servicios" optional="hide"/>
+                    <field name="x_ticket_count" string="Tickets" optional="hide"/>
+                    <field name="x_fsm_order_count" string="Órdenes FSM" optional="hide"/>
+                    <field name="x_assigned_technician_count" string="Técnicos Asignados" optional="hide"/>
+                    <field name="x_multi_asset_order_count" string="Órdenes Multi-Activo" optional="hide"/>
+                    
+                    <!-- Campos técnicos ocultos para filtros -->
+                    <field name="company_id" column_invisible="1"/>
+                    <field name="create_date" column_invisible="1"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Vista de formulario PATCO para equipos (Vista Nueva - No Heredada) -->
+        <record id="view_maintenance_equipment_form_patco" model="ir.ui.view">
+            <field name="name">maintenance.equipment.form.patco</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="arch" type="xml">
+                <form string="Activos de Clientes de PATCO">
+                    <!-- HEADER: Statusbar y Botones Estadísticos según propuesta UX -->
+                    <header>
+                        <field name="x_maintenance_state" widget="statusbar" 
+                               statusbar_visible="draft,active,maintenance,retired"
+                               help="Estado actual del activo en el ciclo de vida PATCO"/>
+                    </header>
+                    
+                    <sheet>
+                        <!-- BOTONES ESTADÍSTICOS: Servicios, Tickets, QR según propuesta -->
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_view_service_orders" type="object"
+                                    class="oe_stat_button" icon="fa-wrench"
+                                    help="Ver órdenes de servicio relacionadas">
+                                <field name="x_service_count" widget="statinfo" string="Servicios"/>
+                            </button>
+                            <button name="action_view_helpdesk_tickets" type="object"
+                                    class="oe_stat_button" icon="fa-ticket"
+                                    help="Ver tickets de soporte activos">
+                                <field name="x_ticket_count" widget="statinfo" string="Tickets"/>
+                            </button>
+                            <button name="action_view_fsm_orders" type="object"
+                                    class="oe_stat_button" icon="fa-cogs"
+                                    help="Ver órdenes FSM donde participa este activo">
+                                <field name="x_fsm_order_count" widget="statinfo" string="Órdenes FSM"/>
+                            </button>
+                            <button name="action_view_assigned_technicians" type="object"
+                                    class="oe_stat_button" icon="fa-users"
+                                    help="Ver técnicos asignados a este activo">
+                                <field name="x_assigned_technician_count" widget="statinfo" string="Técnicos"/>
+                            </button>
+                            <button name="action_view_multi_asset_orders" type="object"
+                                    class="oe_stat_button" icon="fa-sitemap"
+                                    help="Ver órdenes que involucran múltiples activos">
+                                <field name="x_multi_asset_order_count" widget="statinfo" string="Multi-Activo"/>
+                            </button>
+                            <button name="regenerate_qr_code" type="object"
+                                    class="oe_stat_button" icon="fa-qrcode"
+                                    string="Regenerar QR"
+                                    help="Regenerar código QR para acceso móvil"/>
+                        </div>
+                        
+                        <!-- TÍTULO: Nombre del activo y código PATCO según propuesta -->
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" string="Nombre del Activo" 
+                                       placeholder="Ej: Aire Acondicionado Split - Sala Principal"
+                                       help="Nombre descriptivo del activo para fácil identificación"/>
+                            </h1>
+                            <h2>
+                                <field name="x_patco_code" string="Código PATCO" 
+                                       readonly="1" class="text-muted"
+                                       help="Código único PATCO generado automáticamente (ej: EQ-2024-001)"/>
+                            </h2>
+                        </div>
+                        
+                        <!-- INFORMACIÓN PRINCIPAL: Organizada por prioridad según propuesta UX -->
+                        <group>
+                            <!-- GRUPO 1: Cliente y Ubicación (Prioridad Alta) -->
+                            <group string="🏢 Cliente y Ubicación" name="client_location">
+                                <field name="x_customer_id" string="Cliente Propietario" 
+                                       domain="[('customer_rank', '>', 0)]"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       help="Cliente o empresa propietaria del activo"/>
+                                <field name="x_service_location_id" string="Ubicación de Servicio" 
+                                       domain="[('parent_id', '=', x_customer_id)]"
+                                       options="{'no_create': True, 'no_open': True}"
+                                       help="Ubicación específica donde se encuentra el activo"/>
+                                <field name="x_installation_date" string="Fecha de Instalación"
+                                       help="Cuándo se instaló el activo en esta ubicación"/>
+                            </group>
+                            
+                            <!-- GRUPO 2: Datos Técnicos (Prioridad Alta) -->
+                            <group string="⚙️ Datos Técnicos" name="technical_data">
+                                <field name="category_id" string="Categoría" 
+                                       help="Categoría que determina checklists y documentación aplicable"/>
+                                <field name="partner_id" string="Fabricante" 
+                                       domain="[('supplier_rank', '=', 2)]"
+                                       context="{'default_is_company': True, 'default_supplier_rank': 2}"
+                                       options="{'no_create': False, 'create_edit': True}"
+                                       help="Empresa fabricante o marca del activo"/>
+                                <field name="model" string="Modelo" 
+                                       help="Modelo específico según el fabricante"/>
+                                <field name="serial_no" string="Número de Serie" 
+                                       help="Número de serie único del fabricante"/>
+                                <field name="x_warranty_expiry" string="Vencimiento Garantía"
+                                       help="Fecha límite de cobertura de garantía"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <!-- GRUPO 3: Estado y Métricas (Prioridad Media) -->
+                            <group string="📊 Estado y Métricas" name="status_metrics">
+                                <field name="x_last_service_date" string="Último Servicio" 
+                                       readonly="1" help="Fecha del servicio más reciente"/>
+                                <field name="x_service_count" string="Total Servicios" 
+                                       readonly="1" help="Número total de servicios realizados"/>
+                                <field name="x_ticket_count" string="Tickets Activos" 
+                                       readonly="1" help="Tickets de soporte actualmente abiertos"/>
+                                <field name="x_fsm_order_count" string="Órdenes FSM" 
+                                       readonly="1" help="Órdenes de servicio de campo relacionadas"/>
+                                <field name="x_assigned_technician_count" string="Técnicos Asignados" 
+                                       readonly="1" help="Número de técnicos asignados a este activo"/>
+                                <field name="x_multi_asset_order_count" string="Órdenes Multi-Activo" 
+                                       readonly="1" help="Órdenes que involucran múltiples activos"/>
+                            </group>
+                            
+                            <!-- GRUPO 4: Acceso Móvil (Prioridad Media) -->
+                            <group string="📱 Acceso Móvil" name="mobile_access">
+                                <field name="x_qr_code" string="Código QR" 
+                                       widget="image" class="oe_avatar" nolabel="1"
+                                       help="Escanear para acceso rápido desde dispositivos móviles"/>
+                                <field name="x_qr_url" string="URL de Acceso" 
+                                       widget="url" readonly="1"
+                                       help="Enlace directo para acceder a la información del activo"/>
+                            </group>
+                        </group>
+                        
+                        <!-- NOTEBOOK: Páginas de información detallada -->
+                        <notebook>
+                            <!-- Nueva página para asignaciones de técnicos y múltiples activos 
+                            <page string="👥 Asignaciones y Multi-Activos" name="technician_assignments">
+                                <group string="🔧 Asignaciones de Técnicos" name="technician_assignments_group">
+                                    <div class="alert alert-info" role="alert">
+                                        <strong><i class="fa fa-users"/> Gestión de Técnicos</strong>
+                                        <br/>Este activo puede ser asignado a múltiples técnicos en diferentes órdenes de servicio.
+                                        <br/>Use los botones estadísticos para ver y gestionar las asignaciones activas.
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button name="action_view_assigned_technicians" type="object" 
+                                                    string="👨‍🔧 Ver Técnicos Asignados" 
+                                                    class="btn btn-primary btn-lg" icon="fa-users"
+                                                    help="Ver todos los técnicos asignados a este activo"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <button name="action_view_fsm_orders" type="object" 
+                                                    string="📋 Ver Órdenes FSM" 
+                                                    class="btn btn-success btn-lg" icon="fa-cogs"
+                                                    help="Ver órdenes de servicio relacionadas"/>
+                                        </div>
+                                    </div>
+                                </group>
+                                
+                                <group string="🏗️ Órdenes Multi-Activo" name="multi_asset_orders_group">
+                                    <div class="alert alert-warning" role="alert">
+                                        <strong><i class="fa fa-sitemap"/> Órdenes Complejas</strong>
+                                        <br/>Este activo puede participar en órdenes de servicio que involucran múltiples equipos.
+                                        <br/>Estas órdenes requieren coordinación entre diferentes técnicos y activos.
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button name="action_view_multi_asset_orders" type="object" 
+                                                    string="🔗 Ver Órdenes Multi-Activo" 
+                                                    class="btn btn-warning btn-lg" icon="fa-sitemap"
+                                                    help="Ver órdenes que involucran múltiples activos"/>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="o_stat_info text-center">
+                                                <span class="o_stat_value text-warning">
+                                                    <field name="x_multi_asset_order_count" readonly="1"/>
+                                                </span>
+                                                <span class="o_stat_text">Órdenes Complejas</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                                
+                                <group string="📊 Estadísticas de Colaboración" name="collaboration_stats">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="o_stat_info text-center">
+                                                <span class="o_stat_value text-primary">
+                                                    <field name="x_assigned_technician_count" readonly="1"/>
+                                                </span>
+                                                <span class="o_stat_text">Técnicos Únicos</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="o_stat_info text-center">
+                                                <span class="o_stat_value text-success">
+                                                    <field name="x_fsm_order_count" readonly="1"/>
+                                                </span>
+                                                <span class="o_stat_text">Órdenes FSM</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="o_stat_info text-center">
+                                                <span class="o_stat_value text-warning">
+                                                    <field name="x_multi_asset_order_count" readonly="1"/>
+                                                </span>
+                                                <span class="o_stat_text">Multi-Activos</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                            </page>-->
+                            
+                            <!-- Página mejorada para Checklists y Documentación -->
+                            <page string="🔧 Checklists y Manuales" name="checklists_docs">
+                                <!-- ACCESO A CHECKLISTS CON HERENCIA INTELIGENTE -->
+                                <group string="📋 Plantillas de Checklist (Herencia Inteligente)" name="checklists">
+                                    <field name="category_id" readonly="1" string="Categoría Asignada"
+                                        help="La categoría determina qué checklists y documentación están disponibles"/>
+                                    
+                                    <separator string="Checklists Disponibles"/>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <strong>📝 Checklist de Entrada:</strong>
+                                            <div>
+                                                <button name="get_entry_checklist_template" type="object" 
+                                                        string="Ver Plantilla de Entrada" 
+                                                        class="btn btn-primary" icon="fa-list-check"
+                                                        invisible="not category_id"
+                                                        help="Abrir checklist de entrada para este tipo de equipo"/>
+                                                <div invisible="category_id" class="alert alert-warning mt-2" role="alert">
+                                                    <i class="fa fa-exclamation-triangle"/> Sin categoría asignada
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <strong>📤 Checklist de Salida:</strong>
+                                            <div>
+                                                <button name="get_exit_checklist_template" type="object" 
+                                                        string="Ver Plantilla de Salida" 
+                                                        class="btn btn-success" icon="fa-check-square"
+                                                        invisible="not category_id"
+                                                        help="Abrir checklist de salida para este tipo de equipo"/>
+                                                <div invisible="category_id" class="alert alert-warning mt-2" role="alert">
+                                                    <i class="fa fa-exclamation-triangle"/> Sin categoría asignada
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                                
+                                <!-- BASE DE CONOCIMIENTO -->
+                                <group string="📚 Base de Conocimiento" name="knowledge_base">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <button name="action_view_category_knowledge_base" type="object" 
+                                                    string="📖 Ver Documentación Técnica" 
+                                                    class="btn btn-info btn-lg" icon="fa-book"
+                                                    invisible="not category_id"
+                                                    help="Acceder a manuales, diagramas y documentación técnica"/>
+                                            <div invisible="category_id" class="alert alert-info mt-3" role="alert">
+                                                <strong><i class="fa fa-info-circle"/> Documentación No Disponible</strong>
+                                                <br/>Asigne una categoría para acceder a la documentación técnica específica.
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" invisible="not category_id">
+                                            <div class="alert alert-success" role="alert">
+                                                <strong><i class="fa fa-lightbulb-o"/> Tip</strong>
+                                                <br/>La documentación incluye manuales de todas las categorías padre.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                                
+                                <!-- INFORMACIÓN DE HERENCIA -->
+                                <group string="🔗 Sistema de Herencia Inteligente" invisible="not category_id">
+                                    <div class="alert alert-success" style="margin: 10px 0;" role="alert">
+                                        <strong><i class="fa fa-sitemap"/> Jerarquía de Categorías</strong>
+                                        <br/>Este equipo hereda automáticamente checklists y documentación de las categorías padre cuando está habilitado.
+                                        <div class="row mt-3">
+                                            <div class="col-md-6">
+                                                <strong><i class="fa fa-list"/> Checklists:</strong>
+                                                <ul>
+                                                    <li>Se utilizan las plantillas más específicas disponibles</li>
+                                                    <li>Herencia automática desde categorías padre</li>
+                                                    <li>Personalización por tipo de equipo</li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong><i class="fa fa-book"/> Documentación:</strong>
+                                                <ul>
+                                                    <li>Incluye documentos de categorías padre</li>
+                                                    <li>Manuales técnicos específicos</li>
+                                                    <li>Diagramas y especificaciones</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                            </page>
+                            
+                            <!-- Página 3: Mantenimiento -->
+                            <page string="🔧 Datos para el Mantenimiento" name="maintenance">
+                                <group>
+                                    <group string="Especificaciones Técnicas">
+                                        <field name="x_technical_specs" nolabel="1" 
+                                            placeholder="Especificaciones técnicas detalladas del equipo..."
+                                            help="Detalles técnicos completos del activo"/>
+                                    </group>
+                                    
+                                    <group string="Condiciones de Operación">
+                                        <field name="x_operating_conditions" nolabel="1" 
+                                            placeholder="Condiciones ambientales y operativas..."
+                                            help="Condiciones donde opera el activo"/>
+                                    </group>
+                                    <!-- Mantenimiento Preventivo -->
+                                    <group string="🛠️ Mantenimiento Preventivo" name="preventive_maintenance">
+                                        <field name="expected_mtbf" string="MTBF Esperado (días)" help="Tiempo medio esperado entre fallos en días"/>
+                                        <field name="maintenance_team_id" string="Equipo de Mantenimiento" options="{'no_create': True}" help="Equipo responsable del mantenimiento del activo"/>
+                                        <field name="owner_user_id" string="Responsable Principal" help="Usuario responsable principal del activo"/>
+                                        <field name="technician_user_id" string="Técnico Asignado"
+                                               help="Técnico específico asignado para el mantenimiento"/>
+                                    </group>
+                                    
+                                    <!-- Planificación y Frecuencia -->
+                                    <group string="📅 Planificación" name="maintenance_planning">
+                                        <field name="mtbf" string="MTBF Actual (días)" readonly="1"
+                                               help="Tiempo medio entre fallos calculado basado en mantenimientos correctivos realizados"/>
+                                        <field name="estimated_next_failure" string="Próxima Falla Estimada" readonly="1"
+                                               help="Fecha estimada para la próxima falla basada en el MTBF"/>
+                                        <field name="maintenance_open_count" string="Órdenes Abiertas"
+                                               readonly="1" help="Número de órdenes de mantenimiento abiertas"/>
+                                        <field name="maintenance_count" string="Total Mantenimientos"
+                                               readonly="1" help="Número total de mantenimientos realizados"/>
+                                    </group>
+                                </group>
+                                
+                                <!-- Información Adicional de Mantenimiento -->
+                                <group string="📝 Información Adicional" name="maintenance_info">
+                                    <field name="note" string="Notas de Mantenimiento" 
+                                           placeholder="Instrucciones especiales, precauciones, o información relevante para el mantenimiento..."
+                                           help="Información importante para los técnicos de mantenimiento"/>
+                                </group>
+                                
+                                <!-- Botones de Acción Rápida -->
+                                <div class="oe_button_box" name="maintenance_buttons">
+                                    <button name="%(maintenance.hr_equipment_request_action)d" 
+                                            type="action" 
+                                            class="oe_stat_button" 
+                                            icon="fa-wrench"
+                                            context="{'default_equipment_id': id}">
+                                        <div class="o_field_widget o_stat_info">
+                                            <span class="o_stat_value">
+                                                <field name="maintenance_open_count"/>
+                                            </span>
+                                            <span class="o_stat_text">Órdenes Abiertas</span>
+                                        </div>
+                                    </button>
+                                    
+                                    <button name="%(maintenance.hr_equipment_request_action)d" 
+                                            type="action" 
+                                            class="oe_stat_button" 
+                                            icon="fa-plus-circle"
+                                            string="Nueva Orden"
+                                            context="{'default_equipment_id': id}">
+                                        <span>Crear Orden de Mantenimiento</span>
+                                    </button>
+                                </div>
+                            </page>
+                            
+                            <!-- Página 4: Historial y Servicios -->
+                            <page string="📊 Historial y Servicios" name="history_services">
+                                <!-- INTEGRACIÓN CON FSM (FIELD SERVICE MANAGEMENT) -->
+                                <group string="🔧 Servicios de Campo (FSM)" name="fsm_integration">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <!-- Botones comentados hasta implementar los métodos
+                                            <button name="action_view_fsm_orders" type="object" 
+                                                    string="📋 Ver Órdenes de Servicio" 
+                                                    class="btn btn-primary btn-lg" icon="fa-wrench"
+                                                    help="Ver todas las órdenes de servicio relacionadas con este equipo"/>
+                                            <button name="action_create_fsm_order" type="object" 
+                                                    string="➕ Nueva Orden de Servicio" 
+                                                    class="btn btn-success ml-2" icon="fa-plus"
+                                                    help="Crear nueva orden de servicio para este equipo"/>
+                                            -->
+                                            <div class="alert alert-info" role="alert">
+                                                <strong><i class="fa fa-info-circle"/> Integración FSM</strong>
+                                                <br/>Funcionalidad de Field Service Management en desarrollo.
+                                                <br/>Próximamente: Órdenes de servicio, programación de técnicos, y seguimiento en tiempo real.
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="alert alert-warning" role="alert">
+                                                <strong><i class="fa fa-wrench"/> Estado</strong>
+                                                <br/>Módulo FSM: En desarrollo
+                                                <br/>Disponible en próxima versión
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                                
+                                <!-- INTEGRACIÓN CON HELPDESK -->
+                                <group string="🎫 Soporte y Tickets" name="helpdesk_integration">
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <!-- Botones comentados hasta implementar los métodos
+                                            <button name="action_view_helpdesk_tickets" type="object" 
+                                                    string="🎫 Ver Tickets de Soporte" 
+                                                    class="btn btn-warning btn-lg" icon="fa-ticket"
+                                                    help="Ver todos los tickets de soporte relacionados con este equipo"/>
+                                            <button name="action_create_helpdesk_ticket" type="object" 
+                                                    string="➕ Nuevo Ticket" 
+                                                    class="btn btn-danger" icon="fa-plus"
+                                                    help="Crear nuevo ticket de soporte para este equipo"/>
+                                            -->
+                                            <div class="alert alert-info" role="alert">
+                                                <strong><i class="fa fa-ticket"/> Integración Helpdesk</strong>
+                                                <br/>Sistema de tickets y soporte técnico en desarrollo.
+                                                <br/>Próximamente: Tickets automáticos, escalamiento, y base de conocimiento.
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="alert alert-warning" role="alert">
+                                                <strong><i class="fa fa-support"/> Estado</strong>
+                                                <br/>Módulo Helpdesk: En desarrollo
+                                                <br/>Disponible en próxima versión
+                                            </div>
+                                        </div>
+                                    </div>
+                                </group>
+                                
+                                <!-- MÉTRICAS Y RENDIMIENTO -->
+                                <group string="📈 Métricas de Rendimiento" name="performance_metrics">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="o_stat_info text-center">
+                                                <span class="o_stat_value text-success">
+                                                    <field name="maintenance_count" readonly="1"/>
+                                                </span>
+                                                <span class="o_stat_text">Mantenimientos Totales</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="o_stat_info text-center">
+                                                <span class="o_stat_value text-warning">
+                                                    <field name="maintenance_open_count" readonly="1"/>
+                                                </span>
+                                                <span class="o_stat_text">Órdenes Abiertas</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="o_stat_info text-center">
+                                                <span class="o_stat_value text-info">
+                                                    <!-- Campo calculado para días desde último mantenimiento -->
+                                                    <span>N/A</span>
+                                                </span>
+                                                <span class="o_stat_text">Días Último Mant.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <separator string="Historial de Actividad"/>
+                                    <div class="alert alert-success" role="alert">
+                                        <strong><i class="fa fa-history"/> Próximamente</strong>
+                                        <br/>Gráficos de tendencias, análisis de fallos, y métricas de disponibilidad.
+                                    </div>
+                                </group>
+                            </page>
+                        </notebook>
+                        
+                        <!-- Agregar botones de acción después del notebook -->
+                        <!--
+                        <xpath expr="//notebook" position="after">
+                            <div class="oe_chatter">
+                                Botones comentados hasta implementar los métodos
+                                <button name="action_activate" type="object" string="Activar"
+                                        class="btn-primary" invisible="maintenance_state != 'draft'"/>
+                                <button name="action_maintenance" type="object" string="Mantenimiento"
+                                        class="btn-warning" invisible="maintenance_state != 'active'"/>
+                                <button name="action_retire" type="object" string="Retirar"
+                                        class="btn-secondary" invisible="maintenance_state in ['draft', 'retired']"/>
+                            </div>
+                        </xpath>
+                        -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Vista de búsqueda extendida -->
+        <record id="view_maintenance_equipment_search_patco" model="ir.ui.view">
+            <field name="name">maintenance.equipment.search.patco</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_view_search"/>
+            <field name="arch" type="xml">
+    
+                <!-- Agregar filtros PATCO -->
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="x_patco_code"/>
+                    <field name="x_customer_id"/>
+                </xpath>
+                
+                <xpath expr="//filter[@name='inactive']" position="after">
+                    <separator/>
+                    <filter name="active_equipment" string="Activos" domain="[('x_maintenance_state', '=', 'active')]"/>
+                    <filter name="maintenance_equipment" string="En Mantenimiento" domain="[('x_maintenance_state', '=', 'maintenance')]"/>
+                    <filter name="retired_equipment" string="Retirados" domain="[('x_maintenance_state', '=', 'retired')]"/>
+                </xpath>
+                
+                <xpath expr="//group" position="inside">
+                    <filter name="group_customer" string="Cliente" context="{'group_by': 'x_customer_id'}"/>
+                    <filter name="group_maintenance_state" string="Estado PATCO" context="{'group_by': 'x_maintenance_state'}"/>
+                </xpath>
+                
+            </field>
+        </record>
+        
+        <!-- Acción de ventana para equipos PATCO -->
+        <!-- <field name="list_view_id" ref="view_maintenance_equipment_list_patco"/>
+            <field name="form_view_id" ref="view_maintenance_equipment_form_patco"/>-->
+        <record id="action_maintenance_equipment_patco" model="ir.actions.act_window">
+            <field name="name">Activos de Clientes</field>
+            <field name="res_model">maintenance.equipment</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_maintenance_equipment_list_patco')}),
+                                          (0, 0, {'view_mode': 'form', 'view_id': ref('view_maintenance_equipment_form_patco')})]"/>
+            <field name="search_view_id" ref="view_maintenance_equipment_search_patco"/>
+            <field name="context">{'search_default_active_equipment': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Crea tu primer activo de cliente!
+                </p>
+                <p>
+                    Los activos de cliente incluyen funcionalidades avanzadas como códigos QR,
+                    trazabilidad de servicios y gestión de tickets de soporte.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

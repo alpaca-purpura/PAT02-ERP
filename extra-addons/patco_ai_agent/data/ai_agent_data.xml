@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Partner del Agente IA -->
+    <record id="ai_agent_partner" model="res.partner">
+        <field name="name">🤖 Asistente IA PATCO</field>
+        <field name="is_company" eval="False"/>
+        <field name="email">ai-agent@patco.com.pe</field>
+        <field name="phone">+51-1-234-5678</field>
+        <field name="website">https://patco.com.pe</field>
+        <field name="comment">
+            Partner virtual que representa al Asistente IA PATCO en las conversaciones.
+            Este partner se utiliza como autor de los mensajes generados por el sistema de IA.
+        </field>
+        <field name="category_id" eval="[(6, 0, [])]"/>
+    </record>
+    
+    <!-- Usuario del Agente IA para aparecer en conversaciones -->
+    <record id="ai_agent_user" model="res.users">
+        <field name="login">ai_bot_patco</field>
+        <field name="partner_id" ref="ai_agent_partner"/>
+        <field name="active" eval="True"/>
+        <field name="share" eval="False"/>
+        <field name="groups_id" eval="[(6, 0, [ref('base.group_user'), ref('mail.group_mail_template_editor')])]"/>
+    </record>
+    
+    <!-- Configuración de parámetros del sistema para IA -->
+    <record id="ir_config_parameter_ai_enabled" model="ir.config_parameter">
+        <field name="key">patco_ai_agent.ai_enabled</field>
+        <field name="value">True</field>
+    </record>
+    
+    <record id="ir_config_parameter_ai_auto_start" model="ir.config_parameter">
+        <field name="key">patco_ai_agent.ai_auto_start_enabled</field>
+        <field name="value">True</field>
+    </record>
+    
+    <!-- Configuración de API Key de Gemini (debe configurarse manualmente por seguridad) -->
+    <record id="ir_config_parameter_gemini_api_key" model="ir.config_parameter">
+        <field name="key">patco_ai_agent.gemini_api_key</field>
+        <field name="value">AIzaSyDgs5BnGU0bT0RLX7GC_4VR_bDprrFEzYU</field>
+    </record>
+    
+    <!-- Configuración del modelo de embedding -->
+    <record id="ir_config_parameter_embedding_model" model="ir.config_parameter">
+        <field name="key">patco_ai_agent.embedding_model</field>
+        <field name="value">text-embedding-004</field>
+    </record>
+    
+    <record id="ir_config_parameter_ai_indexing_batch_size" model="ir.config_parameter">
+        <field name="key">patco_ai_agent.indexing_batch_size</field>
+        <field name="value">50</field>
+    </record>
+    
+    <record id="ir_config_parameter_ai_similarity_threshold" model="ir.config_parameter">
+        <field name="key">patco_ai_agent.similarity_threshold</field>
+        <field name="value">0.7</field>
+    </record>
+    
+    <record id="ir_config_parameter_ai_max_results" model="ir.config_parameter">
+        <field name="key">patco_ai_agent.max_search_results</field>
+        <field name="value">10</field>
+    </record>
+    
+    <!-- Datos de ejemplo para tipos de documentos (comentados temporalmente para Fase 1) -->
+    <!--
+    <record id="demo_manual_attachment" model="ir.attachment">
+        <field name="name">Manual de Ejemplo - Horno Industrial</field>
+        <field name="description">Manual técnico de ejemplo para demostrar capacidades RAG</field>
+        <field name="x_document_type">manual</field>
+        <field name="x_language">es</field>
+        <field name="x_technical_level">intermediate</field>
+        <field name="x_keywords">horno, industrial, temperatura, mantenimiento, seguridad</field>
+        <field name="x_indexing_priority">normal</field>
+        <field name="mimetype">text/plain</field>
+        <field name="type">binary</field>
+        <field name="raw" eval="base64.b64encode(b'''
+MANUAL TÉCNICO - HORNO INDUSTRIAL PATCO HI-2000
+
+1. ESPECIFICACIONES TÉCNICAS
+- Temperatura máxima: 300°C
+- Capacidad: 50 litros
+- Potencia: 3000W
+- Voltaje: 220V/380V
+- Dimensiones: 60x40x45 cm
+
+2. PROCEDIMIENTOS DE MANTENIMIENTO
+2.1 Limpieza diaria:
+- Limpiar interior con paño húmedo
+- Verificar estado de resistencias
+- Revisar termostato
+
+2.2 Mantenimiento semanal:
+- Calibrar termómetro
+- Revisar conexiones eléctricas
+- Limpiar filtros de ventilación
+
+3. SOLUCIÓN DE PROBLEMAS
+- No calienta: Verificar fusibles y resistencias
+- Temperatura incorrecta: Calibrar termostato
+- Ruido excesivo: Revisar ventiladores
+
+4. MEDIDAS DE SEGURIDAD
+- Usar guantes térmicos
+- Verificar ventilación adecuada
+- No exceder temperatura máxima
+        ''')"/>
+    </record>
+    -->
+    
+    <!--
+    <record id="demo_procedure_attachment" model="ir.attachment">
+        <field name="name">Procedimiento - Calibración de Termostato</field>
+        <field name="description">Procedimiento paso a paso para calibración de termostatos</field>
+        <field name="x_document_type">procedure</field>
+        <field name="x_language">es</field>
+        <field name="x_technical_level">advanced</field>
+        <field name="x_keywords">calibración, termostato, temperatura, precisión</field>
+        <field name="x_indexing_priority">high</field>
+        <field name="mimetype">text/plain</field>
+        <field name="type">binary</field>
+        <field name="raw" eval="base64.b64encode(b'''
+PROCEDIMIENTO DE CALIBRACIÓN DE TERMOSTATO
+
+OBJETIVO: Calibrar termostato para garantizar precisión de ±2°C
+
+HERRAMIENTAS NECESARIAS:
+- Termómetro de referencia calibrado
+- Destornillador de precisión
+- Multímetro
+
+PASOS:
+1. Apagar equipo y desconectar de la red eléctrica
+2. Esperar enfriamiento completo (mínimo 30 minutos)
+3. Conectar termómetro de referencia en cámara
+4. Encender equipo y configurar temperatura de prueba (100°C)
+5. Esperar estabilización (15-20 minutos)
+6. Comparar lectura del termostato con termómetro de referencia
+7. Si diferencia > 2°C, ajustar potenciómetro de calibración
+8. Repetir proceso para temperaturas 150°C y 200°C
+9. Documentar resultados en hoja de calibración
+10. Colocar etiqueta de calibración con fecha
+
+CRITERIOS DE ACEPTACIÓN:
+- Precisión ±2°C en todo el rango
+- Estabilidad de temperatura
+- Respuesta adecuada del controlador
+        ''')"/>
+    </record>
+    -->
+    
+    <!-- Plantilla de mensaje inicial para conversaciones IA -->
+    <record id="ai_initial_message_template" model="mail.template">
+        <field name="name">Mensaje Inicial IA - Orden FSM</field>
+        <field name="model_id" ref="model_ai_conversation"/>
+        <field name="subject">Asistente IA - ${object.fsm_order_id.name}</field>
+        <field name="body_html"><![CDATA[
+            <div style="font-family: Arial, sans-serif; max-width: 600px;">
+                <h2 style="color: #2E86AB;">¡Hola ${object.technician_id.name}! 👋</h2>
+                
+                <p>Soy tu <strong>Asistente IA PATCO</strong> para la orden de servicio <strong>${object.fsm_order_id.name}</strong>.</p>
+                
+                <div style="background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 15px 0;">
+                    <h3 style="color: #495057; margin-top: 0;">📋 Detalles del servicio:</h3>
+                    <ul style="margin: 10px 0;">
+                        <li><strong>Cliente:</strong> ${object.fsm_order_id.partner_id.name}</li>
+                        <li><strong>Ubicación:</strong> ${object.fsm_order_id.location_id.name or 'No especificada'}</li>
+                        <li><strong>Equipos asignados:</strong> ${len(object.fsm_order_id.equipment_ids)} equipos</li>
+                        % if object.fsm_order_id.x_service_nature_id:
+                        <li><strong>Naturaleza:</strong> ${object.fsm_order_id.x_service_nature_id.name}</li>
+                        % endif
+                    </ul>
+                </div>
+                
+                <p>Te ayudaré durante todo el proceso proporcionando:</p>
+                <ul>
+                    <li>🔍 Acceso a manuales técnicos y procedimientos</li>
+                    <li>📝 Guía paso a paso para el servicio</li>
+                    <li>📊 Generación automática de reportes</li>
+                    <li>💡 Recomendaciones basadas en el historial</li>
+                </ul>
+                
+                <div style="background-color: #d4edda; padding: 15px; border-radius: 5px; margin: 15px 0; border-left: 4px solid #28a745;">
+                    <p style="margin: 0;"><strong>¿Has llegado al sitio y estás listo para comenzar?</strong></p>
+                    <p style="margin: 5px 0 0 0; font-size: 14px; color: #6c757d;">
+                        Puedes preguntarme sobre cualquier equipo, procedimiento o problema técnico.
+                    </p>
+                </div>
+            </div>
+        ]]></field>
+        <field name="lang">${object.technician_id.user_id.lang}</field>
+        <field name="auto_delete" eval="False"/>
+    </record>
+    
+    <!-- Secuencia para conversaciones IA -->
+    <record id="sequence_ai_conversation" model="ir.sequence">
+        <field name="name">Conversación IA</field>
+        <field name="code">ai.conversation</field>
+        <field name="prefix">IA-</field>
+        <field name="padding">4</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    
+    <!-- Cron job para indexación automática (deshabilitado por defecto) -->
+    <record id="cron_auto_indexing" model="ir.cron">
+        <field name="name">Indexación Automática RAG</field>
+        <field name="model_id" ref="base.model_ir_attachment"/>
+        <field name="state">code</field>
+        <field name="code">
+# Obtener documentos candidatos para indexación
+candidates = model.get_indexing_candidates(limit=10)
+if candidates:
+    # Por ahora solo marcar como procesados
+    # En fases posteriores se integrará con el servicio de indexación
+    for doc in candidates:
+        doc.mark_indexing_complete()
+        </field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">hours</field>
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>

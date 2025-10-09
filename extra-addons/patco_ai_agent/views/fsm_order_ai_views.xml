@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vista de formulario FSM con integración IA -->
+    <record id="view_fsm_order_form_ai" model="ir.ui.view">
+        <field name="name">fsm.order.form.ai</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Agregar campos IA en el header -->
+            <xpath expr="//header" position="inside">
+                <button name="action_open_ai_channel" 
+                        string="💬 Abrir Chat IA" 
+                        type="object" 
+                        class="btn-primary"
+                        invisible="x_ai_channel_id == False"/>
+                <button name="action_create_ai_channel" 
+                        string="🤖 Activar IA" 
+                        type="object" 
+                        class="btn-secondary"
+                        invisible="x_ai_channel_id != False"/>
+                <button name="action_disable_ai" 
+                        string="⏸️ Pausar IA" 
+                        type="object" 
+                        class="btn-warning"
+                        invisible="x_ai_enabled == False or x_ai_channel_id == False"/>
+                <button name="action_enable_ai" 
+                        string="▶️ Reanudar IA" 
+                        type="object" 
+                        class="btn-success"
+                        invisible="x_ai_enabled == True"/>
+            </xpath>
+            
+            <!-- Agregar grupo de campos IA -->
+            <xpath expr="//group[@name='description_grp']" position="after">
+                <group name="ai_info" string="🤖 Asistente IA" 
+                       invisible="x_ai_enabled == False">
+                    <field name="x_ai_enabled"/>
+                    <field name="x_ai_channel_id" 
+                           invisible="x_ai_channel_id == False"/>
+                    <field name="x_ai_channel_name" 
+                           invisible="x_ai_channel_id == False"/>
+                    <field name="x_ai_message_count" 
+                           invisible="x_ai_channel_id == False"/>
+                    <field name="x_ai_duration" 
+                           widget="float_time"
+                           invisible="x_ai_channel_id == False"/>
+                    <field name="x_ai_auto_start"/>
+                </group>
+            </xpath>
+            
+            <!-- Integrar canal IA en el chatter -->
+            <xpath expr="//chatter" position="before">
+                <div class="oe_ai_chat_container" 
+                     invisible="x_ai_channel_id == False">
+                    <div class="oe_ai_chat_header">
+                        <h4>🤖 Conversación con Asistente IA</h4>
+                        <p>Chatea directamente con el asistente IA para obtener ayuda durante el servicio</p>
+                        <div class="oe_ai_stats">
+                            <span class="badge badge-info">
+                                <i class="fa fa-comments"/> <field name="x_ai_message_count"/> mensajes
+                            </span>
+                            <span class="badge badge-secondary">
+                                <i class="fa fa-clock-o"/> <field name="x_ai_duration" widget="float_time"/>
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <!-- Widget de chat IA integrado -->
+                    <field name="x_ai_channel_id" 
+                           widget="mail_thread" 
+                           options="{'display_log_button': True, 'post_refresh': 'always', 'thread_level': 1}"/>
+                </div>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    <!-- Vista de lista mejorada con IA -->
+    <record id="view_fsm_order_tree_ai" model="ir.ui.view">
+        <field name="name">fsm.order.tree.ai</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_list_view"/>
+        <field name="arch" type="xml">
+            <!-- Agregar columnas IA -->
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="x_ai_enabled" 
+                       string="IA"
+                       optional="show"/>
+                <field name="x_ai_message_count" 
+                       string="Msgs IA"
+                       optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Vista de canal IA personalizada -->
+    <record id="view_mail_channel_ai_form" model="ir.ui.view">
+        <field name="name">discuss.channel.ai.form</field>
+        <field name="model">discuss.channel</field>
+        <field name="inherit_id" ref="mail.discuss_channel_view_form"/>
+        <field name="arch" type="xml">
+            
+            <!-- Personalizar vista para canales IA -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="description" 
+                       invisible="description == False"/>
+            </xpath>
+            
+            <!-- Agregar información de orden FSM asociada -->
+            <xpath expr="//group" position="after">
+                <group name="fsm_info" string="📋 Información FSM" 
+                       invisible="not name or '🤖 IA -' not in name">
+                    <field name="fsm_order_id" 
+                           compute="_compute_fsm_order_info" 
+                           string="Orden FSM"/>
+                    <field name="technician_id" 
+                           compute="_compute_fsm_order_info" 
+                           string="Técnico"/>
+                    <field name="client_name" 
+                           compute="_compute_fsm_order_info" 
+                           string="Cliente"/>
+                </group>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    <!-- Acción para abrir canales IA -->
+    <record id="action_ai_channels" model="ir.actions.act_window">
+        <field name="name">Canales IA</field>
+        <field name="res_model">discuss.channel</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('name', 'ilike', '🤖 IA -')]</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay canales IA activos
+            </p>
+            <p>
+                Los canales IA se crean automáticamente cuando se asigna un técnico a una orden FSM con IA habilitada.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Acción para órdenes FSM con IA -->
+    <record id="action_fsm_orders_with_ai" model="ir.actions.act_window">
+        <field name="name">Órdenes FSM con IA</field>
+        <field name="res_model">fsm.order</field>
+        <field name="view_mode">list,form,kanban</field>
+        <field name="domain">[('x_ai_enabled', '=', True)]</field>
+        <field name="context">{'search_default_ai_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No hay órdenes FSM con IA habilitada
+            </p>
+            <p>
+                Habilita el asistente IA en las órdenes FSM para proporcionar guía conversacional a los técnicos.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Filtros de búsqueda para FSM con IA -->
+    <record id="view_fsm_order_search_ai" model="ir.ui.view">
+        <field name="name">fsm.order.search.ai</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_search_view"/>
+        <field name="arch" type="xml">
+            
+            <!-- Agregar filtros IA -->
+            <xpath expr="//filter[@name='done']" position="after">
+                <separator/>
+                <filter name="ai_enabled" string="IA Habilitada" 
+                        domain="[('x_ai_enabled', '=', True)]"/>
+                <filter name="ai_active" string="IA Activa" 
+                        domain="[('x_ai_channel_id', '!=', False)]"/>
+                <filter name="ai_completed" string="IA Completada" 
+                        domain="[('x_ai_enabled', '=', False)]"/>
+            </xpath>
+            
+            <!-- Agregar agrupaciones IA -->
+            <xpath expr="//group[@expand='0']" position="inside">
+                <filter name="group_by_ai_enabled" string="IA Habilitada" 
+                        context="{'group_by': 'x_ai_enabled'}"/>
+                <filter name="group_by_ai_auto_start" string="Inicio Automático IA" 
+                        context="{'group_by': 'x_ai_auto_start'}"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Menú principal de Timesheet FSM -->
+        <menuitem id="menu_timesheet_fsm_root"
+                  name="Registro de Tiempo FSM"
+                  parent="hr_timesheet.timesheet_menu_root"
+                  sequence="30"/>
+        
+        <!-- Submenú: Registro de Tiempo -->
+        <!-- <menuitem id="menu_timesheet_fsm_entries"
+                  name="Mis Registros"
+                  parent="menu_timesheet_fsm_root"
+                  action="action_hr_timesheet_fsm"
+                  sequence="10"/> -->
+        
+        <!-- Submenú: Análisis de Tiempo -->
+        <!-- <menuitem id="menu_timesheet_fsm_analysis"
+                  name="Análisis de Tiempo"
+                  parent="menu_timesheet_fsm_root"
+                  action="action_timesheets_analysis_report_fsm"
+                  sequence="20"/> -->
+        
+        <!-- Integración con menú de Timesheet existente -->
+        <!-- <menuitem id="menu_hr_timesheet_fsm"
+                  name="Tiempo FSM"
+                  parent="hr_timesheet.timesheet_menu_root"
+                  action="action_hr_timesheet_fsm"
+                  sequence="15"/> -->
+        
+    </data>
+</odoo>

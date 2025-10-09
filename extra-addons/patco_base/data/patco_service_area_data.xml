@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Service Areas -->
+        <record id="service_area_cocina_lavanderia" model="patco.service.area">
+            <field name="name">Cocina-Lavandería</field>
+            <field name="code">COC-LAV</field>
+            <field name="sequence">10</field>
+            <field name="description">Equipos de cocina industrial y lavandería comercial</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="service_area_refrigeracion" model="patco.service.area">
+            <field name="name">Refrigeración</field>
+            <field name="code">REF</field>
+            <field name="sequence">20</field>
+            <field name="description">Sistemas de refrigeración comercial e industrial</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="service_area_aire_acondicionado" model="patco.service.area">
+            <field name="name">Aire Acondicionado</field>
+            <field name="code">A/C</field>
+            <field name="sequence">30</field>
+            <field name="description">Sistemas de climatización y aire acondicionado</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="service_area_electromecanica" model="patco.service.area">
+            <field name="name">Electromecánica</field>
+            <field name="code">ELEC</field>
+            <field name="sequence">40</field>
+            <field name="description">Servicios electromecánicos generales</field>
+            <field name="active">True</field>
+        </record>
+        
+        <record id="service_area_general" model="patco.service.area">
+            <field name="name">General</field>
+            <field name="code">GEN</field>
+            <field name="sequence">50</field>
+            <field name="description">Servicios generales no especializados</field>
+            <field name="active">True</field>
+        </record>
+        
+    </data>
+</odoo>

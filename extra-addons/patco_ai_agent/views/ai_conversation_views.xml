@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vista de formulario para conversaciones IA -->
+    <record id="view_ai_conversation_form" model="ir.ui.view">
+        <field name="name">ai.conversation.form</field>
+        <field name="model">ai.conversation</field>
+        <field name="arch" type="xml">
+            <form string="Conversación IA">
+                <header>
+                    <button name="action_start_conversation" 
+                            string="Iniciar Conversación" 
+                            type="object" 
+                            class="btn-primary"
+                            invisible="state != 'initiated'"/>
+                    <button name="action_open_conversation" 
+                            string="Abrir Chat" 
+                            type="object" 
+                            class="btn-secondary"
+                            invisible="channel_id == False"/>
+                    <button name="action_complete_conversation" 
+                            string="Completar" 
+                            type="object" 
+                            class="btn-success"
+                            invisible="state in ['completed', 'archived']"/>
+                    <button name="action_archive_conversation" 
+                            string="Archivar" 
+                            type="object" 
+                            class="btn-warning"
+                            invisible="state != 'completed'"/>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="initiated,equipment_selected,work_in_progress,completed"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_open_conversation" 
+                                type="object" 
+                                class="oe_stat_button" 
+                                icon="fa-comments"
+                                invisible="channel_id == False">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="message_count"/>
+                                </span>
+                                <span class="o_stat_text">Mensajes</span>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group name="main_info">
+                            <field name="fsm_order_id" options="{'no_create': True}"/>
+                            <field name="technician_id" options="{'no_create': True}"/>
+                            <field name="current_equipment_id" options="{'no_create': True}"/>
+                            <field name="report_template_type"/>
+                            <field name="channel_id" readonly="1"/>
+                        </group>
+                        <group name="metrics">
+                            <field name="start_time"/>
+                            <field name="end_time"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="report_generated"/>
+                            <field name="report_generation_status"/>
+                            <field name="report_url" widget="url" 
+                                   invisible="report_url == False"/>
+                        </group>
+                    </group>
+                    
+                    <group string="Reporte Técnico" invisible="report_generation_status == 'pending'">
+                        <group>
+                            <field name="report_attachment_id" invisible="report_generation_status != 'completed'"/>
+                            <field name="report_error_message" invisible="report_generation_status != 'failed'"/>
+                        </group>
+                        <group>
+                            <button name="action_generate_report" 
+                                    string="Generar Reporte" 
+                                    type="object" 
+                                    class="btn-primary"
+                                    invisible="report_generation_status in ['processing', 'completed']"/>
+                            <button name="action_view_report" 
+                                    string="Ver Reporte" 
+                                    type="object" 
+                                    class="btn-success"
+                                    invisible="report_generation_status != 'completed'"/>
+                            <button name="action_regenerate_report" 
+                                    string="Regenerar Reporte" 
+                                    type="object" 
+                                    class="btn-warning"
+                                    invisible="report_generation_status not in ['completed', 'failed']"/>
+                        </group>
+                    </group>
+                    
+                    <group name="related_info">
+                    </group>
+                    
+                    <notebook>
+                        <page string="Contexto" name="context">
+                            <field name="context_data" widget="ace" options="{'mode': 'json'}"
+                                   placeholder="Contexto de la conversación en formato JSON"/>
+                        </page>
+                        <page string="Resumen" name="summary">
+                            <field name="conversation_summary" 
+                                   placeholder="Resumen automático de la conversación generado por IA..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_ids"/>
+                    <field name="activity_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Vista de lista para conversaciones IA -->
+    <record id="view_ai_conversation_tree" model="ir.ui.view">
+        <field name="name">ai.conversation.tree</field>
+        <field name="model">ai.conversation</field>
+        <field name="arch" type="xml">
+            <list string="Conversaciones IA" decoration-info="state=='initiated'" 
+                  decoration-warning="state in ['work_in_progress', 'checklist_entry', 'checklist_exit']" 
+                  decoration-success="state=='completed'"
+                  decoration-muted="state=='archived'">
+                <field name="name"/>
+                <field name="fsm_order_id"/>
+                <field name="technician_id"/>
+                <field name="state" decoration-info="state=='initiated'" decoration-warning="state=='work_in_progress'" decoration-success="state=='completed'"/>
+                <field name="report_generation_status" decoration-success="report_generation_status=='completed'" decoration-danger="report_generation_status=='failed'"/>
+                <field name="message_count"/>
+                <field name="duration" widget="float_time"/>
+                <field name="create_date"/>
+                <button name="action_generate_report" 
+                        string="Generar Reporte" 
+                        type="object" 
+                        icon="fa-file-text-o"
+                        invisible="report_generation_status in ['processing', 'completed']"/>
+                <button name="action_view_report" 
+                        string="Ver Reporte" 
+                        type="object" 
+                        icon="fa-download"
+                        invisible="report_generation_status != 'completed'"/>
+            </list>
+        </field>
+    </record>
+    
+    <!-- Vista kanban para conversaciones IA -->
+    <record id="view_ai_conversation_kanban" model="ir.ui.view">
+        <field name="name">ai.conversation.kanban</field>
+        <field name="model">ai.conversation</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="state" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="fsm_order_id"/>
+                <field name="technician_id"/>
+                <field name="state"/>
+                <field name="message_count"/>
+                <field name="duration"/>
+                <field name="report_generated"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <br/>
+                                        <small class="o_kanban_record_subtitle text-muted">
+                                            <field name="fsm_order_id"/>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <i class="fa fa-user"/> <field name="technician_id"/>
+                                        </div>
+                                        <div class="col-6">
+                                            <i class="fa fa-wrench"/> <field name="fsm_order_id"/>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <div class="col-6">
+                                            <i class="fa fa-comments"/> <field name="message_count"/> mensajes
+                                        </div>
+                                        <div class="col-6">
+                                            <i class="fa fa-clock-o"/> <field name="duration" widget="float_time"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="report_generated" widget="boolean"/>
+                                        <t t-if="record.report_generated.raw_value">
+                                            <span class="badge badge-success">Reporte</span>
+                                        </t>
+                                    </div>
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="state" widget="label_selection" 
+                                               options="{'classes': {'initiated': 'info', 'work_in_progress': 'warning', 'completed': 'success'}}"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+    
+    <!-- Vista de búsqueda para conversaciones IA -->
+    <record id="view_ai_conversation_search" model="ir.ui.view">
+        <field name="name">ai.conversation.search</field>
+        <field name="model">ai.conversation</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Conversaciones IA">
+                <field name="name" string="Nombre"/>
+                <field name="fsm_order_id" string="Orden FSM"/>
+                <field name="technician_id" string="Técnico"/>
+                <field name="current_equipment_id" string="Equipo"/>
+                
+                <filter string="Iniciadas" name="initiated" domain="[('state', '=', 'initiated')]"/>
+                <filter string="En Progreso" name="in_progress" 
+                        domain="[('state', 'in', ['equipment_selected', 'work_in_progress'])]"/>
+                <filter string="Completadas" name="completed" domain="[('state', '=', 'completed')]"/>
+                <filter string="Con Reporte" name="with_report" domain="[('report_generated', '=', True)]"/>
+                
+                <separator/>
+                <filter string="Hoy" name="today" 
+                        domain="[('start_time', '&gt;=', datetime.datetime.combine(context_today(), datetime.time(0,0,0))), 
+                                 ('start_time', '&lt;', datetime.datetime.combine(context_today() + datetime.timedelta(days=1), datetime.time(0,0,0)))]"/>
+                <filter string="Esta Semana" name="this_week" 
+                        domain="[('start_time', '&gt;=', (context_today() - datetime.timedelta(days=context_today().weekday())).strftime('%Y-%m-%d'))]"/>
+                <filter string="Este Mes" name="this_month" 
+                        domain="[('start_time', '&gt;=', datetime.datetime.now().strftime('%Y-%m-01'))]"/>
+                
+                <group expand="0" string="Agrupar Por">
+                    <filter string="Estado" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Técnico" name="group_technician" context="{'group_by': 'technician_id'}"/>
+                    <filter string="Fecha" name="group_date" context="{'group_by': 'start_time:day'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    
+    <!-- Acción para conversaciones IA -->
+    <record id="action_ai_conversation" model="ir.actions.act_window">
+        <field name="name">Conversaciones IA</field>
+        <field name="res_model">ai.conversation</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Crea tu primera conversación con el Asistente IA!
+            </p>
+            <p>
+                Las conversaciones IA guían a los técnicos durante los servicios de campo,
+                proporcionando acceso a la base de conocimiento y generando reportes automáticamente.
+            </p>
+            <p>
+                <strong>Características:</strong>
+            </p>
+            <ul>
+                <li>Integración nativa con órdenes FSM</li>
+                <li>Acceso a base de conocimiento técnico</li>
+                <li>Generación automática de reportes</li>
+                <li>Seguimiento de métricas de conversación</li>
+            </ul>
+        </field>
+    </record>
+
+</odoo>

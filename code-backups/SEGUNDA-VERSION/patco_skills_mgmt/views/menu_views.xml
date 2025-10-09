@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Menú principal de Gestión de Habilidades -->
+        <menuitem id="menu_skills_management_root"
+                  name="Gestión de Habilidades"
+                  web_icon="patco_skills_mgmt,static/src/img/PATCO-Logo.png"
+                  sequence="50"/>
+        
+        <!-- Submenú de Configuración -->
+        <menuitem id="menu_skills_config"
+                  name="Configuración"
+                  parent="menu_skills_management_root"
+                  sequence="10"/>
+        
+        <!-- Elementos del menú de configuración -->
+        <menuitem id="menu_hr_skill_type"
+                  name="Tipos de Habilidades"
+                  parent="menu_skills_config"
+                  action="action_hr_skill_type"
+                  sequence="10"/>
+        
+        <menuitem id="menu_hr_skill_level"
+                  name="Niveles de Habilidades"
+                  parent="menu_skills_config"
+                  action="action_hr_skill_level"
+                  sequence="20"/>
+        
+        <menuitem id="menu_hr_skill"
+                  name="Habilidades"
+                  parent="menu_skills_config"
+                  action="action_hr_skill"
+                  sequence="30"/>
+        
+        <!-- Submenú de Gestión de Empleados -->
+        <menuitem id="menu_skills_employees"
+                  name="Empleados"
+                  parent="menu_skills_management_root"
+                  sequence="20"/>
+        
+        <!-- Elementos del menú de empleados -->
+        <menuitem id="menu_hr_employee_skills_matrix"
+                  name="Matriz de Habilidades"
+                  parent="menu_skills_employees"
+                  action="action_hr_employee_skill_employee"
+                  sequence="10"/>
+        
+        <menuitem id="menu_hr_field_technicians"
+                  name="Técnicos de Campo"
+                  parent="menu_skills_employees"
+                  action="action_hr_field_technicians"
+                  sequence="20"/>
+        
+        <menuitem id="menu_hr_employee_skill"
+                  name="Habilidades de Empleados"
+                  parent="menu_skills_employees"
+                  action="action_hr_employee_skill"
+                  sequence="30"/>
+        
+        <!-- Submenú de Órdenes de Servicio -->
+        <menuitem id="menu_skills_fsm"
+                  name="Órdenes de Servicio"
+                  parent="menu_skills_management_root"
+                  sequence="30"/>
+        
+        <!-- Elementos del menú de órdenes FSM -->
+        <menuitem id="menu_fsm_orders_with_skills"
+                  name="Órdenes con Habilidades"
+                  parent="menu_skills_fsm"
+                  action="action_fsm_orders_with_skills"
+                  sequence="10"/>
+        
+        <menuitem id="menu_fsm_orders_poor_match"
+                  name="Órdenes Mal Emparejadas"
+                  parent="menu_skills_fsm"
+                  action="action_fsm_orders_poor_match"
+                  sequence="20"/>
+        
+        <!-- Comentado temporalmente - requiere patco_fsm para el wizard
+        <menuitem id="menu_technician_suggestions"
+                  name="Sugerencias de Técnicos"
+                  parent="menu_skills_fsm"
+                  action="action_technician_suggestions"
+                  sequence="30"/>
+        -->
+        
+        <!-- Submenú de Reportes -->
+        <menuitem id="menu_skills_reports"
+                  name="Reportes"
+                  parent="menu_skills_management_root"
+                  sequence="40"/>
+        
+        <!-- Elementos del menú de reportes -->
+        <menuitem id="menu_hr_employee_skill_log"
+                  name="Historial de Habilidades"
+                  parent="menu_skills_reports"
+                  action="action_hr_employee_skill_log"
+                  sequence="10"/>
+        
+        <!-- Integración con menú de Recursos Humanos -->
+        <menuitem id="menu_hr_skills_integration"
+                  name="Habilidades"
+                  parent="hr.menu_hr_root"
+                  sequence="25"/>
+        
+        <menuitem id="menu_hr_employee_skills_hr"
+                  name="Habilidades de Empleados"
+                  parent="menu_hr_skills_integration"
+                  action="action_hr_employee_skill"
+                  sequence="10"/>
+        
+        <menuitem id="menu_hr_skills_matrix_hr"
+                  name="Matriz de Habilidades"
+                  parent="menu_hr_skills_integration"
+                  action="action_hr_employee_skill_employee"
+                  sequence="20"/>
+        
+        <!-- Integración con menú de Field Service -->
+        <menuitem id="menu_fsm_skills_integration"
+                  name="Gestión de Habilidades"
+                  parent="fieldservice.root"
+                  sequence="25"/>
+        
+        <menuitem id="menu_fsm_technician_skills"
+                  name="Técnicos por Habilidades"
+                  parent="menu_fsm_skills_integration"
+                  action="action_hr_field_technicians"
+                  sequence="10"/>
+        
+        <menuitem id="menu_fsm_orders_skills_fsm"
+                  name="Órdenes con Habilidades"
+                  parent="menu_fsm_skills_integration"
+                  action="action_fsm_orders_with_skills"
+                  sequence="20"/>
+        
+    </data>
+</odoo>

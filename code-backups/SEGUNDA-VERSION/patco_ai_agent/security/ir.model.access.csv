@@ -1,0 +1,12 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ai_conversation_user,ai.conversation.user,model_ai_conversation,patco_ai_agent.group_ai_user,1,1,1,0
+access_ai_conversation_manager,ai.conversation.manager,model_ai_conversation,patco_ai_agent.group_ai_manager,1,1,1,1
+access_ai_conversation_knowledge_manager,ai.conversation.knowledge_manager,model_ai_conversation,patco_ai_agent.group_knowledge_manager,1,0,0,0
+access_ai_bot_user_user,ai.bot.user.user,model_ai_bot_user,patco_ai_agent.group_ai_user,1,0,0,0
+access_ai_bot_user_manager,ai.bot.user.manager,model_ai_bot_user,patco_ai_agent.group_ai_manager,1,1,1,1
+access_ir_attachment_rag_user,ir.attachment.rag.user,base.model_ir_attachment,patco_ai_agent.group_ai_user,1,0,0,0
+access_ir_attachment_rag_knowledge_manager,ir.attachment.rag.knowledge_manager,base.model_ir_attachment,patco_ai_agent.group_knowledge_manager,1,1,1,1
+access_mail_message_ai_user,mail.message.ai.user,mail.model_mail_message,patco_ai_agent.group_ai_user,1,1,0,0
+access_mail_message_ai_manager,mail.message.ai.manager,mail.model_mail_message,patco_ai_agent.group_ai_manager,1,1,1,0
+access_mail_channel_ai_user,mail.channel.ai.user,mail.model_discuss_channel,patco_ai_agent.group_ai_user,1,1,1,0
+access_mail_channel_ai_manager,mail.channel.ai.manager,mail.model_discuss_channel,patco_ai_agent.group_ai_manager,1,1,1,1

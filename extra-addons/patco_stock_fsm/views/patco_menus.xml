@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================ -->
+        <!-- MENÚS ESPECÍFICOS DE PATCO STOCK FSM -->
+        <!-- ============================================ -->
+        
+        <!-- Servicio Técnico - Ubicaciones de Vehículos -->
+        <menuitem id="menu_patco_vehicle_locations"
+                  name="Ubicaciones de Vehículos"
+                  parent="patco_base.menu_patco_field_service_orders"
+                  action="action_stock_location_vehicle"
+                  sequence="40"/>
+        
+        <!-- Servicio Técnico - Solicitudes de Transferencia -->
+        <menuitem id="menu_patco_transfer_requests"
+                  name="Solicitudes de Transferencia"
+                  parent="patco_base.menu_patco_field_service_orders"
+                  action="action_stock_transfer_request"
+                  sequence="50"/>
+        
+    </data>
+</odoo>

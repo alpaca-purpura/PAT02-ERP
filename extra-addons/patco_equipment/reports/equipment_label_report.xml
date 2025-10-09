@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Reporte de etiquetas de equipos -->
+        <record id="action_report_equipment_label" model="ir.actions.report">
+            <field name="name">Etiqueta de Equipo</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">patco_equipment.equipment_label_template</field>
+            <field name="report_file">patco_equipment.equipment_label_template</field>
+            <field name="binding_model_id" ref="maintenance.model_maintenance_equipment"/>
+            <field name="binding_type">report</field>
+        </record>
+        
+        <!-- Template de etiqueta -->
+        <template id="equipment_label_template">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="equipment">
+                    <div class="page" style="page-break-after: always;">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h3><span t-field="equipment.name"/></h3>
+                                    <p><strong>Código:</strong> <span t-field="equipment.x_patco_code"/></p>
+                                    <p><strong>Cliente:</strong> <span t-field="equipment.x_customer_id.name"/></p>
+                                    <p><strong>Área:</strong> <span t-field="equipment.x_service_location_id.name"/></p>
+                                    <p><strong>Modelo:</strong> <span t-field="equipment.model"/></p>
+                                    <p><strong>Serie:</strong> <span t-field="equipment.serial_no"/></p>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <t t-if="equipment.x_qr_code">
+                                        <img t-att-src="image_data_uri(equipment.x_qr_code)" style="max-width: 150px; max-height: 150px;"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+        
+    </data>
+</odoo>

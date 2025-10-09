@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Extensión de la vista de formulario de Órdenes FSM -->
+        <record id="view_fsm_order_form_skills" model="ir.ui.view">
+            <field name="name">fsm.order.form.skills</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='person_id']" position="after">
+                    <field name="required_skill_ids" widget="many2many_tags" 
+                           options="{'color_field': 'skill_type_id', 'no_create_edit': True}"
+                           help="Habilidades técnicas requeridas para esta orden"/>
+                </xpath>
+                <!-- Campo suggested_technician_ids es computado y se mostrará automáticamente -->
+            </field>
+        </record>
+        
+        <!-- Extensión de la vista de lista de Órdenes FSM -->
+        <record id="view_fsm_order_list_skills" model="ir.ui.view">
+            <field name="name">fsm.order.list.skills</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_list_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='person_id']" position="after">
+                    <field name="required_skill_ids" widget="many2many_tags" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Extensión de la vista de búsqueda de Órdenes FSM -->
+        <record id="view_fsm_order_search_skills" model="ir.ui.view">
+            <field name="name">fsm.order.search.skills</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_search_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='person_id']" position="after">
+                    <field name="required_skill_ids" widget="many2many_tags"/>
+                </xpath>
+                <xpath expr="//filter[@name='fsm_person_id']" position="after">
+                    <filter name="required_skills" string="Required Skills" domain="[('required_skill_ids', '!=', False)]"/>
+                </xpath>
+                <xpath expr="//group[@expand='0']" position="inside">
+                    <filter string="Habilidades Requeridas" name="group_skills" 
+                            context="{'group_by': 'required_skill_ids'}"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Extensión de la vista de formulario de Ubicaciones FSM -->
+        <record id="view_fsm_location_form_skills" model="ir.ui.view">
+            <field name="name">fsm.location.form.skills</field>
+            <field name="model">fsm.location</field>
+            <field name="inherit_id" ref="fieldservice.fsm_location_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='others']" position="after">
+                    <page string="Habilidades Requeridas" name="skills">
+                        <group>
+                            <field name="default_skill_ids" widget="many2many_tags" 
+                                   options="{'color_field': 'skill_type_id'}"
+                                   help="Habilidades técnicas típicamente requeridas en esta ubicación"/>
+                        </group>
+                        <separator string="Información Adicional"/>
+                        <group>
+                            <field name="skill_notes" placeholder="Notas sobre las habilidades requeridas en esta ubicación..."/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Extensión de la vista de formulario de Equipos FSM -->
+        <record id="view_fsm_equipment_form_skills" model="ir.ui.view">
+            <field name="name">fsm.equipment.form.skills</field>
+            <field name="model">fsm.equipment</field>
+            <field name="inherit_id" ref="fieldservice.fsm_equipment_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='current_location_id']" position="after">
+                    <field name="required_skill_ids" widget="many2many_tags" 
+                           options="{'color_field': 'skill_type_id'}"
+                           help="Habilidades técnicas requeridas para mantener este equipo"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Extensión de la vista de lista de Equipos FSM -->
+        <record id="view_fsm_equipment_list_skills" model="ir.ui.view">
+            <field name="name">fsm.equipment.list.skills</field>
+            <field name="model">fsm.equipment</field>
+            <field name="inherit_id" ref="fieldservice.fsm_equipment_list_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='current_location_id']" position="after">
+                    <field name="required_skill_ids" widget="many2many_tags" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Botón para abrir wizard de sugerencia de técnicos -->
+        <record id="view_fsm_order_form_suggest_button" model="ir.ui.view">
+            <field name="name">fsm.order.form.suggest.button</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_suggest_technicians" type="object" 
+                            class="oe_stat_button" icon="fa-users"
+                            help="Sugerir técnicos basados en habilidades requeridas">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Sugerir</span>
+                            <span class="o_stat_text">Técnicos</span>
+                        </div>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Acción para Órdenes sin Técnico Asignado -->
+        <record id="action_fsm_order_unassigned" model="ir.actions.act_window">
+            <field name="name">Órdenes sin Técnico</field>
+            <field name="res_model">fsm.order</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('person_id', '=', False), ('stage_id.is_closed', '=', False)]</field>
+            <field name="context">{'search_default_no_technician': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Todas las órdenes tienen técnicos asignados!
+                </p>
+                <p>
+                    Aquí aparecerán las órdenes de servicio que aún no tienen
+                    un técnico asignado y necesitan atención.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Acción para Órdenes con Habilidades Requeridas -->
+        <record id="action_fsm_order_with_skills" model="ir.actions.act_window">
+            <field name="name">Órdenes con Habilidades</field>
+            <field name="res_model">fsm.order</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('required_skill_ids', '!=', False)]</field>
+            <field name="context">{'search_default_with_skills': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No hay órdenes con habilidades específicas aún.
+                </p>
+                <p>
+                    Aquí aparecerán las órdenes que requieren habilidades técnicas
+                    específicas para su resolución.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

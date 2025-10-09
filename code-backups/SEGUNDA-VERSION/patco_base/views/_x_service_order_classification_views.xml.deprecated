@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Helpdesk Ticket Form View Extension -->
+        <record id="view_helpdesk_ticket_form_classification" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.form.classification</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk_mgmt.helpdesk_ticket_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='priority']" position="after">
+                    <field name="x_nature_id"/>
+                    <field name="x_area_id"/>
+                    <field name="x_complexity_id"/>
+                    <field name="x_classification_code" readonly="1"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Checklists">
+                        <group>
+                            <field name="x_entry_checklist" widget="html"/>
+                            <field name="x_exit_checklist" widget="html"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- FSM Order Form View Extension -->
+        <record id="view_fsm_order_form_classification" model="ir.ui.view">
+            <field name="name">fsm.order.form.classification</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='priority']" position="after">
+                    <field name="x_nature_id"/>
+                    <field name="x_area_id"/>
+                    <field name="x_complexity_id"/>
+                    <field name="x_classification_code" readonly="1"/>
+                </xpath>
+                <xpath expr="//notebook" position="inside">
+                    <page string="Checklists">
+                        <group>
+                            <field name="x_entry_checklist" widget="html"/>
+                            <field name="x_exit_checklist" widget="html"/>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <menuitem id="menu_patco_asset"
+                  name="Gestión de Activos y Manuales"
+                  web_icon="patco_equipment,static/src/img/PATCO-Logo.png"
+                  sequence="10"/>
+
+        <!-- Menu de Gestion de Activos -->
+        <menuitem id="menu_patco_asset_management" 
+                  name="Activos de Clientes" 
+                  parent="menu_patco_asset" 
+                  action="action_maintenance_equipment_patco"
+                  sequence="20"/>
+
+        
+        <!-- Menú de Categorías de Activos -->
+        <menuitem id="menu_patco_equipment_categories" 
+                  name="Categorías, Checklists y Manuales" 
+                  parent="menu_patco_asset" 
+                  action="action_maintenance_equipment_category_patco" 
+                  sequence="30"/>
+    </data>
+</odoo>

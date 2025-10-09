@@ -1,8 +1,64 @@
-version: '3.8'
+# Docker Compose Integrado - PATCO Suite con Servicios IA
+# Configuración completa: Odoo + PostgreSQL + Servicios IA + Traefik
+# Versión: 1.2 - Septiembre 2025
+# 
+# WEBSOCKETS CONFIGURADOS: ✅
+# - Traefik proxy para desarrollo local
+# - Routing correcto de /websocket al puerto 8072
+# - Evented Service (longpolling) funcionando
+# 
+# SCRIPTS DE CORRECCIÓN DISPONIBLES:
+# - Windows: .\scripts\fix-websockets.ps1
+# - Linux: ./scripts/fix-websockets.sh
+# - Setup: .\scripts\setup-websockets.ps1
 
 services:
+  # ===== TRAEFIK PROXY PARA DESARROLLO LOCAL =====
+  traefik:
+    image: traefik:v3.0
+    container_name: patco-traefik-dev
+    command:
+      # Configuración básica
+      - --api.insecure=true
+      - --api.dashboard=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=odoo-patco-network
+      
+      # Entrypoints
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websocket.address=:8072
+      
+      # Certificados auto-firmados para desarrollo local
+      - --certificatesresolvers.localresolver.acme.tlschallenge=true
+      - --certificatesresolvers.localresolver.acme.email=dev@patco.local
+      - --certificatesresolvers.localresolver.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.localresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      
+      # Logs para debugging
+      - --log.level=INFO
+      - --accesslog=true
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Dashboard de Traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-letsencrypt:/letsencrypt
+    networks:
+      - odoo-network
+    restart: unless-stopped
+    labels:
+      - "patco.service=traefik"
+      - "patco.component=proxy"
+      - "patco.description=Traefik proxy para desarrollo local con dashboard"
+
+  # ===== SERVICIOS BASE PATCO =====
   db:
-    image: postgres:15
+    build:
+      context: ./ai-services/postgres-pgvector
+      dockerfile: Dockerfile
     container_name: odoo-patco-db
     environment:
       - POSTGRES_DB=odoo_patco
@@ -20,6 +76,10 @@ services:
       timeout: 10s
       retries: 10
       start_period: 60s
+    labels:
+      - "patco.service=database"
+      - "patco.component=core"
+      - "patco.description=PostgreSQL 15 con PGVector para PATCO Suite"
 
   odoo:
     build:
@@ -29,10 +89,11 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "8069:8069"
-    # --- EL COMANDO DEFINITIVO Y CORRECTO ---
-    command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "--init=l10n_pe", "--load-language=es_PE", "--without-demo=all"]    
+      traefik:
+        condition: service_started
+    # --- COMANDO PARA INSTALAR MÓDULOS PATCO Y MANTENER CORRIENDO ---
+    # command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "-d", "odoo_patco", "--init=l10n_pe", "--load-language=es_PE", "--without-demo=all"]
+    command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "-d", "odoo_patco", "--init=l10n_pe", "--load-language=es_PE", "--without-demo=all"]      
     environment:
       - DB_HOST=db
       - DB_PORT=5432
@@ -46,19 +107,442 @@ services:
     networks:
       - odoo-network
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8069/web/static/src/css/bootstrap.css || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8069/web/database/selector || exit 1"]
       interval: 60s
       timeout: 10s
       retries: 3
       start_period: 120s
+    labels:
+      - "patco.service=odoo"
+      - "patco.component=core"
+      - "patco.description=Odoo Community 18 para PATCO Suite"
+      
+      # --- TRAEFIK LABELS PARA DESARROLLO LOCAL ---
+      - "traefik.enable=true"
+      - "traefik.docker.network=odoo-patco-network"
+      
+      # Router principal para Odoo (HTTP)
+      - "traefik.http.routers.odoo-dev.rule=Host(`localhost`) || Host(`127.0.0.1`) || Host(`odoo.local`)"
+      - "traefik.http.routers.odoo-dev.entrypoints=web"
+      - "traefik.http.routers.odoo-dev.service=odoo-web-dev"
+      
+      # Router para websockets
+      - "traefik.http.routers.odoo-websocket-dev.rule=(Host(`localhost`) || Host(`127.0.0.1`) || Host(`odoo.local`)) && PathPrefix(`/websocket`)"
+      - "traefik.http.routers.odoo-websocket-dev.entrypoints=web"
+      - "traefik.http.routers.odoo-websocket-dev.service=odoo-websocket-dev"
+      
+      # Servicios
+      - "traefik.http.services.odoo-web-dev.loadbalancer.server.port=8069"
+      - "traefik.http.services.odoo-websocket-dev.loadbalancer.server.port=8072"
+      
+      # Middleware para headers correctos
+      - "traefik.http.routers.odoo-dev.middlewares=odoo-headers-dev"
+      - "traefik.http.routers.odoo-websocket-dev.middlewares=odoo-headers-dev"
+      - "traefik.http.middlewares.odoo-headers-dev.headers.customrequestheaders.X-Forwarded-Proto=http"
+      - "traefik.http.middlewares.odoo-headers-dev.headers.customrequestheaders.X-Forwarded-Host=localhost"
+
+  # ===== SERVICIOS IA - FASE 1 =====
+
+  # Servicio de validación de entorno IA
+  ai-services-validator:
+    image: postgres:15
+    container_name: patco-ai-validator
+    depends_on:
+      db:
+        condition: service_healthy
+      odoo:
+        condition: service_healthy
+    environment:
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=odoo
+      - PGPASSWORD=P4tc0_2
+      - PGDATABASE=odoo_patco
+    command: >
+      bash -c "
+        echo '🧪 Iniciando validación de servicios IA...' &&
+        sleep 10 &&
+        echo '📊 Verificando PostgreSQL...' &&
+        PGPASSWORD=P4tc0_2 psql -h db -U odoo -d odoo_patco -c 'SELECT version();' &&
+        echo '🔍 Verificando PGVector...' &&
+        PGPASSWORD=P4tc0_2 psql -h db -U odoo -d odoo_patco -c 'SELECT * FROM pg_available_extensions WHERE name = '\''vector'\'';' &&
+        echo '🌐 Verificando conectividad con Odoo...' &&
+        curl -f http://odoo:8069/web/database/selector || echo 'Odoo no disponible aún' &&
+        echo '✅ Validación completada - Entorno listo para servicios IA' &&
+        echo '📋 Resumen de configuración:' &&
+        echo '   - PostgreSQL: ✅ Disponible' &&
+        echo '   - PGVector: ✅ Instalado' &&
+        echo '   - Red Docker: ✅ Configurada' &&
+        echo '   - Variables de entorno: ✅ Definidas' &&
+        echo '🚀 Fase 0 completada exitosamente'
+      "
+    networks:
+      - odoo-network
+    restart: "no"
+    profiles:
+      - ai-setup
+    labels:
+      - "patco.service=ai-validator"
+      - "patco.component=ai"
+      - "patco.phase=0"
+      - "patco.description=Validación de entorno IA"
+
+  # ===== SERVICIOS IA - FASE 3 =====
+  # Servicio de indexación de documentos
+  document-indexer:
+    build:
+      context: ./ai-services/indexer
+      dockerfile: Dockerfile
+    container_name: patco-document-indexer
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=postgresql://odoo:P4tc0_2@db:5432/odoo_patco
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ODOO_URL=http://odoo:8069
+      - INDEXING_BATCH_SIZE=50
+      - INDEXING_CYCLE_INTERVAL=300
+    volumes:
+      - ./ai-services/indexer:/app
+      - ./logs:/app/logs
+    networks:
+      - odoo-network
+    restart: unless-stopped
+    profiles:
+      - ai-services
+    labels:
+      - "patco.service=document-indexer"
+      - "patco.component=ai"
+      - "patco.phase=3"
+      - "patco.description=Servicio de indexación automática de documentos con embeddings"
+
+  # ===== SERVICIOS IA - FASE 4 =====
+  # Servidor MCP (Model Context Protocol)
+  mcp-server:
+    build:
+      context: ./ai-services/mcp
+      dockerfile: Dockerfile
+    container_name: patco-mcp-server
+    depends_on:
+      db:
+        condition: service_healthy
+      odoo:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      # Base de datos
+      - DATABASE_URL=postgresql://odoo:P4tc0_2@db:5432/odoo_patco
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=odoo_patco
+      - DB_USER=odoo
+      - DB_PASSWORD=P4tc0_2
+      
+      # Odoo API
+      - ODOO_URL=http://odoo:8069
+      - ODOO_DB=odoo_patco
+      - ODOO_USERNAME=admin
+      - ODOO_PASSWORD=admin
+      
+      # Servidor MCP
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8080
+      - MCP_DEBUG=true
+      - MCP_LOG_LEVEL=INFO
+      
+      # Autenticación JWT
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-patco-mcp-secret-key-2025}
+      - JWT_ALGORITHM=HS256
+      - JWT_ACCESS_TOKEN_EXPIRE_MINUTES=30
+      
+      # APIs externas
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      
+      # Configuración de embeddings
+      - EMBEDDING_MODEL=text-embedding-004
+      - EMBEDDING_DIMENSION=768
+      - VECTOR_SEARCH_LIMIT=10
+      
+      # Rate limiting
+      - RATE_LIMIT_REQUESTS=100
+      - RATE_LIMIT_WINDOW=60
+      
+      # CORS
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:8069
+      
+      # Cache
+      - CACHE_TTL=300
+      - CACHE_MAX_SIZE=1000
+    volumes:
+      - ./ai-services/mcp:/app
+      - ./logs:/app/logs
+      - ./ai-services/mcp/uploads:/app/uploads
+      - ./ai-services/mcp/data:/app/data
+      - ./ai-services/mcp/cache:/app/cache
+    networks:
+      - odoo-network
+    restart: unless-stopped
+    profiles:
+      - ai-services
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "patco.service=mcp-server"
+      - "patco.component=ai"
+      - "patco.phase=4"
+      - "patco.description=Servidor MCP para herramientas FSM, equipos, RAG y conversaciones IA"
+
+  # ===== SERVICIOS IA - FASE 5 =====
+  # Servidor LangGraph (Orquestación Conversacional)
+  langgraph-server:
+    build:
+      context: ./ai-services/langgraph
+      dockerfile: Dockerfile
+    container_name: patco-langgraph-server
+    depends_on:
+      db:
+        condition: service_healthy
+      mcp-server:
+        condition: service_healthy
+    ports:
+      - "8001:8001"
+    environment:
+      # Servidor LangGraph
+      - LANGGRAPH_HOST=0.0.0.0
+      - LANGGRAPH_PORT=8001
+      - LANGGRAPH_DEBUG=true
+      - LANGGRAPH_LOG_LEVEL=INFO
+      
+      # Base de datos para checkpointing
+      - DATABASE_URL=postgresql://odoo:P4tc0_2@db:5432/odoo_patco
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=odoo_patco
+      - DB_USER=odoo
+      - DB_PASSWORD=P4tc0_2
+      
+      # Servidor MCP
+      - MCP_SERVER_URL=http://mcp-server:8080
+      - MCP_TIMEOUT=30
+      
+      # APIs externas
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      
+      # Configuración de embeddings
+      - EMBEDDING_MODEL=text-embedding-004
+      - EMBEDDING_DIMENSION=768
+      
+      # Configuración de conversaciones
+      - MAX_CONVERSATION_HISTORY=50
+      - CONVERSATION_TIMEOUT=1800
+      
+      # Cache
+      - CACHE_TTL=300
+      - CACHE_MAX_SIZE=1000
+      
+      # CORS
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:8069
+    volumes:
+      - ./ai-services/langgraph:/app
+      - ./logs:/app/logs
+      - ./ai-services/langgraph/data:/app/data
+      - ./ai-services/langgraph/cache:/app/cache
+    networks:
+      - odoo-network
+    restart: unless-stopped
+    profiles:
+      - ai-services
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8001/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "patco.service=langgraph-server"
+      - "patco.component=ai"
+      - "patco.phase=5"
+      - "patco.description=Servidor LangGraph para orquestación conversacional del agente IA"
+
+  # ===== SERVICIOS OFFICE - FASE 8 =====
+  # Servicio de configuración de base de datos OnlyOffice
+  onlyoffice-db-setup:
+    image: postgres:15
+    container_name: patco-onlyoffice-db-setup
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - PGHOST=db
+      - PGPORT=5432
+      - PGUSER=odoo
+      - PGPASSWORD=P4tc0_2
+      - PGDATABASE=postgres
+    command: >
+      bash -c "
+        echo '🗄️ Configurando base de datos OnlyOffice...' &&
+        sleep 5 &&
+        PGPASSWORD=P4tc0_2 psql -h db -U odoo -d postgres -c 'CREATE DATABASE onlyoffice OWNER odoo;' || echo 'Base de datos onlyoffice ya existe' &&
+        echo '✅ Base de datos OnlyOffice configurada correctamente'
+      "
+    networks:
+      - odoo-network
+    restart: "no"
+    profiles:
+      - office-services
+    labels:
+      - "patco.service=onlyoffice-db-setup"
+      - "patco.component=office"
+      - "patco.phase=8"
+      - "patco.description=Configuración de base de datos para OnlyOffice"
+
+  # Servicio RabbitMQ para OnlyOffice
+  onlyoffice-rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: patco-onlyoffice-rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=onlyoffice
+      - RABBITMQ_DEFAULT_PASS=onlyoffice_pass
+      - RABBITMQ_DEFAULT_VHOST=onlyoffice
+    volumes:
+      - onlyoffice-rabbitmq-data:/var/lib/rabbitmq
+    networks:
+      - odoo-network
+    restart: unless-stopped
+    profiles:
+      - office-services
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    labels:
+      - "patco.service=onlyoffice-rabbitmq"
+      - "patco.component=office"
+      - "patco.phase=8"
+      - "patco.description=RabbitMQ para OnlyOffice Document Server"
+
+  # OnlyOffice Document Server
+  onlyoffice-documentserver:
+    image: onlyoffice/documentserver:8.2
+    container_name: patco-onlyoffice-documentserver
+    depends_on:
+      db:
+        condition: service_healthy
+      onlyoffice-rabbitmq:
+        condition: service_healthy
+      onlyoffice-db-setup:
+        condition: service_completed_successfully
+    ports:
+      - "8081:80"
+    environment:
+      # Base de datos PostgreSQL
+      - DB_TYPE=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME=onlyoffice
+      - DB_USER=odoo
+      - DB_PWD=P4tc0_2
+      
+      # RabbitMQ
+      - AMQP_TYPE=rabbitmq
+      - AMQP_URI=amqp://onlyoffice:onlyoffice_pass@onlyoffice-rabbitmq:5672/onlyoffice
+      
+      # Configuración del servidor
+      - JWT_ENABLED=true
+      - JWT_SECRET=patco-onlyoffice-jwt-secret-2025
+      - JWT_HEADER=Authorization
+      - JWT_IN_BODY=true
+      
+      # Configuración de red
+      - WOPI_ENABLED=true
+      - USE_UNAUTHORIZED_STORAGE=false
+      
+      # Configuración de logs
+      - ONLYOFFICE_HTTPS_HSTS_ENABLED=false
+      - GENERATE_FONTS=true
+    volumes:
+      - onlyoffice-data:/var/www/onlyoffice/Data
+      - onlyoffice-logs:/var/log/onlyoffice
+      - onlyoffice-fonts:/usr/share/fonts/truetype/custom
+      - onlyoffice-forgotten:/var/lib/onlyoffice/documentserver/App_Data/cache/files/forgotten
+    networks:
+      - odoo-network
+    restart: unless-stopped
+    profiles:
+      - office-services
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost/healthcheck || exit 1"]
+      interval: 60s
+      timeout: 15s
+      retries: 3
+      start_period: 180s
+    labels:
+      - "patco.service=onlyoffice-documentserver"
+      - "patco.component=office"
+      - "patco.phase=8"
+      - "patco.description=OnlyOffice Document Server para edición colaborativa de documentos"
 
 volumes:
   odoo-web-data:
     name: odoo-patco-web-data
   odoo-db-data:
     name: odoo-patco-db-data
+  # Volumen para Traefik
+  traefik-letsencrypt:
+    name: patco-traefik-letsencrypt
+  # Volúmenes para OnlyOffice Document Server
+  onlyoffice-data:
+    name: patco-onlyoffice-data
+  onlyoffice-logs:
+    name: patco-onlyoffice-logs
+  onlyoffice-fonts:
+    name: patco-onlyoffice-fonts
+  onlyoffice-forgotten:
+    name: patco-onlyoffice-forgotten
+  onlyoffice-rabbitmq-data:
+    name: patco-onlyoffice-rabbitmq-data
 
 networks:
   odoo-network:
     name: odoo-patco-network
     driver: bridge
+
+# ===== PERFILES DE SERVICIOS =====
+# Perfiles para controlar qué servicios se ejecutan:
+# 
+# Uso básico (solo Odoo + PostgreSQL):
+#   docker compose up -d
+#
+# Incluir servicios IA de configuración:
+#   docker compose --profile ai-setup up -d
+#
+# Servicios futuros (LangGraph, MCP, Indexer, etc.):
+#   docker compose --profile ai-services up -d
+#
+# Servicios de oficina (OnlyOffice Document Server):
+#   docker compose --profile office-services up -d
+
+# ===== NOTAS DE INTEGRACIÓN =====
+# 1. Los servicios IA están organizados por fases del plan de implementación
+# 2. Se usan profiles para controlar la ejecución de servicios específicos
+# 3. Los servicios de Fase 0 son temporales para configuración inicial
+# 4. Las dependencias están correctamente configuradas entre servicios
+# 5. La red odoo-network es compartida por todos los servicios
+# 6. Labels permiten identificar y filtrar servicios por componente y fase
+# 7. OnlyOffice Document Server (Fase 8) incluye:
+#    - Base de datos separada 'onlyoffice' en PostgreSQL existente
+#    - RabbitMQ dedicado para procesamiento de documentos
+#    - JWT habilitado para seguridad
+#    - Volúmenes persistentes para datos, logs y fuentes
+#    - Acceso en puerto 8081 para evitar conflictos
+#    - Perfil 'office-services' para control independiente

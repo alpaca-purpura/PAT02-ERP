@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Menú principal de Field Service Management -->
+    <menuitem id="menu_fsm_root"
+              name="Servicios Externos"
+              sequence="10"
+              web_icon="patco_fsm,static/src/img/PATCO-Logo.png"/>
+
+    <!-- Menú de Órdenes de Servicio -->
+    <menuitem id="menu_fsm_orders"
+              name="Órdenes de Servicio"
+              parent="menu_fsm_root"
+              sequence="10"/>
+
+    <!-- Opción de Órdenes FSM -->
+    <menuitem id="menu_fsm_order_all"
+              name="Todas las Órdenes"
+              parent="menu_fsm_orders"
+              action="action_fsm_order_patco"
+              sequence="10"/>
+
+    <!-- Opción de Mis Órdenes -->
+    <menuitem id="menu_fsm_order_my"
+              name="Mis Órdenes"
+              parent="menu_fsm_orders"
+              action="action_fsm_order_patco"
+              sequence="20"/>
+
+
+    <!-- Menú de Hojas de Trabajo -->
+    <menuitem id="menu_fsm_worksheets"
+              name="Hojas de Trabajo"
+              parent="menu_fsm_root"
+              sequence="20"/>
+
+
+    <!-- Opción de Hojas de Trabajo -->
+    <menuitem id="menu_fsm_worksheet_all"
+              name="Todas las Hojas"
+              parent="menu_fsm_worksheets"
+              action="action_fsm_worksheet_patco"
+              sequence="10"/>
+
+    <!-- Menú de Repuestos -->
+    <menuitem id="menu_fsm_parts"
+              name="Repuestos"
+              parent="menu_fsm_root"
+              sequence="30"/>
+
+    <!-- Opción de Repuestos Consumidos -->
+    <menuitem id="menu_fsm_consumed_parts"
+              name="Repuestos Consumidos"
+              parent="menu_fsm_parts"
+              action="action_fsm_order_consumed_part"
+              sequence="10"/>
+
+    <!-- Menú de Configuración -->
+    <menuitem id="menu_fsm_configuration"
+              name="Configuración"
+              parent="menu_fsm_root"
+              sequence="90"/>
+
+    <!-- Opción de Plantillas -->
+    <menuitem id="menu_fsm_worksheet_templates"
+              name="Plantillas de Hojas de Trabajo"
+              parent="menu_fsm_configuration"
+              action="action_fsm_worksheet_template"
+              sequence="10"/>
+
+</odoo>

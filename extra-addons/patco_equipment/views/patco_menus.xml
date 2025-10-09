@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================ -->
+        <!-- MENÚS ESPECÍFICOS DE PATCO EQUIPMENT -->
+        <!-- ============================================ -->
+        
+        <!-- Servicio Técnico - Activos de Clientes -->
+        <menuitem id="menu_patco_customer_assets"
+                  name="Activos de Clientes"
+                  parent="patco_base.menu_patco_field_service_assets"
+                  action="action_maintenance_equipment_patco"
+                  sequence="10"/>
+        
+        <!-- Servicio Técnico - Manuales y Checklists -->
+        <menuitem id="menu_patco_manuals_checklists"
+                  name="Manuales y Checklists"
+                  parent="patco_base.menu_patco_field_service_assets"
+                  action="action_maintenance_equipment_category_patco"
+                  sequence="20"/>
+        
+    </data>
+</odoo>

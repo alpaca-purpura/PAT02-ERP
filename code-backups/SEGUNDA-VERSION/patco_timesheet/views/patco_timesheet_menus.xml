@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menú principal para Timesheet FSM -->
+    <menuitem id="menu_patco_timesheet_fsm"
+              name="Control de Tiempo FSM"
+              parent="fieldservice.menu_fieldservice_root"
+              action="action_hr_timesheet_fsm"
+              sequence="30"/>
+
+    <!-- Submenú en Proyectos para acceso alternativo -->
+    <menuitem id="menu_patco_timesheet_project"
+              name="Tiempo FSM"
+              parent="project.menu_project_management"
+              action="action_hr_timesheet_fsm"
+              sequence="15"/>
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_analytic_line_user,account.analytic.line.user,account.model_account_analytic_line,base.group_user,1,1,1,0
+access_account_analytic_line_manager,account.analytic.line.manager,account.model_account_analytic_line,hr_timesheet.group_timesheet_manager,1,1,1,1
+access_timesheets_analysis_report_user,timesheets.analysis.report.user,hr_timesheet.model_timesheets_analysis_report,base.group_user,1,0,0,0
+access_timesheets_analysis_report_manager,timesheets.analysis.report.manager,hr_timesheet.model_timesheets_analysis_report,hr_timesheet.group_timesheet_manager,1,0,0,0

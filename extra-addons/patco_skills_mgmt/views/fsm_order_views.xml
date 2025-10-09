@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Extensión adicional para campo required_skills (texto) -->
+        <record id="view_fsm_order_form_skills_text" model="ir.ui.view">
+            <field name="name">fsm.order.form.skills.text</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='person_id']" position="after">
+                    <field name="required_skills" placeholder="Ej: COC-CAL, REF-COM, ELEC-BT" 
+                           help="Campo de texto adicional para habilidades específicas"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Nota: El wizard suggest_technician_wizard se encuentra en el módulo patco_fsm -->
+    </data>
+</odoo>

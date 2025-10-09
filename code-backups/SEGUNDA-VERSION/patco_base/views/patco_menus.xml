@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Main PATCO Menu -->
+        <menuitem id="menu_patco_main"
+                  name="Configuración Operativa"
+                  web_icon="patco_base,static/src/img/PATCO-Logo.png"
+                  sequence="10"/>
+        
+        <!-- Configuration Menu -->
+        <menuitem id="menu_patco_configuration"
+                  name="Configuración"
+                  parent="menu_patco_main"
+                  sequence="90"/>
+        
+        <!-- Operational Classification Submenu -->
+        <menuitem id="menu_patco_operational_classification"
+                  name="Clasificación Operativa"
+                  parent="menu_patco_configuration"
+                  sequence="10"/>
+        
+        <!-- Service Nature Menu -->
+        <record id="action_patco_service_nature" model="ir.actions.act_window">
+            <field name="name">Naturaleza de Servicio</field>
+            <field name="res_model">patco.service.nature</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crear una nueva naturaleza de servicio
+                </p>
+                <p>
+                    Define las diferentes naturalezas de servicio disponibles en el sistema.
+                </p>
+            </field>
+        </record>
+        
+        <menuitem id="menu_patco_service_nature"
+                  name="Naturaleza de Servicio"
+                  parent="menu_patco_operational_classification"
+                  action="action_patco_service_nature"
+                  sequence="10"/>
+        
+        <!-- Service Area Menu -->
+        <record id="action_patco_service_area" model="ir.actions.act_window">
+            <field name="name">Área de Especialización</field>
+            <field name="res_model">patco.service.area</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crear una nueva área de especialización
+                </p>
+                <p>
+                    Define las diferentes áreas de especialización técnica disponibles.
+                </p>
+            </field>
+        </record>
+        
+        <menuitem id="menu_patco_service_area"
+                  name="Área de Especialización"
+                  parent="menu_patco_operational_classification"
+                  action="action_patco_service_area"
+                  sequence="20"/>
+        
+        <!-- Service Complexity Menu -->
+        <record id="action_patco_service_complexity" model="ir.actions.act_window">
+            <field name="name">Complejidad de Servicio</field>
+            <field name="res_model">patco.service.complexity</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Crear una nueva complejidad de servicio
+                </p>
+                <p>
+                    Define los diferentes niveles de complejidad para los servicios.
+                </p>
+            </field>
+        </record>
+        
+        <menuitem id="menu_patco_service_complexity"
+                  name="Complejidad de Servicio"
+                  parent="menu_patco_operational_classification"
+                  action="action_patco_service_complexity"
+                  sequence="30"/>
+        
+        <!-- Time Registration Menu -->
+        <menuitem id="menu_patco_time_registration"
+                  name="Registro de Tiempo"
+                  parent="menu_patco_main"
+                  sequence="20"/>
+        
+    </data>
+</odoo>

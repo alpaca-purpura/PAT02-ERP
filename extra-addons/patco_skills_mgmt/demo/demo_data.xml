@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Empleados de demostración -->
+        <record id="demo_employee_chef" model="hr.employee">
+            <field name="name">Carlos Mendoza</field>
+            <field name="job_title">Chef Ejecutivo</field>
+            <field name="is_field_technician" eval="False"/>
+        </record>
+        
+        <record id="demo_employee_waiter" model="hr.employee">
+            <field name="name">Ana García</field>
+            <field name="job_title">Mesera Senior</field>
+            <field name="is_field_technician" eval="False"/>
+        </record>
+        
+        <record id="demo_employee_bartender" model="hr.employee">
+            <field name="name">Luis Ramírez</field>
+            <field name="job_title">Bartender</field>
+            <field name="is_field_technician" eval="False"/>
+        </record>
+        
+        <record id="demo_employee_technician" model="hr.employee">
+            <field name="name">Miguel Torres</field>
+            <field name="job_title">Técnico de Mantenimiento</field>
+            <field name="is_field_technician" eval="True"/>
+        </record>
+        
+        <record id="demo_employee_cleaner" model="hr.employee">
+            <field name="name">Rosa Flores</field>
+            <field name="job_title">Personal de Limpieza</field>
+            <field name="is_field_technician" eval="False"/>
+        </record>
+        
+        <!-- Habilidades de empleados de demostración -->
+        <record id="demo_skill_chef_cooking" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_chef"/>
+            <field name="skill_id" ref="skill_basic_cooking"/>
+            <field name="skill_level_id" ref="skill_level_expert"/>
+            <field name="level_progress">95</field>
+            <field name="is_certified" eval="True"/>
+            <field name="certification_date" eval="(datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')"/>
+            <field name="certification_body">Instituto Culinario Nacional</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=1095)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Chef con amplia experiencia en cocina internacional</field>
+        </record>
+        
+        <record id="demo_skill_chef_management" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_chef"/>
+            <field name="skill_id" ref="skill_kitchen_management"/>
+            <field name="skill_level_id" ref="skill_level_advanced"/>
+            <field name="level_progress">85</field>
+            <field name="is_certified" eval="False"/>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=730)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Gestión eficiente de equipos de cocina</field>
+        </record>
+        
+        <record id="demo_skill_waiter_service" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_waiter"/>
+            <field name="skill_id" ref="skill_customer_service"/>
+            <field name="skill_level_id" ref="skill_level_advanced"/>
+            <field name="level_progress">90</field>
+            <field name="is_certified" eval="True"/>
+            <field name="certification_date" eval="(datetime.now() - timedelta(days=180)).strftime('%Y-%m-%d')"/>
+            <field name="certification_body">Asociación de Servicios Gastronómicos</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=900)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Excelente atención al cliente y manejo de quejas</field>
+        </record>
+        
+        <record id="demo_skill_waiter_wine" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_waiter"/>
+            <field name="skill_id" ref="skill_wine_service"/>
+            <field name="skill_level_id" ref="skill_level_intermediate"/>
+            <field name="level_progress">70</field>
+            <field name="is_certified" eval="False"/>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Conocimientos básicos de maridaje y servicio de vinos</field>
+        </record>
+        
+        <record id="demo_skill_bartender_cocktails" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_bartender"/>
+            <field name="skill_id" ref="skill_bartending"/>
+            <field name="skill_level_id" ref="skill_level_expert"/>
+            <field name="level_progress">92</field>
+            <field name="is_certified" eval="True"/>
+            <field name="certification_date" eval="(datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')"/>
+            <field name="certification_body">Asociación Internacional de Bartenders</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=1460)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Especialista en cocteles clásicos y modernos</field>
+        </record>
+        
+        <record id="demo_skill_bartender_service" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_bartender"/>
+            <field name="skill_id" ref="skill_customer_service"/>
+            <field name="skill_level_id" ref="skill_level_intermediate"/>
+            <field name="level_progress">75</field>
+            <field name="is_certified" eval="False"/>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=1095)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Buen trato con clientes en ambiente de bar</field>
+        </record>
+        
+        <record id="demo_skill_technician_electrical" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_technician"/>
+            <field name="skill_id" ref="skill_electrical_maintenance"/>
+            <field name="skill_level_id" ref="skill_level_advanced"/>
+            <field name="level_progress">88</field>
+            <field name="is_certified" eval="True"/>
+            <field name="certification_date" eval="(datetime.now() - timedelta(days=270)).strftime('%Y-%m-%d')"/>
+            <field name="certification_body">Colegio de Ingenieros del Perú</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=1825)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Especialista en sistemas eléctricos comerciales</field>
+        </record>
+        
+        <record id="demo_skill_technician_plumbing" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_technician"/>
+            <field name="skill_id" ref="skill_plumbing_maintenance"/>
+            <field name="skill_level_id" ref="skill_level_intermediate"/>
+            <field name="level_progress">72</field>
+            <field name="is_certified" eval="False"/>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=1095)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Mantenimiento básico de sistemas de agua y desagüe</field>
+        </record>
+        
+        <record id="demo_skill_cleaner_cleaning" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_cleaner"/>
+            <field name="skill_id" ref="skill_deep_cleaning"/>
+            <field name="skill_level_id" ref="skill_level_advanced"/>
+            <field name="level_progress">85</field>
+            <field name="is_certified" eval="True"/>
+            <field name="certification_date" eval="(datetime.now() - timedelta(days=120)).strftime('%Y-%m-%d')"/>
+            <field name="certification_body">Instituto de Limpieza Profesional</field>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=730)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Experta en limpieza profunda y desinfección</field>
+        </record>
+        
+        <record id="demo_skill_cleaner_hygiene" model="hr.employee.skill">
+            <field name="employee_id" ref="demo_employee_cleaner"/>
+            <field name="skill_id" ref="skill_hygiene_protocols"/>
+            <field name="skill_level_id" ref="skill_level_intermediate"/>
+            <field name="level_progress">78</field>
+            <field name="is_certified" eval="False"/>
+            <field name="date_start" eval="(datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')"/>
+            <field name="notes">Conocimiento de protocolos de higiene alimentaria</field>
+        </record>
+        
+        <!-- Órdenes FSM de demostración (si el módulo fieldservice está instalado) -->
+        <record id="demo_fsm_order_electrical" model="fsm.order">
+            <field name="name">Reparación Sistema Eléctrico - Cocina</field>
+            <field name="person_id" ref="demo_employee_technician"/>
+            <field name="min_skill_level" ref="skill_level_intermediate"/>
+            <field name="skill_priority">high</field>
+        </record>
+        
+        <record id="demo_fsm_order_plumbing" model="fsm.order">
+            <field name="name">Mantenimiento Tuberías - Baños</field>
+            <field name="person_id" ref="demo_employee_technician"/>
+            <field name="min_skill_level" ref="skill_level_beginner"/>
+            <field name="skill_priority">medium</field>
+        </record>
+        
+        <!-- Relación de habilidades requeridas para órdenes FSM -->
+        <record id="demo_fsm_skill_electrical" model="fsm.order">
+            <field name="id" ref="demo_fsm_order_electrical"/>
+            <field name="required_skill_ids" eval="[(6, 0, [ref('skill_electrical_maintenance')])]"/>
+        </record>
+        
+        <record id="demo_fsm_skill_plumbing" model="fsm.order">
+            <field name="id" ref="demo_fsm_order_plumbing"/>
+            <field name="required_skill_ids" eval="[(6, 0, [ref('skill_plumbing_maintenance')])]"/>
+        </record>
+        
+    </data>
+</odoo>

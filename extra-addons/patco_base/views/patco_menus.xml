@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================ -->
+        <!-- MENÚS PRINCIPALES PATCO - ESTRUCTURA UNIFICADA -->
+        <!-- ============================================ -->
+        
+        <!-- MENÚ PRINCIPAL: Conversaciones -->
+        <menuitem id="menu_patco_conversations"
+                  name="Conversaciones"
+                  sequence="10"
+                  web_icon="patco_base,static/src/img/PATCO-Logo.png"/>
+        
+        <!-- MENÚ PRINCIPAL: Administración -->
+        <menuitem id="menu_patco_administration"
+                  name="Administración"
+                  sequence="20"
+                  web_icon="patco_base,static/src/img/PATCO-Logo.png"/>
+        
+        <!-- Submenús de Administración -->
+        <menuitem id="menu_patco_administration_employees"
+                  name="Empleados"
+                  parent="menu_patco_administration"
+                  sequence="10"/>
+        
+        <menuitem id="menu_patco_administration_customers"
+                  name="Clientes"
+                  parent="menu_patco_administration"
+                  sequence="20"/>
+        
+        <menuitem id="menu_patco_administration_billing"
+                  name="Facturación y Cobranza"
+                  parent="menu_patco_administration"
+                  sequence="30"/>
+        
+        <menuitem id="menu_patco_administration_config"
+                  name="Configuración"
+                  parent="menu_patco_administration"
+                  sequence="40"/>
+        
+        <!-- MENÚ PRINCIPAL: Servicio Técnico -->
+        <menuitem id="menu_patco_field_service"
+                  name="Servicio Técnico"
+                  sequence="30"
+                  web_icon="patco_base,static/src/img/PATCO-Logo.png"/>
+        
+        <!-- Submenús de Servicio Técnico -->
+        <menuitem id="menu_patco_field_service_assets"
+                  name="Activos y Manuales"
+                  parent="menu_patco_field_service"
+                  sequence="10"/>
+        
+        <menuitem id="menu_patco_field_service_orders"
+                  name="Órdenes de Servicio"
+                  parent="menu_patco_field_service"
+                  sequence="20"/>
+        
+        <menuitem id="menu_patco_field_service_tickets"
+                  name="Tickets"
+                  parent="menu_patco_field_service"
+                  sequence="30"/>
+        
+        <!-- MENÚ PRINCIPAL: Configuración IA -->
+        <menuitem id="menu_patco_ai_config"
+                  name="Configuración IA"
+                  sequence="40"
+                  web_icon="patco_base,static/src/img/PATCO-Logo.png"/>
+        
+        <!-- Submenús de Configuración IA -->
+        <menuitem id="menu_patco_ai_config_conversations"
+                  name="Conversaciones"
+                  parent="menu_patco_ai_config"
+                  sequence="10"/>
+        
+        <menuitem id="menu_patco_ai_config_knowledge"
+                  name="Base de Conocimiento"
+                  parent="menu_patco_ai_config"
+                  sequence="20"/>
+        
+        <menuitem id="menu_patco_ai_config_settings"
+                  name="Configuración"
+                  parent="menu_patco_ai_config"
+                  sequence="30"/>
+        
+        <!-- MENÚ PRINCIPAL: Gerencia -->
+        <menuitem id="menu_patco_management"
+                  name="Gerencia"
+                  sequence="50"
+                  web_icon="patco_base,static/src/img/PATCO-Logo.png"/>
+        
+        <!-- Submenús de Gerencia -->
+        <menuitem id="menu_patco_management_reports"
+                  name="Reportes"
+                  parent="menu_patco_management"
+                  sequence="10"/>
+        
+        <menuitem id="menu_patco_management_dashboards"
+                  name="Tableros"
+                  parent="menu_patco_management"
+                  sequence="20"/>
+        
+    </data>
+</odoo>

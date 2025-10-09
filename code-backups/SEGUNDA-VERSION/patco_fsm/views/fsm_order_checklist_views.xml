@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista formulario extendida para FSM Order con Checklists -->
+        <record id="fsm_order_form_view_checklist_inherit" model="ir.ui.view">
+            <field name="name">fsm.order.form.checklist.inherit</field>
+            <field name="model">fsm.order</field>
+            <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+            <field name="arch" type="xml">
+                <!-- Agregar botón de base de conocimiento en el button_box -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <button name="action_view_equipment_knowledge_base" 
+                            type="object" 
+                            class="oe_stat_button" 
+                            icon="fa-book"
+                            invisible="x_knowledge_base_count == 0">
+                        <field name="x_knowledge_base_count" widget="statinfo" string="Base Conocimiento"/>
+                    </button>
+                </xpath>
+                
+                <!-- Agregar página de checklists -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Checklists" invisible="not equipment_id">
+                        <group>
+                            <group string="Checklist de Entrada">
+                                <field name="x_entry_checklist" widget="html" nolabel="1"/>
+                            </group>
+                        </group>
+                        <group>
+                            <group string="Checklist de Salida">
+                                <field name="x_exit_checklist" widget="html" nolabel="1"/>
+                            </group>
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        
+
+        
+    </data>
+</odoo>

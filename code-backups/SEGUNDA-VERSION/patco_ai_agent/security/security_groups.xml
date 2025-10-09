@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Categoría de seguridad para IA -->
+    <record id="module_category_ai_agent" model="ir.module.category">
+        <field name="name">Asistente IA</field>
+        <field name="description">Gestión de permisos para el Asistente IA PATCO</field>
+        <field name="sequence">50</field>
+    </record>
+    
+    <!-- Grupo: Usuario IA -->
+    <record id="group_ai_user" model="res.groups">
+        <field name="name">Usuario IA</field>
+        <field name="category_id" ref="module_category_ai_agent"/>
+        <field name="comment">
+            Puede usar conversaciones IA y acceder a la base de conocimiento.
+            Permisos básicos para técnicos de campo.
+        </field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+    </record>
+    
+    <!-- Grupo: Administrador IA -->
+    <record id="group_ai_manager" model="res.groups">
+        <field name="name">Administrador IA</field>
+        <field name="category_id" ref="module_category_ai_agent"/>
+        <field name="comment">
+            Puede gestionar conversaciones IA, configurar la base de conocimiento,
+            y administrar todos los aspectos del sistema IA.
+        </field>
+        <field name="implied_ids" eval="[(4, ref('group_ai_user'))]"/>
+    </record>
+    
+    <!-- Grupo: Administrador Base de Conocimiento -->
+    <record id="group_knowledge_manager" model="res.groups">
+        <field name="name">Administrador Base de Conocimiento</field>
+        <field name="category_id" ref="module_category_ai_agent"/>
+        <field name="comment">
+            Puede gestionar documentos RAG, configurar indexación,
+            y administrar la base de conocimiento técnico.
+        </field>
+        <field name="implied_ids" eval="[(4, ref('group_ai_user'))]"/>
+    </record>
+    
+    <!-- Reglas de registro para ai.conversation -->
+    <record id="rule_ai_conversation_user" model="ir.rule">
+        <field name="name">Conversación IA: Usuario</field>
+        <field name="model_id" ref="model_ai_conversation"/>
+        <field name="domain_force">[('create_uid', '=', user.id)]</field>
+        <field name="groups" eval="[(4, ref('group_ai_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    
+    <record id="rule_ai_conversation_manager" model="ir.rule">
+        <field name="name">Conversación IA: Administrador</field>
+        <field name="model_id" ref="model_ai_conversation"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_ai_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+    
+    <!-- Reglas de registro para ir.attachment (campos RAG) -->
+    <record id="rule_attachment_rag_user" model="ir.rule">
+        <field name="name">Documentos RAG: Usuario</field>
+        <field name="model_id" ref="base.model_ir_attachment"/>
+        <field name="domain_force">[
+            '|',
+            ('x_is_indexed', '=', True),
+            ('create_uid', '=', user.id)
+        ]</field>
+        <field name="groups" eval="[(4, ref('group_ai_user'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="False"/>
+        <field name="perm_create" eval="False"/>
+        <field name="perm_unlink" eval="False"/>
+    </record>
+    
+    <record id="rule_attachment_rag_knowledge_manager" model="ir.rule">
+        <field name="name">Documentos RAG: Administrador Conocimiento</field>
+        <field name="model_id" ref="base.model_ir_attachment"/>
+        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[(4, ref('group_knowledge_manager'))]"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_write" eval="True"/>
+        <field name="perm_create" eval="True"/>
+        <field name="perm_unlink" eval="True"/>
+    </record>
+
+</odoo>

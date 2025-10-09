@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista de formulario extendida para tickets de helpdesk -->
+        <record id="view_helpdesk_ticket_form_patco" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.form.patco</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_form"/>
+            <field name="arch" type="xml">
+                
+                <!-- Agregar campos de equipo después del cliente -->
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_equipment_id" options="{'no_create': True}"/>
+                    <field name="x_equipment_code" readonly="1" invisible="not x_equipment_id"/>
+                    <field name="x_customer_equipment" readonly="1" invisible="not x_equipment_id"/>
+                    <field name="x_equipment_location" readonly="1" invisible="not x_equipment_id"/>
+                </xpath>
+                
+            </field>
+        </record>
+        
+        <!-- Vista de lista extendida para tickets de helpdesk -->
+        <record id="view_helpdesk_ticket_list_patco" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.list.patco</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk_mgmt.ticket_view_tree"/>
+            <field name="arch" type="xml">
+                
+                <!-- Agregar columnas de equipo -->
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_equipment_code" optional="show"/>
+                    <field name="x_customer_equipment" optional="hide"/>
+                </xpath>
+                
+            </field>
+        </record>
+        
+        <!-- Vista de búsqueda extendida -->
+        <record id="view_helpdesk_ticket_search_patco" model="ir.ui.view">
+            <field name="name">helpdesk.ticket.search.patco</field>
+            <field name="model">helpdesk.ticket</field>
+            <field name="inherit_id" ref="helpdesk_mgmt.helpdesk_ticket_view_search"/>
+            <field name="arch" type="xml">
+                
+                <!-- Agregar filtros de equipo -->
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_equipment_id"/>
+                    <field name="x_equipment_code"/>
+                </xpath>
+                
+                <xpath expr="//group" position="inside">
+                    <filter name="group_equipment" string="Equipo" context="{'group_by': 'x_equipment_id'}"/>
+                </xpath>
+                
+            </field>
+        </record>
+        
+    </data>
+</odoo>

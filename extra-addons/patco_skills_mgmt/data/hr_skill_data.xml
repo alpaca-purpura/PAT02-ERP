@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- HABILIDADES DE COCINA Y EQUIPOS DE COCCIÓN -->
+        <record id="skill_coc_calentadores" model="hr.skill">
+            <field name="name">Calentadores y Hornos Comerciales</field>
+            <field name="code">COC-CAL</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+        </record>
+        
+        <record id="skill_coc_presion" model="hr.skill">
+            <field name="name">Equipos de Presión y Vapor</field>
+            <field name="code">COC-PRE</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+        </record>
+        
+        <record id="skill_coc_lavado" model="hr.skill">
+            <field name="name">Lavavajillas Comerciales</field>
+            <field name="code">COC-LAV</field>
+            <field name="skill_type_id" ref="skill_type_coc"/>
+        </record>
+        
+        <!-- HABILIDADES DE REFRIGERACIÓN -->
+        <record id="skill_ref_comercial" model="hr.skill">
+            <field name="name">Refrigeración Comercial</field>
+            <field name="code">REF-COM</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+        </record>
+        
+        <record id="skill_ref_aire" model="hr.skill">
+            <field name="name">Aire Acondicionado</field>
+            <field name="code">REF-AC</field>
+            <field name="skill_type_id" ref="skill_type_ref"/>
+        </record>
+        
+        <!-- HABILIDADES DE LAVANDERÍA -->
+        <record id="skill_lav_lavadoras" model="hr.skill">
+            <field name="name">Lavadoras Comerciales</field>
+            <field name="code">LAV-LAV</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+        </record>
+        
+        <record id="skill_lav_secadoras" model="hr.skill">
+            <field name="name">Secadoras Comerciales</field>
+            <field name="code">LAV-SEC</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+        </record>
+        
+        <record id="skill_lav_planchas" model="hr.skill">
+            <field name="name">Planchas y Calandrias</field>
+            <field name="code">LAV-PLA</field>
+            <field name="skill_type_id" ref="skill_type_lav"/>
+        </record>
+        
+        <!-- HABILIDADES ELÉCTRICAS -->
+        <record id="skill_elec_baja" model="hr.skill">
+            <field name="name">Electricidad de Baja Tensión</field>
+            <field name="code">ELEC-BT</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+        </record>
+        
+        <record id="skill_elec_generadores" model="hr.skill">
+            <field name="name">Generadores y UPS</field>
+            <field name="code">ELEC-GEN</field>
+            <field name="skill_type_id" ref="skill_type_elec"/>
+        </record>
+        
+        <!-- HABILIDADES DE FONTANERÍA -->
+        <record id="skill_font_agua" model="hr.skill">
+            <field name="name">Sistemas de Agua</field>
+            <field name="code">FONT-AGUA</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+        </record>
+        
+        <record id="skill_font_gas" model="hr.skill">
+            <field name="name">Instalaciones de Gas</field>
+            <field name="code">FONT-GAS</field>
+            <field name="skill_type_id" ref="skill_type_font"/>
+        </record>
+        
+        <!-- HABILIDADES DE CLIMATIZACIÓN -->
+        <record id="skill_hvac_ventilacion" model="hr.skill">
+            <field name="name">Sistemas de Ventilación</field>
+            <field name="code">HVAC-VENT</field>
+            <field name="skill_type_id" ref="skill_type_hvac"/>
+        </record>
+        
+        <record id="skill_hvac_climatizacion" model="hr.skill">
+            <field name="name">Climatización Integral</field>
+            <field name="code">HVAC-CLIM</field>
+            <field name="skill_type_id" ref="skill_type_hvac"/>
+        </record>
+        
+        <!-- HABILIDADES DE DIAGNÓSTICO -->
+        <record id="skill_diag_instrumentos" model="hr.skill">
+            <field name="name">Diagnóstico con Instrumentos</field>
+            <field name="code">DIAG-INST</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+        </record>
+        
+        <record id="skill_diag_electronico" model="hr.skill">
+            <field name="name">Diagnóstico Electrónico</field>
+            <field name="code">DIAG-ELEC</field>
+            <field name="skill_type_id" ref="skill_type_diag"/>
+        </record>
+        
+        <!-- HABILIDADES DE MANTENIMIENTO PREVENTIVO -->
+        <record id="skill_prev_planificado" model="hr.skill">
+            <field name="name">Mantenimiento Planificado</field>
+            <field name="code">PREV-PLAN</field>
+            <field name="skill_type_id" ref="skill_type_prev"/>
+        </record>
+        
+        <record id="skill_prev_predictivo" model="hr.skill">
+            <field name="name">Mantenimiento Predictivo</field>
+            <field name="code">PREV-PRED</field>
+            <field name="skill_type_id" ref="skill_type_prev"/>
+        </record>
+        
+        <!-- HABILIDADES DE GESTIÓN -->
+        <record id="skill_gest_cliente" model="hr.skill">
+            <field name="name">Atención al Cliente</field>
+            <field name="code">GEST-CLI</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+        </record>
+        
+        <record id="skill_gest_reportes" model="hr.skill">
+            <field name="name">Elaboración de Reportes</field>
+            <field name="code">GEST-REP</field>
+            <field name="skill_type_id" ref="skill_type_gest"/>
+        </record>
+        
+    </data>
+</odoo>

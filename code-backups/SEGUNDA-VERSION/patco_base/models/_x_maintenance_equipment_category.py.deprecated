@@ -1,0 +1,41 @@
+# -*- coding: utf-8 -*-
+from odoo import api, fields, models, _
+
+class MaintenanceEquipmentCategory(models.Model):
+    _inherit = 'maintenance.equipment.category'
+    
+    # Checklist templates for equipment categories
+    x_entry_checklist_template = fields.Html(
+        string='Entry Checklist Template',
+        help='Default checklist template for entry procedures in this equipment category'
+    )
+    x_exit_checklist_template = fields.Html(
+        string='Exit Checklist Template', 
+        help='Default checklist template for exit procedures in this equipment category'
+    )
+    
+    # Knowledge base for equipment categories
+    x_knowledge_base = fields.Html(
+        string='Knowledge Base',
+        help='Technical documentation and knowledge base for this equipment category'
+    )
+    
+    # Additional classification fields
+    x_maintenance_type = fields.Selection([
+        ('preventive', 'Preventive'),
+        ('corrective', 'Corrective'),
+        ('predictive', 'Predictive'),
+        ('emergency', 'Emergency')
+    ], string='Primary Maintenance Type', help='Primary type of maintenance for this category')
+    
+    x_criticality_level = fields.Selection([
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+        ('critical', 'Critical')
+    ], string='Criticality Level', help='Criticality level of equipment in this category')
+    
+    x_skill_requirements = fields.Text(
+        string='Skill Requirements',
+        help='Required skills and certifications for maintenance of this equipment category'
+    )

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Vista de lista extendida para timesheet con campos FSM -->
+        <record id="hr_timesheet_line_list_fsm" model="ir.ui.view">
+        <field name="name">account.analytic.line.list.fsm</field>
+        <field name="model">account.analytic.line</field>
+        <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="fsm_order_id" optional="show"/>
+                    <field name="fsm_location" optional="show"/>
+                    <field name="fsm_customer" optional="show"/>
+                    <field name="is_timer_running" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de formulario extendida para timesheet con campos FSM -->
+        <record id="hr_timesheet_line_form_fsm" model="ir.ui.view">
+            <field name="name">account.analytic.line.form.fsm</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="fsm_order_id" domain="[('stage_id.is_closed', '=', False)]"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="fsm_location" readonly="1"/>
+                    <field name="fsm_customer" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='unit_amount']" position="after">
+                    <field name="date_time" readonly="1"/>
+                    <field name="is_timer_running" invisible="1"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista de búsqueda extendida con filtros FSM -->
+        <record id="hr_timesheet_line_search_fsm" model="ir.ui.view">
+            <field name="name">account.analytic.line.search.fsm</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="after">
+                    <field name="fsm_order_id"/>
+                    <field name="fsm_location"/>
+                    <field name="fsm_customer"/>
+                </xpath>
+                <xpath expr="//filter[@name='groupby_project']" position="after">
+                    <filter name="groupby_fsm_order" string="Orden FSM" 
+                            context="{'group_by': 'fsm_order_id'}"/>
+                    <filter name="groupby_fsm_customer" string="Cliente FSM" 
+                            context="{'group_by': 'fsm_customer'}"/>
+                </xpath>
+                <xpath expr="//group[@name='groupby']" position="inside">
+                    <separator/>
+                    <filter name="fsm_timesheets" string="Con Orden FSM" 
+                            domain="[('fsm_order_id', '!=', False)]"/>
+                    <filter name="timer_active" string="Timer Activo" 
+                            domain="[('date_time', '!=', False), ('unit_amount', '=', 0)]"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Acción específica para timesheet FSM -->
+        <record id="action_hr_timesheet_fsm" model="ir.actions.act_window">
+            <field name="name">Registro de Tiempo FSM</field>
+            <field name="res_model">account.analytic.line</field>
+            <field name="view_mode">list,form</field>
+            <field name="domain">[('project_id', '!=', False)]</field>
+            <field name="context">{
+                'search_default_fsm_timesheets': 1,
+                'default_project_id': ref('patco_timesheet.project_fsm_default'),
+            }</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Registra tu tiempo de trabajo en campo!
+                </p>
+                <p>
+                    Utiliza el sistema de timer integrado para registrar automáticamente
+                    el tiempo dedicado a cada orden de servicio.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

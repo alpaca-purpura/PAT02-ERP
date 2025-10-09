@@ -1,0 +1,120 @@
+# -*- coding: utf-8 -*-
+
+from odoo import models, fields, api, _
+from odoo.exceptions import UserError
+
+class AccountAnalyticLine(models.Model):
+    _inherit = 'account.analytic.line'
+    
+    # Relación con FSM Order - Campo requerido por timesheets_analysis_report
+    fsm_order_id = fields.Many2one(
+        'fsm.order',
+        string='Orden de Servicio',
+        help='Orden de servicio de campo asociada'
+    )
+    
+    # Campo para manejar timer
+    date_time = fields.Datetime(
+        string='Hora de Inicio',
+        help='Hora de inicio del timer (vacío cuando el timer está detenido)'
+    )
+    
+    # Campos computados para mejor UX
+    fsm_location = fields.Char(
+        string='Ubicación',
+        related='fsm_order_id.location_id.name',
+        readonly=True
+    )
+    
+    fsm_customer = fields.Char(
+        string='Cliente FSM',
+        related='fsm_order_id.location_id.partner_id.name',
+        readonly=True
+    )
+    
+    is_timer_running = fields.Boolean(
+        string='Timer Activo',
+        compute='_compute_timer_running'
+    )
+    
+    @api.depends('date_time', 'unit_amount')
+    def _compute_timer_running(self):
+        """Determina si el timer está corriendo"""
+        for line in self:
+            line.is_timer_running = bool(line.date_time and not line.unit_amount)
+    
+    @api.model
+    def create(self, vals):
+        """Override create para validaciones"""
+        # Si se crea desde FSM y no tiene proyecto, usar el proyecto por defecto
+        if vals.get('fsm_order_id') and not vals.get('project_id'):
+            fsm_order = self.env['fsm.order'].browse(vals['fsm_order_id'])
+            if fsm_order.project_id:
+                vals['project_id'] = fsm_order.project_id.id
+            elif not vals.get('project_id'):
+                # Buscar o crear proyecto por defecto para FSM
+                default_project = self._get_or_create_fsm_project()
+                vals['project_id'] = default_project.id
+        
+        return super().create(vals)
+    
+    def _get_or_create_fsm_project(self):
+        """Obtiene o crea el proyecto por defecto para FSM"""
+        project = self.env['project.project'].search([
+            ('name', '=', 'Servicios de Campo'),
+            ('is_fsm', '=', True)
+        ], limit=1)
+        
+        if not project:
+            project = self.env['project.project'].create({
+                'name': 'Servicios de Campo',
+                'is_fsm': True,
+                'allow_timesheets': True,
+            })
+        
+        return project
+    
+    def action_start_timer(self):
+        """Inicia el timer para esta línea"""
+        self.ensure_one()
+        if self.is_timer_running:
+            raise UserError(_("El timer ya está activo para este registro."))
+        
+        self.write({
+            'date_time': fields.Datetime.now(),
+            'unit_amount': 0,
+        })
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'message': _("Timer iniciado."),
+                'type': 'success',
+            }
+        }
+    
+    def action_stop_timer(self):
+        """Detiene el timer para esta línea"""
+        self.ensure_one()
+        if not self.is_timer_running:
+            raise UserError(_("No hay timer activo para este registro."))
+        
+        # Calcular duración
+        start_time = self.date_time
+        end_time = fields.Datetime.now()
+        duration = (end_time - start_time).total_seconds() / 3600
+        
+        self.write({
+            'unit_amount': duration,
+            'date_time': False,
+        })
+        
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'message': _("Timer detenido. Tiempo: %.2f horas.") % duration,
+                'type': 'success',
+            }
+        }

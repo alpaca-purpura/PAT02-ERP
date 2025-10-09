@@ -35,3 +35,12 @@
 	path = extra-addons/OCA/fieldservice_skill
 	url = https://github.com/HeliconiaIO/field-service.git
 	branch = 18.0-mig-fieldservice_skill
+[submodule "extra-addons/OCA/mail"]
+	path = extra-addons/OCA/mail
+	url = https://github.com/OCA/mail.git
+[submodule "extra-addons/OCA/server-brand"]
+	path = extra-addons/OCA/server-brand
+	url = https://github.com/OCA/server-brand.git
+[submodule "extra-addons/OCA/server-tool"]
+	path = extra-addons/OCA/server-tool
+	url = https://github.com/OCA/server-tools.git

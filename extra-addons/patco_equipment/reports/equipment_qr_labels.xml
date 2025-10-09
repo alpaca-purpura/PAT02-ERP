@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Reporte de etiquetas QR para equipos -->
+        <record id="action_report_equipment_qr_labels" model="ir.actions.report">
+            <field name="name">Etiquetas QR de Equipos</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">patco_equipment.report_equipment_qr_labels</field>
+            <field name="report_file">patco_equipment.report_equipment_qr_labels</field>
+            <field name="binding_model_id" ref="maintenance.model_maintenance_equipment"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="base.paperformat_us"/>
+        </record>
+        
+        <!-- Template del reporte -->
+        <template id="report_equipment_qr_labels">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="equipment">
+                    <div class="page">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12 text-center">
+                                    <h3>Etiqueta de Equipo PATCO</h3>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-4">
+                                <div class="col-6">
+                                    <table class="table table-borderless">
+                                        <tr>
+                                            <td><strong>Código PATCO:</strong></td>
+                                            <td><span t-field="equipment.x_patco_code"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Equipo:</strong></td>
+                                            <td><span t-field="equipment.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Modelo:</strong></td>
+                                            <td><span t-field="equipment.model"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Serie:</strong></td>
+                                            <td><span t-field="equipment.serial_no"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Cliente:</strong></td>
+                                            <td><span t-field="equipment.x_customer_id.name"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Ubicación:</strong></td>
+                                            <td><span t-field="equipment.x_service_location_id.name"/></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                
+                                <div class="col-6 text-center">
+                                    <t t-if="equipment.x_qr_code">
+                                        <img t-att-src="image_data_uri(equipment.x_qr_code)" 
+                                             style="max-width: 200px; max-height: 200px;"/>
+                                        <br/>
+                                        <small class="text-muted">Escanea para acceder al equipo</small>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="alert alert-warning">
+                                            <i class="fa fa-exclamation-triangle"/> 
+                                            Código QR no disponible
+                                        </div>
+                                    </t>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="border-top pt-3">
+                                        <small class="text-muted">
+                                            <strong>Fecha de impresión:</strong> 
+                                            <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d/%m/%Y %H:%M')"/>
+                                            <br/>
+                                            <strong>URL:</strong> <span t-field="equipment.x_qr_url"/>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </template>
+        
+        <!-- Template compacto para múltiples etiquetas -->
+        <template id="report_equipment_qr_labels_compact">
+            <t t-call="web.html_container">
+                <div class="page">
+                    <style>
+                        .equipment-label {
+                            width: 48%;
+                            display: inline-block;
+                            vertical-align: top;
+                            margin: 1%;
+                            border: 1px solid #ddd;
+                            padding: 10px;
+                            page-break-inside: avoid;
+                        }
+                        .qr-image {
+                            max-width: 80px;
+                            max-height: 80px;
+                        }
+                    </style>
+                    
+                    <t t-foreach="docs" t-as="equipment">
+                        <div class="equipment-label">
+                            <div class="row">
+                                <div class="col-8">
+                                    <strong t-field="equipment.x_patco_code"/><br/>
+                                    <span t-field="equipment.name"/><br/>
+                                    <small t-field="equipment.x_customer_id.name"/>
+                                </div>
+                                <div class="col-4 text-center">
+                                    <t t-if="equipment.x_qr_code">
+                                        <img t-att-src="image_data_uri(equipment.x_qr_code)" 
+                                             class="qr-image"/>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </t>
+        </template>
+        
+        <!-- Reporte compacto -->
+        <record id="action_report_equipment_qr_labels_compact" model="ir.actions.report">
+            <field name="name">Etiquetas QR Compactas</field>
+            <field name="model">maintenance.equipment</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">patco_equipment.report_equipment_qr_labels_compact</field>
+            <field name="report_file">patco_equipment.report_equipment_qr_labels_compact</field>
+            <field name="binding_model_id" ref="maintenance.model_maintenance_equipment"/>
+            <field name="binding_type">report</field>
+            <field name="paperformat_id" ref="base.paperformat_us"/>
+        </record>
+        
+    </data>
+</odoo>

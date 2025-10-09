@@ -1,0 +1,38 @@
+{
+  "test_summary": {
+    "total_tests": 0,
+    "passed_tests": 0,
+    "success_rate": 0,
+    "overall_status": "NECESITA MEJORAS"
+  },
+  "detailed_results": {
+    "pgvector_tests": {
+      "error": "connection to server at \"localhost\" (::1), port 5432 failed: Connection refused (0x0000274D/10061)\n\tIs the server running on that host and accepting TCP/IP connections?\nconnection to server at \"localhost\" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)\n\tIs the server running on that host and accepting TCP/IP connections?\n"
+    },
+    "indexer_tests": {
+      "error": "connection to server at \"localhost\" (::1), port 5432 failed: Connection refused (0x0000274D/10061)\n\tIs the server running on that host and accepting TCP/IP connections?\nconnection to server at \"localhost\" (127.0.0.1), port 5432 failed: Connection refused (0x0000274D/10061)\n\tIs the server running on that host and accepting TCP/IP connections?\n"
+    },
+    "mcp_tests": {
+      "error": "HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000011C5BFA01A0>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión'))"
+    },
+    "langgraph_tests": {
+      "error": "HTTPConnectionPool(host='localhost', port=8001): Max retries exceeded with url: /health (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000011C5B459D10>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión'))"
+    },
+    "integration_tests": {
+      "successful_queries": 0,
+      "total_queries": 3,
+      "success_rate": 0.0,
+      "total_processing_time": 12.119935512542725,
+      "avg_processing_time": 4.039978504180908,
+      "error": "HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /mcp (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000011C5B422690>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión'))"
+    },
+    "performance_tests": {
+      "error": "HTTPConnectionPool(host='localhost', port=8080): Max retries exceeded with url: /mcp (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x0000011C5B39B790>: Failed to establish a new connection: [WinError 10061] No se puede establecer una conexión ya que el equipo de destino denegó expresamente dicha conexión'))"
+    }
+  },
+  "recommendations": [
+    "Instalar extensión PGVector en PostgreSQL",
+    "Indexar más documentos para mejorar la calidad de búsqueda",
+    "Mejorar estabilidad de integración end-to-end"
+  ]
+}

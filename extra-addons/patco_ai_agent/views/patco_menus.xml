@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================ -->
+        <!-- MENÚS ESPECÍFICOS DE PATCO AI AGENT -->
+        <!-- ============================================ -->
+        
+        <!-- Conversaciones - Lista de conversaciones -->
+        <menuitem id="menu_patco_conversations_list"
+                  name="Lista de conversaciones"
+                  parent="patco_base.menu_patco_conversations"
+                  action="action_ai_conversation"
+                  sequence="10"/>
+        
+        <!-- Configuración IA - Todas las conversaciones -->
+        <menuitem id="menu_patco_ai_all_conversations"
+                  name="Todas las conversaciones"
+                  parent="patco_base.menu_patco_ai_config_conversations"
+                  action="action_ai_conversation_all"
+                  sequence="10"/>
+        
+        <!-- Configuración IA - Documentos RAG -->
+        <menuitem id="menu_patco_ai_rag_documents"
+                  name="Documentos RAG"
+                  parent="patco_base.menu_patco_ai_config_knowledge"
+                  action="action_ai_rag_document"
+                  sequence="10"/>
+        
+        <!-- Configuración IA - Pendientes de Indexación -->
+        <menuitem id="menu_patco_ai_pending_indexing"
+                  name="Pendientes de Indexación"
+                  parent="patco_base.menu_patco_ai_config_knowledge"
+                  action="action_ai_rag_document_pending"
+                  sequence="20"/>
+        
+        <!-- Configuración IA - Estadísticas IA -->
+        <menuitem id="menu_patco_ai_statistics"
+                  name="Estadísticas IA"
+                  parent="patco_base.menu_patco_ai_config_settings"
+                  action="action_ai_statistics"
+                  sequence="10"/>
+        
+        <!-- Configuración IA - Estadísticas RAG -->
+        <menuitem id="menu_patco_ai_rag_statistics"
+                  name="Estadísticas RAG"
+                  parent="patco_base.menu_patco_ai_config_settings"
+                  action="action_ai_rag_statistics"
+                  sequence="20"/>
+        
+    </data>
+</odoo>

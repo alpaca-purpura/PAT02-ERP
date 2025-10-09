@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================ -->
+        <!-- MENÚS ESPECÍFICOS DE PATCO TIMESHEET -->
+        <!-- ============================================ -->
+        
+        <!-- Servicio Técnico - Registro de Tiempo FSM -->
+        <menuitem id="menu_patco_timesheet_fsm"
+                  name="Registro de Tiempo FSM"
+                  parent="patco_base.menu_patco_field_service_orders"
+                  action="action_hr_timesheet_fsm"
+                  sequence="60"/>
+        
+    </data>
+</odoo>

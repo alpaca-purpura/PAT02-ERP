@@ -1,0 +1,10 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+# Equipment Categories - Acceso por roles PATCO
+access_maintenance_equipment_category_user,maintenance.equipment.category.user,maintenance.model_maintenance_equipment_category,base.group_user,1,0,0,0
+access_maintenance_equipment_category_technician,maintenance.equipment.category.technician,maintenance.model_maintenance_equipment_category,patco_base.group_patco_technician,1,0,0,0
+access_maintenance_equipment_category_ops_manager,maintenance.equipment.category.ops.manager,maintenance.model_maintenance_equipment_category,patco_base.group_patco_operations_manager,1,1,1,0
+access_maintenance_equipment_category_administrative,maintenance.equipment.category.administrative,maintenance.model_maintenance_equipment_category,patco_base.group_patco_administrative,1,1,1,1
+# Equipment - Técnicos pueden crear activos, managers gestionan completamente
+access_maintenance_equipment_technician,maintenance.equipment.technician,maintenance.model_maintenance_equipment,patco_base.group_patco_technician,1,1,1,0
+access_maintenance_equipment_ops_manager,maintenance.equipment.ops.manager,maintenance.model_maintenance_equipment,patco_base.group_patco_operations_manager,1,1,1,1
+access_maintenance_equipment_administrative,maintenance.equipment.administrative,maintenance.model_maintenance_equipment,patco_base.group_patco_administrative,1,1,1,1

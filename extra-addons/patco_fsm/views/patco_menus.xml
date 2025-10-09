@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- ============================================ -->
+        <!-- MENÚS ESPECÍFICOS DE PATCO FSM -->
+        <!-- ============================================ -->
+        
+        <!-- Servicio Técnico - Mis Órdenes -->
+        <menuitem id="menu_patco_my_orders"
+                  name="Mis Órdenes"
+                  parent="patco_base.menu_patco_field_service_orders"
+                  action="action_fsm_order_patco"
+                  sequence="10"/>
+        
+        <!-- Servicio Técnico - Hojas de Trabajo -->
+        <menuitem id="menu_patco_worksheets"
+                  name="Hojas de Trabajo"
+                  parent="patco_base.menu_patco_field_service_orders"
+                  action="action_fsm_worksheet_patco"
+                  sequence="20"/>
+        
+        <!-- Servicio Técnico - Repuestos -->
+        <menuitem id="menu_patco_spare_parts"
+                  name="Repuestos"
+                  parent="patco_base.menu_patco_field_service_orders"
+                  action="action_fsm_order_consumed_part"
+                  sequence="30"/>
+        
+    </data>
+</odoo>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Maintenance Equipment Category Form View Extension -->
+        <record id="view_maintenance_equipment_category_form_extended" model="ir.ui.view">
+            <field name="name">maintenance.equipment.category.form.extended</field>
+            <field name="model">maintenance.equipment.category</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_category_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='note']" position="after">
+                    <field name="x_maintenance_type"/>
+                    <field name="x_criticality_level"/>
+                    <field name="x_skill_requirements" widget="text"/>
+                </xpath>
+                <xpath expr="//sheet" position="inside">
+                    <notebook>
+                        <page string="Checklist Templates">
+                            <group>
+                                <field name="x_entry_checklist_template" widget="html"/>
+                                <field name="x_exit_checklist_template" widget="html"/>
+                            </group>
+                        </page>
+                        <page string="Knowledge Base">
+                            <field name="x_knowledge_base" widget="html"/>
+                        </page>
+                    </notebook>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Maintenance Equipment Category List View Extension -->
+        <record id="view_maintenance_equipment_category_list_extended" model="ir.ui.view">
+            <field name="name">maintenance.equipment.category.tree.extended</field>
+            <field name="model">maintenance.equipment.category</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_category_view_list"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="x_maintenance_type"/>
+                    <field name="x_criticality_level"/>
+                </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

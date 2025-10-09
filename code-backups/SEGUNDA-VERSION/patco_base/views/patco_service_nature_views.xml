@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Service Nature List View -->
+        <record id="view_patco_service_nature_list" model="ir.ui.view">
+            <field name="name">patco.service.nature.list</field>
+            <field name="model">patco.service.nature</field>
+            <field name="arch" type="xml">
+                <list string="Naturaleza de Servicios" default_order="sequence,name">
+                    <field name="sequence" widget="handle"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Service Nature Form View -->
+        <record id="view_patco_service_nature_form" model="ir.ui.view">
+            <field name="name">patco.service.nature.form</field>
+            <field name="model">patco.service.nature</field>
+            <field name="arch" type="xml">
+                <form string="Naturaleza de Servicio">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Nombre de la naturaleza del servicio"/>
+                                <field name="code" placeholder="Código corto"/>
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Descripción detallada de la naturaleza del servicio"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Service Nature Search View -->
+        <record id="view_patco_service_nature_search" model="ir.ui.view">
+            <field name="name">patco.service.nature.search</field>
+            <field name="model">patco.service.nature</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Naturaleza de Servicios">
+                    <field name="name" string="Naturaleza" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <separator/>
+                    <filter string="Activos" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactivos" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Estado" name="group_active" context="{'group_by': 'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Service Nature Action -->
+        <record id="action_patco_service_nature" model="ir.actions.act_window">
+            <field name="name">Naturaleza de Servicios</field>
+            <field name="res_model">patco.service.nature</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Crea tu primera naturaleza de servicio!
+                </p>
+                <p>
+                    La naturaleza de servicio permite clasificar los tipos de intervención técnica.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Menu Item -->
+        <menuitem id="menu_patco_service_nature"
+                  name="Naturaleza de Servicios"
+                  parent="base.menu_administration"
+                  action="action_patco_service_nature"
+                  sequence="30"/>
+        
+    </data>
+</odoo>

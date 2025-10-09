@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_fsm_order_consumed_part,fsm.order.consumed.part,model_fsm_order_consumed_part,,1,1,1,1
+access_stock_transfer_request,stock.transfer.request,model_stock_transfer_request,,1,1,1,1
+access_fsm_worksheet,fsm.worksheet,model_fsm_worksheet,,1,1,1,1
+access_fsm_worksheet_template,fsm.worksheet.template,model_fsm_worksheet_template,,1,1,1,1

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Habilidades Técnicas Predefinidas para FSM -->
+        <record id="skill_type_refrigeracion" model="hr.skill.type">
+            <field name="name">Refrigeración</field>
+            <field name="skill_level_ids" eval="[(0, 0, {'name': 'Básico', 'level_progress': 25}),
+                                                    (0, 0, {'name': 'Intermedio', 'level_progress': 50}),
+                                                    (0, 0, {'name': 'Avanzado', 'level_progress': 75}),
+                                                    (0, 0, {'name': 'Experto', 'level_progress': 100})]"/>
+        </record>
+        
+        <record id="skill_type_aire_acondicionado" model="hr.skill.type">
+            <field name="name">Aire Acondicionado</field>
+            <field name="skill_level_ids" eval="[(0, 0, {'name': 'Básico', 'level_progress': 25}),
+                                                    (0, 0, {'name': 'Intermedio', 'level_progress': 50}),
+                                                    (0, 0, {'name': 'Avanzado', 'level_progress': 75}),
+                                                    (0, 0, {'name': 'Experto', 'level_progress': 100})]"/>
+        </record>
+        
+        <record id="skill_type_electromecanica" model="hr.skill.type">
+            <field name="name">Electromecánica</field>
+            <field name="skill_level_ids" eval="[(0, 0, {'name': 'Básico', 'level_progress': 25}),
+                                                    (0, 0, {'name': 'Intermedio', 'level_progress': 50}),
+                                                    (0, 0, {'name': 'Avanzado', 'level_progress': 75}),
+                                                    (0, 0, {'name': 'Experto', 'level_progress': 100})]"/>
+        </record>
+        
+        <record id="skill_type_cocina_industrial" model="hr.skill.type">
+            <field name="name">Cocina Industrial</field>
+            <field name="skill_level_ids" eval="[(0, 0, {'name': 'Básico', 'level_progress': 25}),
+                                                    (0, 0, {'name': 'Intermedio', 'level_progress': 50}),
+                                                    (0, 0, {'name': 'Avanzado', 'level_progress': 75}),
+                                                    (0, 0, {'name': 'Experto', 'level_progress': 100})]"/>
+        </record>
+        
+        <record id="skill_type_lavanderia" model="hr.skill.type">
+            <field name="name">Lavandería</field>
+            <field name="skill_level_ids" eval="[(0, 0, {'name': 'Básico', 'level_progress': 25}),
+                                                    (0, 0, {'name': 'Intermedio', 'level_progress': 50}),
+                                                    (0, 0, {'name': 'Avanzado', 'level_progress': 75}),
+                                                    (0, 0, {'name': 'Experto', 'level_progress': 100})]"/>
+        </record>
+        
+        <record id="skill_type_diagnostico" model="hr.skill.type">
+            <field name="name">Diagnóstico Técnico</field>
+            <field name="skill_level_ids" eval="[(0, 0, {'name': 'Básico', 'level_progress': 25}),
+                                                    (0, 0, {'name': 'Intermedio', 'level_progress': 50}),
+                                                    (0, 0, {'name': 'Avanzado', 'level_progress': 75}),
+                                                    (0, 0, {'name': 'Experto', 'level_progress': 100})]"/>
+        </record>
+        
+        <!-- Configuraciones de Facturación por Defecto -->
+        <record id="fsm_invoice_policy_timesheet" model="ir.config_parameter">
+            <field name="key">patco_fsm.default_invoice_policy</field>
+            <field name="value">timesheet</field>
+        </record>
+        
+        <record id="fsm_auto_invoice_on_done" model="ir.config_parameter">
+            <field name="key">patco_fsm.auto_invoice_on_done</field>
+            <field name="value">True</field>
+        </record>
+        
+        <!-- Configuraciones de Timer por Defecto -->
+        <record id="fsm_auto_start_timer" model="ir.config_parameter">
+            <field name="key">patco_fsm.auto_start_timer_on_progress</field>
+            <field name="value">True</field>
+        </record>
+        
+        <record id="fsm_auto_stop_timer" model="ir.config_parameter">
+            <field name="key">patco_fsm.auto_stop_timer_on_done</field>
+            <field name="value">True</field>
+        </record>
+        
+        <!-- Configuraciones de Clasificación -->
+        <record id="fsm_auto_classification" model="ir.config_parameter">
+            <field name="key">patco_fsm.auto_generate_classification_code</field>
+            <field name="value">True</field>
+        </record>
+        
+        <!-- Configuraciones de Sugerencia de Técnicos -->
+        <record id="fsm_skill_match_threshold" model="ir.config_parameter">
+            <field name="key">patco_fsm.skill_match_threshold</field>
+            <field name="value">70</field>
+        </record>
+        
+        <record id="fsm_max_suggested_technicians" model="ir.config_parameter">
+            <field name="key">patco_fsm.max_suggested_technicians</field>
+            <field name="value">5</field>
+        </record>
+        
+        <!-- Configuraciones de Hojas de Trabajo -->
+        <record id="fsm_require_worksheet_completion" model="ir.config_parameter">
+            <field name="key">patco_fsm.require_worksheet_completion</field>
+            <field name="value">True</field>
+        </record>
+        
+        <record id="fsm_require_customer_signature" model="ir.config_parameter">
+            <field name="key">patco_fsm.require_customer_signature</field>
+            <field name="value">True</field>
+        </record>
+        
+        <!-- Secuencias para Códigos de Clasificación -->
+        <record id="sequence_fsm_classification_code" model="ir.sequence">
+            <field name="name">Código de Clasificación FSM</field>
+            <field name="code">fsm.classification.code</field>
+            <field name="prefix">FSM-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+        </record>
+        
+        <!-- Secuencias para Hojas de Trabajo -->
+        <record id="sequence_fsm_worksheet" model="ir.sequence">
+            <field name="name">Hoja de Trabajo FSM</field>
+            <field name="code">fsm.worksheet</field>
+            <field name="prefix">WS-</field>
+            <field name="suffix">-%(year)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+            <field name="implementation">standard</field>
+        </record>
+        
+    </data>
+</odoo>

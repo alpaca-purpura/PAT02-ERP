@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vista de formulario extendida para ir.attachment con campos RAG -->
+    <record id="view_ir_attachment_form_rag" model="ir.ui.view">
+        <field name="name">ir.attachment.form.rag</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="base.view_attachment_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <notebook>
+                    <page string="Configuración RAG" name="rag_config">
+                        <group>
+                            <group name="rag_classification">
+                                <field name="x_document_type"/>
+                                <field name="x_language"/>
+                                <field name="x_technical_level"/>
+                                <field name="x_keywords" placeholder="palabra1, palabra2, palabra3"/>
+                            </group>
+                            <group name="rag_indexing">
+                                <field name="x_is_indexed" readonly="1"/>
+                                <field name="x_indexed_date" readonly="1"/>
+                                <field name="x_indexing_priority"/>
+                                <field name="x_embedding_model" readonly="1"/>
+                                <field name="x_content_hash" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Relaciones Contextuales">
+                            <field name="x_equipment_category_ids" widget="many2many_tags"/>
+                            <field name="x_service_nature_ids" widget="many2many_tags"/>
+                        </group>
+                        
+                        <group string="Información de Fragmentación" 
+                               invisible="x_parent_document_id == False">
+                            <field name="x_parent_document_id" readonly="1"/>
+                            <field name="x_chunk_index" readonly="1"/>
+                        </group>
+                        
+                        <group string="Error de Indexación" 
+                               invisible="x_indexing_error == False">
+                            <field name="x_indexing_error" readonly="1" widget="text"/>
+                        </group>
+                        
+                        <div class="oe_button_box" name="rag_buttons">
+                            <button name="action_index_for_rag" 
+                                    string="Indexar para RAG" 
+                                    type="object" 
+                                    class="btn-primary"
+                                    invisible="x_is_indexed == True"/>
+                            <button name="action_reindex_for_rag" 
+                                    string="Re-indexar" 
+                                    type="object" 
+                                    class="btn-warning"
+                                    invisible="x_is_indexed == False"/>
+                        </div>
+                    </page>
+                </notebook>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Vista de lista extendida para ir.attachment con información RAG -->
+    <record id="view_ir_attachment_tree_rag" model="ir.ui.view">
+        <field name="name">ir.attachment.tree.rag</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="base.view_attachment_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='create_date']" position="after">
+                <field name="x_document_type"/>
+                <field name="x_is_indexed" widget="boolean"/>
+                <field name="x_indexed_date"/>
+                <field name="x_indexing_priority"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Vista de búsqueda extendida para ir.attachment con filtros RAG -->
+    <record id="view_ir_attachment_search_rag" model="ir.ui.view">
+        <field name="name">ir.attachment.search.rag</field>
+        <field name="model">ir.attachment</field>
+        <field name="inherit_id" ref="base.view_attachment_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="x_document_type"/>
+                <field name="x_keywords"/>
+                <field name="x_equipment_category_ids"/>
+                <field name="x_service_nature_ids"/>
+            </xpath>
+            
+            <xpath expr="//filter[@name='my_documents_filter']" position="after">
+                <separator/>
+                <filter string="Indexados para RAG" name="indexed" 
+                        domain="[('x_is_indexed', '=', True)]"/>
+                <filter string="Pendientes de Indexación" name="pending_indexing" 
+                        domain="[('x_is_indexed', '=', False), ('file_size', '>', 0)]"/>
+                <filter string="Con Errores de Indexación" name="indexing_errors" 
+                        domain="[('x_indexing_error', '!=', False)]"/>
+                
+                <separator/>
+                <filter string="Manuales Técnicos" name="manuals" 
+                        domain="[('x_document_type', '=', 'manual')]"/>
+                <filter string="Procedimientos" name="procedures" 
+                        domain="[('x_document_type', '=', 'procedure')]"/>
+                <filter string="Listas de Verificación" name="checklists" 
+                        domain="[('x_document_type', '=', 'checklist')]"/>
+                <filter string="Reportes" name="reports" 
+                        domain="[('x_document_type', '=', 'report')]"/>
+                
+                <separator/>
+                <filter string="Prioridad Alta" name="high_priority" 
+                        domain="[('x_indexing_priority', '=', 'high')]"/>
+                <filter string="Prioridad Urgente" name="urgent_priority" 
+                        domain="[('x_indexing_priority', '=', 'urgent')]"/>
+            </xpath>
+            
+            <xpath expr="//group[@expand='0']" position="inside">
+                <filter string="Tipo de Documento" name="group_document_type" 
+                        context="{'group_by': 'x_document_type'}"/>
+                <filter string="Estado de Indexación" name="group_indexed" 
+                        context="{'group_by': 'x_is_indexed'}"/>
+                <filter string="Prioridad de Indexación" name="group_priority" 
+                        context="{'group_by': 'x_indexing_priority'}"/>
+                <filter string="Categoría de Equipo" name="group_equipment_category" 
+                        context="{'group_by': 'x_equipment_category_ids'}"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Acción para Base de Conocimiento RAG -->
+    <record id="action_knowledge_base_rag" model="ir.actions.act_window">
+        <field name="name">Base de Conocimiento RAG</field>
+        <field name="res_model">ir.attachment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('file_size', '>', 0)]</field>
+        <field name="context">{
+            'search_default_indexed': 1,
+            'default_x_document_type': 'manual',
+            'default_x_language': 'es',
+            'default_x_technical_level': 'intermediate'
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡Construye tu base de conocimiento para el Asistente IA!
+            </p>
+            <p>
+                La base de conocimiento RAG permite al asistente IA acceder a información técnica
+                relevante durante las conversaciones con los técnicos.
+            </p>
+            <p>
+                <strong>Tipos de documentos soportados:</strong>
+            </p>
+            <ul>
+                <li><strong>Manuales Técnicos:</strong> Documentación detallada de equipos</li>
+                <li><strong>Procedimientos:</strong> Pasos para realizar tareas específicas</li>
+                <li><strong>Listas de Verificación:</strong> Checklists para servicios</li>
+                <li><strong>Especificaciones:</strong> Datos técnicos y especificaciones</li>
+                <li><strong>Diagramas:</strong> Esquemas y diagramas técnicos</li>
+            </ul>
+            <p>
+                <strong>Para indexar un documento:</strong>
+            </p>
+            <ol>
+                <li>Sube el archivo (PDF, imagen, texto)</li>
+                <li>Clasifica el tipo de documento</li>
+                <li>Asocia con categorías de equipos relevantes</li>
+                <li>Haz clic en "Indexar para RAG"</li>
+            </ol>
+        </field>
+    </record>
+    
+    <!-- Acción para documentos pendientes de indexación -->
+    <record id="action_pending_indexing" model="ir.actions.act_window">
+        <field name="name">Documentos Pendientes de Indexación</field>
+        <field name="res_model">ir.attachment</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('x_is_indexed', '=', False), ('file_size', '>', 0)]</field>
+        <field name="context">{
+            'search_default_pending_indexing': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡No hay documentos pendientes de indexación!
+            </p>
+            <p>
+                Todos los documentos han sido procesados para la base de conocimiento RAG.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Acción servidor para estadísticas RAG -->
+    <record id="action_view_rag_statistics" model="ir.actions.server">
+        <field name="name">Ver Estadísticas RAG</field>
+        <field name="model_id" ref="base.model_ir_attachment"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_view_rag_stats()
+        </field>
+    </record>
+
+</odoo>

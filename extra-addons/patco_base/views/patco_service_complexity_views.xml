@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Service Complexity List View -->
+        <record id="view_patco_service_complexity_list" model="ir.ui.view">
+            <field name="name">patco.service.complexity.list</field>
+            <field name="model">patco.service.complexity</field>
+            <field name="arch" type="xml">
+                <list string="Niveles de Complejidad" default_order="sequence,name">
+                    <field name="sequence" widget="handle"/>
+                    <field name="code"/>
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Service Complexity Form View -->
+        <record id="view_patco_service_complexity_form" model="ir.ui.view">
+            <field name="name">patco.service.complexity.form</field>
+            <field name="model">patco.service.complexity</field>
+            <field name="arch" type="xml">
+                <form string="Nivel de Complejidad">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="toggle_active" type="object" class="oe_stat_button" icon="fa-archive">
+                                <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" placeholder="Nombre del nivel de complejidad"/>
+                                <field name="code" placeholder="Código corto"/>
+                            </group>
+                            <group>
+                                <field name="sequence"/>
+                            </group>
+                        </group>
+                        <group>
+                            <field name="description" placeholder="Descripción detallada del nivel de complejidad"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Service Complexity Search View -->
+        <record id="view_patco_service_complexity_search" model="ir.ui.view">
+            <field name="name">patco.service.complexity.search</field>
+            <field name="model">patco.service.complexity</field>
+            <field name="arch" type="xml">
+                <search string="Buscar Niveles de Complejidad">
+                    <field name="name" string="Complejidad" filter_domain="['|', ('name', 'ilike', self), ('code', 'ilike', self)]"/>
+                    <field name="code"/>
+                    <field name="description"/>
+                    <separator/>
+                    <filter string="Activos" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactivos" name="inactive" domain="[('active', '=', False)]"/>
+                    <group expand="0" string="Agrupar por">
+                        <filter string="Estado" name="group_active" context="{'group_by': 'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Service Complexity Action -->
+        <record id="action_patco_service_complexity" model="ir.actions.act_window">
+            <field name="name">Niveles de Complejidad</field>
+            <field name="res_model">patco.service.complexity</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Crea tu primer nivel de complejidad!
+                </p>
+                <p>
+                    Los niveles de complejidad permiten clasificar los servicios por dificultad técnica.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Menu Item -->
+        <menuitem id="menu_patco_service_complexity"
+                  name="Niveles de Complejidad"
+                  parent="base.menu_administration"
+                  action="action_patco_service_complexity"
+                  sequence="20"/>
+        
+    </data>
+</odoo>

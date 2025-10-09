@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista formulario completa para categorías de equipos -->
+        <record id="view_form_maintenance_equipment_category_new" model="ir.ui.view">
+            <field name="name">maintenance.equipment.category.form.patco</field>
+            <field name="model">maintenance.equipment.category</field>
+            <field name="arch" type="xml">
+                <form string="Categoría de Equipo">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!-- Botones inteligentes para estadísticas -->
+                            <button name="action_view_knowledge_base" 
+                                    type="object" 
+                                    class="oe_stat_button" 
+                                    icon="fa-book">
+                                <field name="x_knowledge_base_count" widget="statinfo" string="Documentos"/>
+                            </button>
+                            <button name="action_export_knowledge_base" 
+                                    type="object" 
+                                    class="oe_stat_button" 
+                                    icon="fa-download"
+                                    invisible="not x_knowledge_base_count">
+                                <div class="o_field_widget o_stat_info">
+                                    <span class="o_stat_text">Exportar</span>
+                                    <span class="o_stat_text">Docs</span>
+                                </div>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="Nombre de la categoría..."/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="📋 Información General">
+                                <field name="parent_id" 
+                                       string="Categoría Padre"
+                                       help="Categoría padre para herencia de plantillas y documentos"/>
+                                <field name="complete_name" readonly="1" invisible="not parent_id"/>
+                                <field name="color" widget="color"/>
+                            </group>
+                            <group string="🔄 Configuración de Herencia">
+                                <field name="x_inherit_checklists" 
+                                       string="Heredar Plantillas de Checklist"
+                                       help="Hereda automáticamente las plantillas de checklist de la categoría padre"/>
+                                <field name="x_inherit_knowledge_base" 
+                                       string="Heredar Base de Conocimiento"
+                                       help="Incluye documentos de la base de conocimiento de categorías padre"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="📝 Plantillas de Checklist" name="checklist_templates">
+                                <group>
+                                    <group string="📥 Checklist de Entrada">
+                                        <label for="x_entry_checklist_template" string="Plantilla Propia"/>
+                                        <field name="x_entry_checklist_template" 
+                                               widget="html" 
+                                               nolabel="1"
+                                               placeholder="Defina aquí la plantilla de checklist para cuando el equipo ingresa al taller..."/>
+                                    </group>
+                                    <group string="📤 Checklist de Salida">
+                                        <label for="x_exit_checklist_template" string="Plantilla Propia"/>
+                                        <field name="x_exit_checklist_template" 
+                                               widget="html" 
+                                               nolabel="1"
+                                               placeholder="Defina aquí la plantilla de checklist para cuando el equipo sale del taller..."/>
+                                    </group>
+                                </group>
+                                
+                                <!-- Plantillas efectivas (con herencia) -->
+                                <group string="🎯 Plantillas Efectivas (Con Herencia)" invisible="not x_inherit_checklists and not parent_id">
+                                    <group string="📥 Entrada Efectiva">
+                                        <field name="x_effective_entry_checklist" 
+                                               widget="html" 
+                                               readonly="1" 
+                                               nolabel="1"/>
+                                    </group>
+                                    <group string="📤 Salida Efectiva">
+                                        <field name="x_effective_exit_checklist" 
+                                               widget="html" 
+                                               readonly="1" 
+                                               nolabel="1"/>
+                                    </group>
+                                </group>
+                                
+                                <div class="alert alert-info" role="alert">
+                                    <p><strong>💡 Información sobre Plantillas:</strong></p>
+                                    <ul>
+                                        <li><strong>Plantillas Propias:</strong> Defina checklists específicos para esta categoría.</li>
+                                        <li><strong>Herencia Inteligente:</strong> Si no define plantillas propias y tiene herencia habilitada, se usarán las de la categoría padre.</li>
+                                        <li><strong>Plantillas Efectivas:</strong> Muestra el checklist final que se aplicará (propio o heredado).</li>
+                                    </ul>
+                                </div>
+                            </page>
+                            
+                            <page string="📚 Base de Conocimiento" name="knowledge_base">
+                                <group>
+                                    <group string="📊 Estadísticas de Documentos">
+                                        <field name="x_knowledge_base_count" 
+                                               string="Documentos Propios" 
+                                               readonly="1"/>
+                                        <field name="x_inherited_knowledge_count" 
+                                               string="Documentos Heredados" 
+                                               readonly="1" 
+                                               invisible="not x_inherited_knowledge_count"/>
+                                    </group>
+                                </group>
+                                
+                                <!-- Widget de adjuntos integrado -->
+                                <group string="📎 Adjuntar Documentos Técnicos">
+                                    <field name="x_attachment_ids" 
+                                           widget="many2many_binary" 
+                                           string="Documentos de esta Categoría"
+                                           help="Adjunte manuales técnicos, diagramas, especificaciones y documentación específica para esta categoría de equipos"
+                                           nolabel="1"/>
+                                </group>
+                                
+                                <!-- Sección de documentos heredados (solo lectura) -->
+                                <group string="📚 Documentos Heredados" invisible="not x_inherited_knowledge_count">
+                                    <div class="alert alert-info" role="alert">
+                                        <p><strong>📋 Documentos disponibles desde categorías padre:</strong></p>
+                                        <p>Esta categoría hereda <field name="x_inherited_knowledge_count" readonly="1" class="fw-bold text-primary"/> documentos de categorías superiores.</p>
+                                    </div>
+                                    <button name="action_view_inherited_knowledge_base" 
+                                            type="object" 
+                                            string="🔍 Ver Documentos Heredados" 
+                                            class="btn-outline-info"
+                                            icon="fa-level-up"/>
+                                </group>
+                                
+                                <group>
+                                    <group string="🔧 Acciones Avanzadas">
+                                        <button name="action_view_knowledge_base" 
+                                                type="object" 
+                                                string="📖 Ver Base de Conocimiento Completa" 
+                                                class="btn-primary"
+                                                icon="fa-book"
+                                                help="Ver todos los documentos: propios + heredados"/>
+                                        <button name="action_export_knowledge_base" 
+                                                type="object" 
+                                                string="📤 Exportar Documentación" 
+                                                class="btn-secondary"
+                                                icon="fa-download"
+                                                help="Exportar todos los documentos disponibles"/>
+                                    </group>
+                                </group>
+                                
+                                <separator string="💡 Instrucciones de Uso"/>
+                                <div class="alert alert-success" role="alert">
+                                    <p><strong>🎯 Base de Conocimiento con Herencia Inteligente:</strong></p>
+                                    <ul>
+                                        <li><strong>📎 Adjuntar Documentos:</strong> Use el área de adjuntos arriba para subir manuales técnicos, diagramas y documentación específica.</li>
+                                        <li><strong>🔄 Herencia Automática:</strong> Si está habilitada, esta categoría heredará automáticamente todos los documentos de sus categorías padre.</li>
+                                        <li><strong>🔧 Acceso Técnico:</strong> Los técnicos tendrán acceso tanto a documentos propios como heredados durante el servicio.</li>
+                                        <li><strong>📊 Jerarquía Inteligente:</strong> Los documentos más específicos (categoría actual) tienen prioridad sobre los generales (categorías padre).</li>
+                                        <li><strong>🎨 Tipos Recomendados:</strong> PDF (manuales), PNG/JPG (diagramas), DOC/DOCX (procedimientos), XLS/XLSX (especificaciones).</li>
+                                    </ul>
+                                </div>
+                            </page>
+                            
+                            <page string="🏷️ Equipos de esta Categoría" name="equipment_list">
+                                <field name="equipment_ids" nolabel="1">
+                                    <list string="Equipos">
+                                        <field name="name"/>
+                                        <field name="partner_id" string="Fabricante"/>
+                                        <field name="model"/>
+                                        <field name="serial_no"/>
+                                        <field name="x_maintenance_state" widget="badge"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids"/>
+                        <!--<field name="activity_ids"/>-->
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Vista lista extendida para categorías de equipos -->
+        <record id="view_list_maintenance_equipment_category_inherit" model="ir.ui.view">
+            <field name="name">maintenance.equipment.category.list.inherit</field>
+            <field name="model">maintenance.equipment.category</field>
+            <field name="inherit_id" ref="maintenance.hr_equipment_category_view_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="x_knowledge_base_count" string="Docs Propios"/>
+                    <field name="x_inherited_knowledge_count" string="Docs Heredados" optional="hide"/>
+                    <field name="x_inherit_checklists" string="Hereda Checklists" optional="hide"/>
+                    <field name="x_inherit_knowledge_base" string="Hereda Docs" optional="hide"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <!-- Vista kanban extendida para categorías de equipos -->
+        <record id="maintenance_equipment_category_view_kanban_inherit" model="ir.ui.view">
+            <field name="name">maintenance.equipment.category.kanban.inherit</field>
+            <field name="model">maintenance.equipment.category</field>
+            <field name="inherit_id" ref="maintenance.view_maintenance_equipment_category_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//t[@t-name='card']" position="inside">
+                    <div class="d-flex mt-1 align-items-center smaller">
+                        <span class="badge badge-pill badge-info" t-if="record.x_knowledge_base_count.raw_value > 0">
+                            <i class="fa fa-book"/> <t t-esc="record.x_knowledge_base_count.value"/> propios
+                        </span>
+                        <span class="badge badge-pill badge-success ms-1" t-if="record.x_inherited_knowledge_count.raw_value > 0">
+                            <i class="fa fa-level-up"/> <t t-esc="record.x_inherited_knowledge_count.value"/> heredados
+                        </span>
+                        <span class="badge badge-pill badge-warning ms-1" t-if="record.x_inherit_checklists.raw_value">
+                            <i class="fa fa-check-square"/> Hereda CL
+                        </span>
+                        <div class="ms-auto">
+                            <button name="action_view_knowledge_base" type="object" class="btn btn-sm btn-outline-secondary" title="Ver Base de Conocimiento Completa">
+                                <i class="fa fa-book"/>
+                            </button>
+                            <button name="action_view_inherited_knowledge_base" type="object" class="btn btn-sm btn-outline-success ms-1" title="Ver Documentos Heredados" t-if="record.x_inherited_knowledge_count.raw_value > 0">
+                                <i class="fa fa-level-up"/>
+                            </button>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+         <!-- Acción de ventana para categorías de equipos -->
+        <record id="action_maintenance_equipment_category_patco" model="ir.actions.act_window">
+            <field name="name">Categorías de Equipos</field>
+            <field name="res_model">maintenance.equipment.category</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="view_ids" eval="[(5, 0, 0),
+                                          (0, 0, {'view_mode': 'list', 'view_id': ref('view_list_maintenance_equipment_category_inherit')}),
+                                          (0, 0, {'view_mode': 'form', 'view_id': ref('view_form_maintenance_equipment_category_new')})]"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    ¡Crea tu primera categoría de equipo!
+                </p>
+                <p>
+                    Las categorías permiten organizar equipos jerárquicamente con herencia
+                    automática de checklists y documentación técnica.
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

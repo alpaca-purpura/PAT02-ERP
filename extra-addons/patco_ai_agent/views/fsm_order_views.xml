@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Vista de formulario extendida para fsm.order con campos IA -->
+    <record id="view_fsm_order_form_ai" model="ir.ui.view">
+        <field name="name">fsm.order.form.ai</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_form"/>
+        <field name="arch" type="xml">
+            <!-- Agregar botones IA en el button_box -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_start_ai_conversation" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-robot"
+                        invisible="x_ai_conversation_id != False">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Iniciar IA</span>
+                    </div>
+                </button>
+                
+                <button name="action_view_ai_conversation" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-comments"
+                        invisible="x_ai_conversation_id == False">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="x_ai_message_count"/>
+                        </span>
+                        <span class="o_stat_text">Mensajes IA</span>
+                    </div>
+                </button>
+                
+                <button name="action_view_ai_conversation" 
+                        type="object" 
+                        class="oe_stat_button" 
+                        icon="fa-comments"
+                        invisible="x_ai_conversation_id == False">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">Completar IA</span>
+                    </div>
+                </button>
+            </xpath>
+            
+            <!-- Agregar campos IA en una nueva página del notebook -->
+            <xpath expr="//notebook" position="inside">
+                <page string="Asistente IA" name="ai_assistant">
+                    <group>
+                        <group name="ai_config">
+                            <field name="x_ai_enabled"/>
+                            <field name="x_ai_auto_start"/>
+                            <field name="x_ai_enabled" readonly="1"/>
+                        </group>
+                        <group name="ai_conversation">
+                            <field name="x_ai_conversation_id" readonly="1"/>
+                            <field name="x_ai_duration" widget="float_time" readonly="1"/>
+                        </group>
+                    </group>
+                    
+                    <div class="row mt16" invisible="x_ai_conversation_id == False">
+                        <div class="col-12">
+                            <div class="alert alert-info" role="alert">
+                                <h4 class="alert-heading">
+                                    <i class="fa fa-robot"/> Conversación IA Activa
+                                </h4>
+                                <p>
+                                    El asistente IA está disponible para guiar al técnico durante el servicio.
+                                    La conversación incluye acceso a la base de conocimiento técnico y 
+                                    generación automática de reportes.
+                                </p>
+                                <hr/>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <strong>Mensajes:</strong> 
+                                        <field name="x_ai_message_count" readonly="1"/>
+                                    </div>
+                                    <div class="col-6">
+                                        <strong>Duración:</strong> 
+                                        <field name="x_ai_duration" widget="float_time" readonly="1"/>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <button name="action_view_ai_conversation" 
+                                            string="Abrir Conversación" 
+                                            type="object" 
+                                            class="btn btn-primary"/>
+                                    <button name="action_complete_ai_conversation" 
+                                            string="Completar Conversación" 
+                                            type="object" 
+                                            class="btn btn-success ml-2"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row mt16" invisible="x_ai_conversation_id != False">
+                        <div class="col-12">
+                            <div class="alert alert-warning" role="alert" 
+                                 invisible="x_ai_enabled == True">
+                                <h4 class="alert-heading">
+                                    <i class="fa fa-exclamation-triangle"/> IA Deshabilitada
+                                </h4>
+                                <p>
+                                    El asistente IA está deshabilitado para esta orden. 
+                                    Habilítalo para proporcionar guía automática al técnico.
+                                </p>
+                                <button name="action_enable_ai" 
+                                        string="Habilitar IA" 
+                                        type="object" 
+                                        class="btn btn-primary"/>
+                            </div>
+                            
+                            <div class="alert alert-info" role="alert" 
+                                 invisible="x_ai_enabled == False">
+                                <h4 class="alert-heading">
+                                    <i class="fa fa-robot"/> IA Lista para Usar
+                                </h4>
+                                <p>
+                                    El asistente IA está habilitado y listo para guiar al técnico.
+                                    <span invisible="person_id != False">
+                                        Asigna un técnico para iniciar automáticamente la conversación.
+                                    </span>
+                                    <span invisible="person_id == False">
+                                        Inicia la conversación manualmente o espera a que se active automáticamente.
+                                    </span>
+                                </p>
+                                <button name="action_start_ai_conversation" 
+                                        string="Iniciar Conversación IA" 
+                                        type="object" 
+                                        class="btn btn-primary"
+                                        invisible="person_id == False"/>
+                            </div>
+                        </div>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Vista de lista extendida para fsm.order con información IA -->
+    <record id="view_fsm_order_tree_ai" model="ir.ui.view">
+        <field name="name">fsm.order.tree.ai</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_list_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='stage_id']" position="after">
+                <field name="x_ai_conversation_id"/>
+                <field name="x_ai_enabled"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Vista kanban extendida para fsm.order con campos IA -->
+    <record id="view_fsm_order_kanban_ai" model="ir.ui.view">
+        <field name="name">fsm.order.kanban.ai</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="x_ai_conversation_id"/>
+                <field name="x_ai_enabled"/>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Vista de búsqueda extendida para fsm.order con campos IA -->
+    <record id="view_fsm_order_search_ai" model="ir.ui.view">
+        <field name="name">fsm.order.search.ai</field>
+        <field name="model">fsm.order</field>
+        <field name="inherit_id" ref="fieldservice.fsm_order_search_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <separator/>
+                <filter string="IA Habilitada" name="ai_enabled" 
+                        domain="[('x_ai_enabled', '=', True)]"/>
+                <filter string="IA Activa" name="ai_active" 
+                        domain="[('x_ai_conversation_id', '!=', False)]"/>
+                <filter string="IA Completada" name="ai_completed" 
+                        domain="[('x_ai_enabled', '=', False)]"/>
+                <filter string="Con Conversación IA" name="with_ai_conversation" 
+                        domain="[('x_ai_conversation_id', '!=', False)]"/>
+            </xpath>
+            
+            <xpath expr="//search" position="inside">
+                <group expand="0" string="Group By">
+                    <filter string="IA Habilitada" name="group_ai_enabled" 
+                            context="{'group_by': 'x_ai_enabled'}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Acción para órdenes con IA activa -->
+    <record id="action_fsm_orders_with_ai" model="ir.actions.act_window">
+        <field name="name">Órdenes con IA Activa</field>
+        <field name="res_model">fsm.order</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="domain">[('x_ai_channel_id', '!=', False)]</field>
+        <field name="context">{
+            'search_default_ai_active': 1
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                ¡No hay órdenes con IA activa!
+            </p>
+            <p>
+                Las órdenes con IA activa tienen conversaciones en curso con el asistente IA.
+                Los técnicos pueden acceder a la base de conocimiento y recibir guía durante el servicio.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Acción servidor para estadísticas IA -->
+    <record id="action_view_ai_statistics" model="ir.actions.server">
+        <field name="name">Ver Estadísticas IA</field>
+        <field name="model_id" ref="fieldservice.model_fsm_order"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_view_ai_statistics()
+        </field>
+    </record>
+
+</odoo>

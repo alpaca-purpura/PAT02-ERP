@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Vista de formulario para el wizard de conformidad del cliente -->
+        <record id="view_fsm_worksheet_customer_approval_wizard_form" model="ir.ui.view">
+            <field name="name">fsm.worksheet.customer.approval.wizard.form</field>
+            <field name="model">fsm.worksheet.customer.approval.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Conformidad del Cliente">
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="worksheet_id" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Datos del Cliente">
+                                <field name="customer_name" placeholder="Nombre completo del cliente"/>
+                                <field name="customer_document" placeholder="DNI, CE, Pasaporte, etc."/>
+                            </group>
+                            
+                            <group string="Conformidad">
+                                <field name="approval_action" widget="radio"/>
+                            </group>
+                        </group>
+                        
+                        <group string="Firma del Cliente" invisible="approval_action == 'reject'">
+                            <field name="customer_signature" widget="signature" nolabel="1"/>
+                        </group>
+                        
+                        <group string="Comentarios">
+                            <field name="customer_comments" nolabel="1" placeholder="Observaciones del cliente sobre el servicio realizado..."/>
+                        </group>
+                    </sheet>
+                    
+                    <footer>
+                        <button name="action_confirm_approval" type="object" string="Confirmar" class="btn-primary"/>
+                        <button name="action_cancel" type="object" string="Cancelar" class="btn-secondary"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Acción para abrir el wizard -->
+        <record id="action_fsm_worksheet_customer_approval_wizard" model="ir.actions.act_window">
+            <field name="name">Conformidad del Cliente</field>
+            <field name="res_model">fsm.worksheet.customer.approval.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>
