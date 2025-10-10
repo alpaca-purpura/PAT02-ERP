@@ -518,6 +518,8 @@ networks:
   odoo-network:
     name: odoo-patco-network
     driver: bridge
+  web_gateway:
+    external: true # <--- DECLARA QUE LA RED ES EXTERNA
 
 # ===== PERFILES DE SERVICIOS =====
 # Perfiles para controlar qué servicios se ejecutan:
