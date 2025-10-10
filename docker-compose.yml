@@ -14,45 +14,45 @@
 
 services:
   # ===== TRAEFIK PROXY PARA DESARROLLO LOCAL =====
-  traefik:
-    image: traefik:v3.0
-    container_name: patco-traefik-dev
-    command:
-      # Configuración básica
-      - --api.insecure=true
-      - --api.dashboard=true
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --providers.docker.network=odoo-patco-network
+  # traefik:
+  #   image: traefik:v3.0
+  #   container_name: patco-traefik-dev
+  #   command:
+  #     # Configuración básica
+  #     - --api.insecure=true
+  #     - --api.dashboard=true
+  #     - --providers.docker=true
+  #     - --providers.docker.exposedbydefault=false
+  #     - --providers.docker.network=odoo-patco-network
       
-      # Entrypoints
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --entrypoints.websocket.address=:8072
+  #     # Entrypoints
+  #     - --entrypoints.web.address=:80
+  #     - --entrypoints.websecure.address=:443
+  #     - --entrypoints.websocket.address=:8072
       
-      # Certificados auto-firmados para desarrollo local
-      - --certificatesresolvers.localresolver.acme.tlschallenge=true
-      - --certificatesresolvers.localresolver.acme.email=dev@patco.local
-      - --certificatesresolvers.localresolver.acme.storage=/letsencrypt/acme.json
-      - --certificatesresolvers.localresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+  #     # Certificados auto-firmados para desarrollo local
+  #     - --certificatesresolvers.localresolver.acme.tlschallenge=true
+  #     - --certificatesresolvers.localresolver.acme.email=patcoperu@gmail.com
+  #     - --certificatesresolvers.localresolver.acme.storage=/letsencrypt/acme.json
+  #     - --certificatesresolvers.localresolver.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
       
-      # Logs para debugging
-      - --log.level=INFO
-      - --accesslog=true
-    ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"  # Dashboard de Traefik
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik-letsencrypt:/letsencrypt
-    networks:
-      - odoo-network
-    restart: unless-stopped
-    labels:
-      - "patco.service=traefik"
-      - "patco.component=proxy"
-      - "patco.description=Traefik proxy para desarrollo local con dashboard"
+  #     # Logs para debugging
+  #     - --log.level=INFO
+  #     - --accesslog=true
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #     - "8080:8080"  # Dashboard de Traefik
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - traefik-letsencrypt:/letsencrypt
+  #   networks:
+  #     - odoo-network
+  #   restart: unless-stopped
+  #   labels:
+  #     - "patco.service=traefik"
+  #     - "patco.component=proxy"
+  #     - "patco.description=Traefik proxy para desarrollo local con dashboard"
 
   # ===== SERVICIOS BASE PATCO =====
   db:
@@ -89,8 +89,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      traefik:
-        condition: service_started
+      # traefik:
+      #   condition: service_started
     # --- COMANDO PARA INSTALAR MÓDULOS PATCO Y MANTENER CORRIENDO ---
     # command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "-d", "odoo_patco", "--init=l10n_pe", "--load-language=es_PE", "--without-demo=all"]
     command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "-d", "odoo_patco", "--init=l10n_pe", "--load-language=es_PE", "--without-demo=all"]      
@@ -117,33 +117,31 @@ services:
       - "patco.component=core"
       - "patco.description=Odoo Community 18 para PATCO Suite"
       
-      # --- TRAEFIK LABELS PARA DESARROLLO LOCAL ---
+       # --- ETIQUETAS TRAEFIK PARA EL PROXY EXTERNO ---
       - "traefik.enable=true"
-      - "traefik.docker.network=odoo-patco-network"
-      
+      - "traefik.docker.network=web_gateway" # <--- INDICA A TRAEFIK QUÉ RED USAR
 
       # Router principal para Odoo (HTTP)
       - "traefik.docker.network=web_gateway"
       - "traefik.http.routers.odoo.rule=Host(`erp.patcoperu.com`)"
       - "traefik.http.routers.odoo.entrypoints=websecure"
       - "traefik.http.routers.odoo.tls.certresolver=letsencrypt"
-
-      - "traefik.http.routers.odoo.service=odoo-web-dev"
+      - "traefik.http.routers.odoo.service=odoo-web"
       
       # Router para websockets
-      - "traefik.http.routers.odoo-websocket-dev.rule=Host(`erp.patcoperu.com`) && PathPrefix(`/websocket`)"
-      - "traefik.http.routers.odoo-websocket-dev.entrypoints=web"
-      - "traefik.http.routers.odoo-websocket-dev.service=odoo-websocket-dev"
+      - "traefik.http.routers.odoo-websocket.rule=Host(`erp.patcoperu.com`) && PathPrefix(`/websocket`)"
+      - "traefik.http.routers.odoo-websocket.entrypoints=web"
+      - "traefik.http.routers.odoo-websocket.service=odoo-websocket"
       
       # Servicios
-      - "traefik.http.services.odoo-web-dev.loadbalancer.server.port=8069"
-      - "traefik.http.services.odoo-websocket-dev.loadbalancer.server.port=8072"
+      - "traefik.http.services.odoo-web.loadbalancer.server.port=8069"
+      - "traefik.http.services.odoo-websocket.loadbalancer.server.port=8072"
       
       # Middleware para headers correctos
-      - "traefik.http.routers.odoo-dev.middlewares=odoo-headers-dev"
-      - "traefik.http.routers.odoo-websocket-dev.middlewares=odoo-headers-dev"
-      - "traefik.http.middlewares.odoo-headers-dev.headers.customrequestheaders.X-Forwarded-Proto=http"
-      - "traefik.http.middlewares.odoo-headers-dev.headers.customrequestheaders.X-Forwarded-Host=localhost"
+      # - "traefik.http.routers.odoo-dev.middlewares=odoo-headers-dev"
+      # - "traefik.http.routers.odoo-websocket-dev.middlewares=odoo-headers-dev"
+      # - "traefik.http.middlewares.odoo-headers-dev.headers.customrequestheaders.X-Forwarded-Proto=http"
+      # - "traefik.http.middlewares.odoo-headers-dev.headers.customrequestheaders.X-Forwarded-Host=localhost"
 
   # ===== SERVICIOS IA - FASE 1 =====
 
