@@ -500,8 +500,8 @@ volumes:
   odoo-db-data:
     name: odoo-patco-db-data
   # Volumen para Traefik
-  traefik-letsencrypt:
-    name: patco-traefik-letsencrypt
+  # traefik-letsencrypt:
+  #   name: patco-traefik-letsencrypt
   # Volúmenes para OnlyOffice Document Server
   onlyoffice-data:
     name: patco-onlyoffice-data
