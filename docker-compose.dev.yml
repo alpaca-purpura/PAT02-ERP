@@ -121,17 +121,13 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=odoo-patco-network"
       
-
       # Router principal para Odoo (HTTP)
-      - "traefik.docker.network=web_gateway"
-      - "traefik.http.routers.odoo.rule=Host(`erp.patcoperu.com`)"
-      - "traefik.http.routers.odoo.entrypoints=websecure"
-      - "traefik.http.routers.odoo.tls.certresolver=letsencrypt"
-
-      - "traefik.http.routers.odoo.service=odoo-web-dev"
+      - "traefik.http.routers.odoo-dev.rule=Host(`localhost`) || Host(`127.0.0.1`) || Host(`odoo.local`)"
+      - "traefik.http.routers.odoo-dev.entrypoints=web"
+      - "traefik.http.routers.odoo-dev.service=odoo-web-dev"
       
       # Router para websockets
-      - "traefik.http.routers.odoo-websocket-dev.rule=Host(`erp.patcoperu.com`) && PathPrefix(`/websocket`)"
+      - "traefik.http.routers.odoo-websocket-dev.rule=(Host(`localhost`) || Host(`127.0.0.1`) || Host(`odoo.local`)) && PathPrefix(`/websocket`)"
       - "traefik.http.routers.odoo-websocket-dev.entrypoints=web"
       - "traefik.http.routers.odoo-websocket-dev.service=odoo-websocket-dev"
       
