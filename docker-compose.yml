@@ -106,6 +106,7 @@ services:
     restart: unless-stopped
     networks:
       - odoo-network
+      - web_gateway
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8069/web/database/selector || exit 1"]
       interval: 60s
@@ -119,10 +120,8 @@ services:
       
        # --- ETIQUETAS TRAEFIK PARA EL PROXY EXTERNO ---
       - "traefik.enable=true"
-      - "traefik.docker.network=web_gateway" # <--- INDICA A TRAEFIK QUÉ RED USAR
 
       # Router principal para Odoo (HTTP)
-      - "traefik.docker.network=web_gateway"
       - "traefik.http.routers.odoo.rule=Host(`erp.patcoperu.com`)"
       - "traefik.http.routers.odoo.entrypoints=websecure"
       - "traefik.http.routers.odoo.tls.certresolver=letsencrypt"
