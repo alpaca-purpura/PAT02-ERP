@@ -89,8 +89,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      # traefik:
-      #   condition: service_started
     # --- COMANDO PARA INSTALAR MÓDULOS PATCO Y MANTENER CORRIENDO ---
     # command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "-d", "odoo_patco", "--init=l10n_pe", "--load-language=es_PE", "--without-demo=all"]
     command: ["python3", "/opt/odoo/odoo-bin", "-c", "/etc/odoo/odoo.conf", "-d", "odoo_patco", "--init=l10n_pe", "--load-language=es_PE", "--without-demo=all"]      
@@ -122,6 +120,7 @@ services:
       - "traefik.enable=true"
 
       # Router principal para Odoo (HTTP)
+      - "traefik.docker.network=web_gateway"
       - "traefik.http.routers.odoo.rule=Host(`erp.patcoperu.com`)"
       - "traefik.http.routers.odoo.entrypoints=websecure"
       - "traefik.http.routers.odoo.tls.certresolver=letsencrypt"
@@ -129,7 +128,7 @@ services:
       
       # Router para websockets
       - "traefik.http.routers.odoo-websocket.rule=Host(`erp.patcoperu.com`) && PathPrefix(`/websocket`)"
-      - "traefik.http.routers.odoo-websocket.entrypoints=web"
+      - "traefik.http.routers.odoo-websocket.entrypoints=websecure"
       - "traefik.http.routers.odoo-websocket.service=odoo-websocket"
       
       # Servicios
@@ -498,9 +497,6 @@ volumes:
     name: odoo-patco-web-data
   odoo-db-data:
     name: odoo-patco-db-data
-  # Volumen para Traefik
-  # traefik-letsencrypt:
-  #   name: patco-traefik-letsencrypt
   # Volúmenes para OnlyOffice Document Server
   onlyoffice-data:
     name: patco-onlyoffice-data
